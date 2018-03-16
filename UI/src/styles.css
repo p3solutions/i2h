@@ -20,7 +20,8 @@ progress {
   padding: 0;
 }
 .header-cap {
-  background: #9FC5F8;
+  /* background: #9FC5F8; */
+  background: royalblue;
   border: 2px solid #000;
   border-top: none;
   border-left: none;
@@ -30,6 +31,7 @@ progress {
 }
 .header-cap>.fa {
   margin: 12px 0;
+  color: #fff;
 }
 .header-content {
   height: 320px;
@@ -90,6 +92,9 @@ progress {
 }
 .col-i2h {
   color: #9568d6;
+}
+.col-fff{
+  color: #fff;
 }
 .btn-i2h {
   background-color: #9568d6;
