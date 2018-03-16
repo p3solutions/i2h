@@ -1,5 +1,9 @@
 /* You can add global styles to this file, and also import other style files */
 
+body {
+  background: #efefef;
+}
+
 input,
 textarea,
 select,
@@ -21,7 +25,8 @@ progress {
 }
 .header-cap {
   /* background: #9FC5F8; */
-  background: royalblue;
+  /* background: royalblue; */
+  background: #ef7f1a;
   border: 2px solid #000;
   border-top: none;
   border-left: none;
@@ -88,10 +93,12 @@ progress {
   text-align: center;
 }
 .bg-i2h {
-  background-color: #9568d6;
+  /* background-color: #9568d6; */
+  background-color: #ef7f1a;
 }
 .col-i2h {
-  color: #9568d6;
+  /* color: #9568d6; */
+  color: #ef7f1a;
 }
 .col-fff{
   color: #fff;

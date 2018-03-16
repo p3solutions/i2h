@@ -1,6 +1,7 @@
 #custom-nav {
   /* background-color: #269af8; */
-  background-color: royalblue;
+  background-color: #ef7f1a;
+  /* #EC7E1C */
   margin-bottom: 0px;
 }
 #custom-nav .fa {
@@ -110,8 +111,10 @@ ul.msg_list li a .message {
 }
 
 .nav-brand-img {
-  width: 120px;
-  height: 20px;
+  height: 40px;
+  top: 0;
+  position: absolute;
+  margin: 5px;
 }
 
 .fa-sign-out {
