@@ -1,0 +1,49 @@
+<div class="center-card">
+  <div class="header-cap">
+    <i class="fa  fa-user-circle fa-5x"></i>
+  </div>
+  <div class="header-content">
+    <form class="form-horizontal">
+      <div class="email-password-div">
+        <div class="col-md-12 m-t-10 m-b-10">
+          <input type="email" class="form-control" name="signin-email" formControlName="emailAddress" placeholder="Enter Email">
+          <i class="fa fa-envelope fa-lg input-icon" aria-hidden="true"></i>
+        </div>
+        <div class="col-md-12 m-t-10 m-b-10">
+          <input type="password" class="form-control" name="signin-password" formControlName="password" placeholder="Enter Password">
+          <i class="fa fa-key fa-lg input-icon" aria-hidden="true"></i>
+        </div>
+        <!-- <div id="error-block" class="col-md-12 form-group">
+          <div *ngIf="errorObject?.show" class="alert alert-danger alert-dismissible" role="alert">
+            <button type="button" class="close" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+            <strong>Error!</strong> {{errorObject?.message}}
+          </div>
+        </div> -->
+      </div>
+      <div class="col-md-12 m-b-10 text-center">
+        (or)
+      </div>
+      <div class="otp-div col-md-12 m-b-10">
+        <div class="col-md-12 p-0 m-b-10">
+          <input type="text" class="form-control" name="mobile" formControlName="mobile" placeholder="Enter Mobile Number">
+          <i class="fa fa-phone fa-lg input-icon r-0" aria-hidden="true"></i>
+        </div>
+        <div class="col-md-4 p-0 m-t-10">
+          <button class="btn btn-form btn-secondary">Send OTP</button>
+        </div>
+        <div class="col-md-7 p-0 fl-r m-t-10 otp-input">
+          <input type="text" class="form-control" name="mobile" formControlName="mobile" placeholder="Enter OTP">
+          <i class="fa fa-key fa-lg input-icon r-0" aria-hidden="true"></i>
+        </div>
+      </div>
+      <div class="col-md-12 m-t-30 text-center">
+        <button class="col-md-12 btn btn-form btn-i2h {{ enableSignInBtn ? '' : 'bg-disabled'}}">
+          LOG IN
+          <i *ngIf="inProgress" class="fa fa-spinner fa-spin inline-loader"></i>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

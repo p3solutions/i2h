@@ -1,1 +1,98 @@
 /* You can add global styles to this file, and also import other style files */
+
+input,
+textarea,
+select,
+button,
+meter,
+progress {
+  -webkit-writing-mode: horizontal-tb;
+}
+
+.center-card {
+  height: 450px;
+  width: 350px;
+  top: 150px;
+  position: relative;
+  margin: auto auto;
+  border: 2px #000 solid;
+  border-radius: 3px;
+  padding: 0;
+}
+.header-cap {
+  background: #9FC5F8;
+  border: 2px solid #000;
+  border-top: none;
+  border-left: none;
+  border-right: none;
+  height: 100px;
+  text-align: center;
+}
+.header-cap>.fa {
+  margin: 12px 0;
+}
+.header-content {
+  height: 320px;
+  padding: 15px;
+}
+.input-icon {
+  position: absolute;
+  right: 15px;
+  z-index: 2;
+  display: block;
+  margin: 5px 10px;
+  top: 5px;
+  pointer-events: none;
+}
+.otp-input {
+  width: 62%;
+}
+
+/* custom relative specific css */
+.fl-r{
+  float: right;
+}
+.fl-l {
+  float: left;
+}
+.m-0 {
+  margin: 0;
+}
+.m-t-10 {
+  margin-top: 10px;
+}
+.m-t-20 {
+  margin-top: 20px;
+}
+.m-t-30 {
+  margin-top: 30px;
+}
+.m-b-10 {
+  margin-bottom: 10px;
+}
+.m-l-10 {
+  margin-left: 10px;
+}
+.m-r-10 {
+  margin-right: 10px;
+}
+.p-0 {
+  padding: 0;
+}
+.r-0{
+  right: 0;
+}
+.text-center {
+  text-align: center;
+}
+.bg-i2h {
+  background-color: #9568d6;
+}
+.col-i2h {
+  color: #9568d6;
+}
+.btn-i2h {
+  background-color: #9568d6;
+  color: #fff;  
+}
+
