@@ -14,13 +14,14 @@ progress {
 }
 
 .center-card {
+  background-color: #fff;
+  border: 2px #000 solid;
+  border-radius: 3px;
   height: 400px;
   width: 350px;
   top: 150px;
   position: relative;
   margin: auto auto;
-  border: 2px #000 solid;
-  border-radius: 3px;
   padding: 0;
 }
 .header-cap {
