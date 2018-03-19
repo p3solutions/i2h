@@ -1,8 +1,9 @@
 #custom-nav {
-  /* background-color: #269af8; */
   background-color: #ef7f1a;
-  /* #EC7E1C */
   margin-bottom: 0px;
+  box-shadow: 1px 1px 13px grey; 
+  -moz-box-shadow: 1px 1px 13px grey;
+  -webkit-box-shadow: 1px 1px 13px grey;
 }
 #custom-nav .fa {
     color: #fff;

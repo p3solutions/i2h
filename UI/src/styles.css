@@ -1,8 +1,12 @@
 /* You can add global styles to this file, and also import other style files */
-
+/* overriding css */
 body {
   background: #efefef;
 }
+.fa {
+  color: #ef7e1c4a
+}
+/* End of over-riding css */
 
 input,
 textarea,
@@ -15,7 +19,7 @@ progress {
 
 .center-card {
   background-color: #fff;
-  border: 2px #000 solid;
+  box-shadow: 1px 1px 13px grey;
   border-radius: 3px;
   height: 400px;
   width: 350px;
@@ -25,10 +29,7 @@ progress {
   padding: 0;
 }
 .header-cap {
-  /* background: #9FC5F8; */
-  /* background: royalblue; */
   background: #ef7f1a;
-  border: 2px solid #000;
   border-top: none;
   border-left: none;
   border-right: none;
@@ -45,7 +46,7 @@ progress {
 }
 .input-icon {
   position: absolute;
-  right: 15px;
+  right: 0;
   z-index: 2;
   display: block;
   margin: 5px 10px;
@@ -57,6 +58,9 @@ progress {
 }
 
 /* custom relative specific css */
+.hide {
+  display: none;
+}
 .fl-r{
   float: right;
 }
@@ -65,6 +69,9 @@ progress {
 }
 .m-0 {
   margin: 0;
+}
+.m-10 {
+  margin: 10px;
 }
 .m-t-10 {
   margin-top: 10px;
@@ -94,18 +101,25 @@ progress {
   text-align: center;
 }
 .bg-i2h {
-  /* background-color: #9568d6; */
   background-color: #ef7f1a;
 }
+.btn-i2h {
+  background-color: #6a6a6ac4;
+  color: #fff;
+  height: 40px;
+}
+.btn-i2h:hover {
+  color: #fff;
+}
+.btn-i2h:active {
+  color: #000;
+}
 .col-i2h {
-  /* color: #9568d6; */
   color: #ef7f1a;
 }
 .col-fff{
   color: #fff;
 }
-.btn-i2h {
-  background-color: #9568d6;
-  color: #fff;  
+.col-000 {
+  color: #000;
 }
-
