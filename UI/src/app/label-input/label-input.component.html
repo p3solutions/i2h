@@ -1,7 +1,25 @@
-<div class="col-md-12 input-effect">
-  <input class="effect-21" type="text" placeholder="">
-  <label>First Name</label>
-  <span class="focus-border">
-    <i></i>
-  </span>
+<div class="input-effect-div input-effect {{divClassName}}"  [ngStyle]="{'width.%': (widthDimension ? widthDimension : '100')}">
+
+  <input type="{{inputType ? (inputType === 'number'? 'text': inputType) : 'text'}}" class="labelled-effect" (focusout)="handleLabelName($event)"  required="{{validationRequired ? true : null}}"
+   (keydown)="allowOnlyNumbers($event, inputType)"(paste)="pasteOnlyNumbers($event, inputType)" />
+
+  <!-- <input *ngIf="inputTypeEmail" type="email" class="labelled-effect" (focusout)="handleLabelName($event)"
+   attr.formControlName="{{formCtrlName ? formCtrlName : null}}" />
+  
+  <input *ngIf="inputTypePassword" type="password" class="labelled-effect" (focusout)="handleLabelName($event)"
+   attr.formControlName="{{formCtrlName ? formCtrlName : null}}" />
+  
+  <input *ngIf="inputTypeNumber" type="text" class="labelled-effect" (focusout)="handleLabelName($event)"
+     attr.formControlName="{{formCtrlName ? formCtrlName : null}}" /> -->
+
+  <label>{{labelName ? labelName : 'Label Name'}}</label>
+  <span class="focus-bg"></span>
+  <i class="fa {{faIcon}} fa-lg input-icon" aria-hidden="true"></i>
 </div>
+
+
+<!-- 
+  to be used as :
+  <app-label-input [inputType]="'email'" [validationRequired]="true" [labelName]="''" [divClassName]="'m-t-10 m-b-10'" [faIcon]="''"
+    [formCtrlName]="'emailAddress'"></app-label-input>
+ -->

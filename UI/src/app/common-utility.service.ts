@@ -5,6 +5,15 @@ export class CommonUtilityService {
 
   constructor() { }
 
+  handleInputLabelName(e) {
+    const inputValue = e.target.value;
+    const classList = e.target.classList;
+    if (inputValue !== '') {
+      classList.add('has-content');
+    } else {
+      classList.remove('has-content');
+    }
+  }
   allowOnlyNumbers(e) {
     const keyCode = e.keyCode || e.which;
     console.log(keyCode, e);
@@ -18,7 +27,7 @@ export class CommonUtilityService {
       (e.keyCode < 48 || e.keyCode > 57));
     if (notNum && !ctrlA && !ctrlC && !ctrlX && !ctrlV ) { // allowing Ctrl combo keys & disallowing non-numbers
       console.log('preventing');
-      event.preventDefault();
+      e.preventDefault();
     }
   }
   pasteOnlyNumbers(e) {

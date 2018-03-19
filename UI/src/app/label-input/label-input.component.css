@@ -1,11 +1,21 @@
-.col-3 {
+/*= input focus effects css
+=========================== */
+:focus {
+  outline: none;
+}
+.input-effect-div {
   float: left;
-  width: 27.33%;
-  margin: 40px 3%;
   position: relative;
+  width: 100%;
+  z-index: 1;
 }
 
-input[type="text"] {
+/* necessary to give position: relative to parent. */
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="number"]
+ {
   font: 15px/24px "Lato", Arial, sans-serif;
   color: #333;
   width: 100%;
@@ -13,16 +23,55 @@ input[type="text"] {
   letter-spacing: 1px;
 }
 
-.effect-21 {
+.labelled-effect {
+  border: 0;
+  padding: 7px 15px;
   border: 1px solid #ccc;
-  padding: 7px 14px;
-  transition: 0.4s;
+  position: relative;
   background: transparent;
 }
 
-.effect-21~label {
+.labelled-effect~.focus-bg:before,
+.labelled-effect~.focus-bg:after {
+  content: "";
   position: absolute;
-  left: 25px;
+  left: 50%;
+  top: 50%;
+  width: 0;
+  height: 0;
+  background-color: #ededed;
+  transition: 0.3s;
+  z-index: -1;
+}
+
+.labelled-effect:focus~.focus-bg:before,
+.has-content.labelled-effect~.focus-bg:before {
+  transition: 0.3s;
+  width: 50%;
+  left: 0;
+  top: 0;
+  height: 100%;
+}
+
+.labelled-effect~.focus-bg:after {
+  left: auto;
+  right: 50%;
+  top: auto;
+  bottom: 50%;
+}
+
+.labelled-effect:focus~.focus-bg:after,
+.has-content.labelled-effect~.focus-bg:after {
+  transition: 0.3s;
+  width: 50%;
+  height: 100%;
+  bottom: 0;
+  right: 0;
+}
+
+.labelled-effect~label {
+  position: absolute;
+  left: 14px;
   width: 100%;
   top: 10px;
   color: #aaa;
@@ -31,69 +80,18 @@ input[type="text"] {
   letter-spacing: 0.5px;
 }
 
-.effect-21~.focus-border:before,
-.effect-21~.focus-border:after {
-  content: "";
-  position: absolute;
-  top: 0;
-  right: 0;
-  width: 0;
-  height: 2px;
-  background-color: #3399FF;
-  transition: 0.2s;
-  transition-delay: 0.2s;
-}
-
-.effect-21~.focus-border:after {
-  top: auto;
-  bottom: 0;
-  right: auto;
+.labelled-effect:focus~label,
+.has-content.labelled-effect~label {
+  top: -18px;
   left: 0;
-  transition-delay: 0.6s;
+  font-size: 12px;
+  color: #333;
+  transition: 0.3s;
 }
 
-.effect-21~.focus-border:before,
-.effect-21~.focus-border:after {
-  content: "";
-  position: absolute;
-  top: 0;
-  right: 0;
-  width: 0;
-  height: 2px;
-  background-color: #3399FF;
-  transition: 0.2s;
-  transition-delay: 0.2s;
-}
+/*= input focus effects css End
+=============================== */
+/* custommized css
+================== */
 
-.effect-21~.focus-border i:before,
-.effect-21~.focus-border i:after {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 2px;
-  height: 0;
-  background-color: #3399FF;
-  transition: 0.2s;
-}
-
-.effect-21~.focus-border i:after {
-  left: auto;
-  right: 0;
-  top: auto;
-  bottom: 0;
-  transition-delay: 0.4s;
-}
-
-.effect-21~.focus-border i:before,
-.effect-21~.focus-border i:after {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 2px;
-  height: 0;
-  background-color: #3399FF;
-  transition: 0.2s;
-}
 

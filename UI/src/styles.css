@@ -123,3 +123,100 @@ progress {
 .col-000 {
   color: #000;
 }
+
+
+/*= input focus effects css
+=========================== */
+
+:focus {
+  outline: none;
+}
+
+.input-effect-div {
+  float: left;
+  position: relative;
+  width: 100%;
+  z-index: 1;
+}
+
+/* necessary to give position: relative to parent. */
+
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="number"] {
+  font: 15px/24px "Lato", Arial, sans-serif;
+  color: #333;
+  width: 100%;
+  box-sizing: border-box;
+  letter-spacing: 1px;
+}
+
+.labelled-effect {
+  border: 0;
+  padding: 7px 15px;
+  border: 1px solid #ccc;
+  position: relative;
+  background: transparent;
+}
+
+.labelled-effect~.focus-bg:before,
+.labelled-effect~.focus-bg:after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 0;
+  height: 0;
+  background-color: #ededed;
+  transition: 0.3s;
+  z-index: -1;
+}
+
+.labelled-effect:focus~.focus-bg:before,
+.has-content.labelled-effect~.focus-bg:before {
+  transition: 0.3s;
+  width: 50%;
+  left: 0;
+  top: 0;
+  height: 100%;
+}
+
+.labelled-effect~.focus-bg:after {
+  left: auto;
+  right: 50%;
+  top: auto;
+  bottom: 50%;
+}
+
+.labelled-effect:focus~.focus-bg:after,
+.has-content.labelled-effect~.focus-bg:after {
+  transition: 0.3s;
+  width: 50%;
+  height: 100%;
+  bottom: 0;
+  right: 0;
+}
+
+.labelled-effect~label {
+  position: absolute;
+  left: 14px;
+  width: 100%;
+  top: 10px;
+  color: #aaa;
+  transition: 0.3s;
+  z-index: -1;
+  letter-spacing: 0.5px;
+}
+
+.labelled-effect:focus~label,
+.has-content.labelled-effect~label {
+  top: -18px;
+  left: 0;
+  font-size: 12px;
+  color: #333;
+  transition: 0.3s;
+}
+
+/*= input focus effects css End
+=============================== */
