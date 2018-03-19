@@ -1,0 +1,10 @@
+Follow : https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/putty.html
+OR
+1. Convert .pem key to .ppk using PuTTYGen (create some key-phrase - i2h), Save as private key.
+2. Login using PuTTY with username & the keyphrase, also select the key (created earlier) Connection/SSH/Auth
+3. Login at host (ec2-54-191-86-94.us-west-2.compute.amazonaws.com) with username (ubuntu)
+
+Deployment of I2H - UI
+1. Generate build of I2H UI folder, ng build --base-href=/i2h/dist/
+2. Copy dist folder to the I2h folder at server, use WinSCP- SFTP (using same credentials & .ppk key in settings)
+3. Restart the server using command "sudo service apache2 restart"
