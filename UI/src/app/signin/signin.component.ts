@@ -43,9 +43,12 @@ export class SigninComponent implements OnInit {
     console.log(this.signInForm, this.signInForm.value);
     if (params.email && (params.password || params.otp)) {
       this.signinService.signIn(params).subscribe( (res) => {
+        console.log('signin res', res);
+        this.inProgress = false;
         if (res && res.status === 200) {
-          this.inProgress = false;
           this.router.navigate(['/account']);
+        } else {
+          this.commonUtilityService.setNotificationObject(this.notification, 'error', 'Wrong Password / OTP');
         }
       },
       (err: HttpErrorResponse) => {
@@ -54,8 +57,7 @@ export class SigninComponent implements OnInit {
             // A client-side or network error occurred. Handle it accordingly.
             console.log('An error occurred:', err.error.message);
           } else {
-            this.notification.message = err.error.errorMessage;
-            this.notification.show = true;
+            this.commonUtilityService.setNotificationObject(this.notification, 'error', err.error.errorMessage);
             console.log(`Backend returned code ${err.status}, body was: ${JSON.stringify(err.error)}`);
           }
       });
@@ -69,12 +71,11 @@ export class SigninComponent implements OnInit {
     if (email) {
       this.signinService.mailOTP({'email': email}).subscribe((res) => {
         console.log(res, 'otp gen');
-        this.commonUtilityService.setNotificationObject(this.notification, 'success', 'OTP sent to your mail');
+        if (res.status === 200) {
+          this.commonUtilityService.setNotificationObject(this.notification, 'success', 'OTP sent to your mail');
+        }
         this.inProgress = false;
       });
-    // } else {
-    //   this.commonUtilityService.setNotificationObject(this.notification, 'error', 'Enter Email ID');
-    //   this.inProgress = false;
     }
   }
   closeNotification() {
