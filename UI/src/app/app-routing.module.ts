@@ -3,12 +3,15 @@ import { RouterModule, Routes } from '@angular/router';
 import { componentFactoryName } from '@angular/compiler';
 import { Component } from '@angular/core/src/metadata/directives';
 import { SigninComponent } from './signin/signin.component';
+import { AccountComponent } from './account/account.component';
 
 const routes: Routes = [
     {
         path: 'sign-in', component: SigninComponent
     }, {
         path: '', redirectTo: '/sign-in', pathMatch: 'full'
+    }, {
+        path: 'account', component: AccountComponent
     }
 ];
 @NgModule({
