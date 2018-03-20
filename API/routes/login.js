@@ -7,7 +7,7 @@ router.get('/', function (req, res, next) {
 });
 
 router.post('/mailOTP', function (req, res, next) {
-    console.log('res->', req.body);
+    // console.log('res->', req.body);
     const otp = getSetOTP(req.body.email);
     console.log('OTP generated: ', otp, ' for mail:', req.body.email);
     // send otp on mail id
@@ -18,14 +18,18 @@ router.post('/otp', function (req, res, next) {
     console.log('res->', req.body);
     const email = req.body.email;
     const otp = req.body.otp;
+    let resp = {};
     if (otpMap.get(email) === otp) {
-        res.status = 200;
+        resp.status = 200;
     } else {
-        res.status = 401
+        resp.status = 401;
     }
     console.log('loging via OTP: ', otp, ' for mail:', email);
+    for (var value of otpMap.values()) {
+        console.log(value);
+    }
     // send otp on mail id
-    res.json({ status: 200 });
+    res.json(resp);
 });
 
 function getSetOTP(email) {
@@ -34,7 +38,7 @@ function getSetOTP(email) {
         otp = generateOTP();
         console.log('generated otp:', otp);
     } while (otp === otpMap.get(email));
-    otpMap.set(email, otp);
+    otpMap.set(email, otp.toString());
     console.log('otp to be mailed', otp);
     // send otp to the email id
     deleteOtpEntryLater(email);
