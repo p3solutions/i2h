@@ -18,10 +18,13 @@ export class SigninService {
   signIn(params: any) {
     console.log(params);
     let res;
+    const credentials: any = {'email': params.email};
     if (params.password && params.password.length >= 6) {
-      res = this.signInViaPassword(params);
+      credentials.password = params.password.trim();
+      res = this.signInViaPassword(credentials);
     } else {
-      res = this.signInViaOTP(params);
+      credentials.otp = params.otp.trim();
+      res = this.signInViaOTP(credentials);
     }
     return res;
   }
