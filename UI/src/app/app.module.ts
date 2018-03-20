@@ -8,6 +8,8 @@ import { SigninComponent } from './signin/signin.component';
 import { LabelInputComponent } from './label-input/label-input.component';
 import { NavbarComponent } from './navbar/navbar.component';
 import { CommonUtilityService } from './common-utility.service';
+import { SigninService } from './signin/signin.service';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -20,9 +22,13 @@ import { CommonUtilityService } from './common-utility.service';
     BrowserModule,
     FormsModule,
     ReactiveFormsModule,
-    AppRoutingModule
+    AppRoutingModule,
+    HttpClientModule
   ],
-  providers: [CommonUtilityService],
+  providers: [
+    CommonUtilityService,
+    SigninService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -21,11 +21,11 @@ progress {
   background-color: #fff;
   box-shadow: 1px 1px 13px grey;
   border-radius: 3px;
-  height: 400px;
   width: 350px;
   top: 150px;
   position: relative;
   margin: auto auto;
+  min-height: 400px;
   padding: 0;
 }
 .header-cap {
@@ -220,3 +220,15 @@ input[type="number"] {
 
 /*= input focus effects css End
 =============================== */
+.alert-fade-in{
+  animation: opac 0.5s;
+}
+
+@keyframes opac {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}

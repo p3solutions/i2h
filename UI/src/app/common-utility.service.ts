@@ -16,7 +16,7 @@ export class CommonUtilityService {
   }
   allowOnlyNumbers(e) {
     const keyCode = e.keyCode || e.which;
-    console.log(keyCode, e);
+    // console.log(keyCode, e);
     const ctrlA = (e.keyCode === 65 && (e.ctrlKey === true || e.metaKey === true));
     const ctrlC = (e.keyCode === 67 && (e.ctrlKey === true || e.metaKey === true));
     const ctrlV = (e.keyCode === 86 && (e.ctrlKey === true || e.metaKey === true));
@@ -26,7 +26,7 @@ export class CommonUtilityService {
       !(e.keyCode === 46) && // delete
       (e.keyCode < 48 || e.keyCode > 57));
     if (notNum && !ctrlA && !ctrlC && !ctrlX && !ctrlV ) { // allowing Ctrl combo keys & disallowing non-numbers
-      console.log('preventing');
+      // console.log('preventing');
       e.preventDefault();
     }
   }
@@ -35,7 +35,20 @@ export class CommonUtilityService {
     const numRegex = /^[0-9]+$/;
     if (!pastedText.match(numRegex)) {
       e.preventDefault();
-      console.log(pastedText, 'prevented');
+      // console.log(pastedText, 'prevented');
+    }
+  }
+  setNotificationObject(notification, type, msg) {
+    notification.show = true;
+    if (type.toLowerCase() === 'error') {
+      notification.message = msg ? msg : 'Error';
+      notification.classCss = 'alert-danger';
+    } else if (type.toLowerCase() === 'success') {
+      notification.message = msg ? msg : 'Success';
+      notification.classCss = 'alert-success';
+    } else {
+      notification.message = msg ? msg : 'Unknown';
+      console.log('unknown type');
     }
   }
 }
