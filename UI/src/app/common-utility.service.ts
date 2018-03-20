@@ -50,5 +50,9 @@ export class CommonUtilityService {
       notification.message = msg ? msg : 'Unknown';
       console.log('unknown type');
     }
+    setTimeout(() => {
+      const closeBtn = <HTMLButtonElement> document.querySelector('#notification-block button');
+      closeBtn.click();
+    }, 4000);
   }
 }
