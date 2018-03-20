@@ -24,7 +24,7 @@
         (or)
       </div>
       
-      <div class="input-effect-div input-effect m-b-10" style="width: 65%">
+      <div class="input-effect-div input-effect m-b-10" style="width: 65%;">
         <input type="text" class="labelled-effect" (focusout)="handleLabelName($event)" formControlName="otp" 
           (keydown)="allowOnlyNumbers($event)" (paste)="pasteOnlyNumbers($event)" (keyup)="enableSignInButton()"/>
         <label>OTP</label>
@@ -32,7 +32,7 @@
         <i class="fa fa-hashtag fa-lg input-icon" aria-hidden="true"></i>
       </div>
 
-      <div class="col-md-4 p-0 m-b-10 fl-r">
+      <div class="col-md-4 p-0 m-b-10 fl-r" style="z-index: 1;">
         <button class="btn btn-form btn-i2h fl-r" disabled="{{emailHasContent ? null : 'true'}}" (click)="mailOTP()">Send OTP</button>
       </div>
       
@@ -44,7 +44,7 @@
       </div>
       
     </form>
-    <div  class="col-md-12 p-0 m-t-10">
+    <div id="notification-block" class="col-md-12 p-0 m-t-10">
       <div *ngIf="notification?.show" role="alert" class="alert {{notification.classCss}} alert-fade-in alert-dismissible" >
         <button type="button" class="close" aria-label="Close" (click)="closeNotification()">
           <span aria-hidden="true">&times;</span>
