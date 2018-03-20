@@ -16,7 +16,6 @@ export class SigninService {
   constructor(private http: HttpClient) { }
 
   signIn(params: any) {
-    console.log(params);
     let res;
     const credentials: any = {'email': params.email};
     if (params.password && params.password.length >= 6) {
@@ -31,13 +30,10 @@ export class SigninService {
   signInViaPassword(params: any): Observable<any> {
     return this.http.post<any>(this.signinPasswordUrl, params, { headers: this.headers });
   }
-
   signInViaOTP(params: any): Observable<any> {
     return this.http.post<any>(this.signinOTPUrl, params, { headers: this.headers });
   }
-
   mailOTP(emailParam) {
-    console.log(emailParam, 'param');
     return this.http.post<any>(this.getOTPUrl, emailParam, { headers: this.headers });
   }
 

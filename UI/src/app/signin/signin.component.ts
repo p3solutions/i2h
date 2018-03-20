@@ -40,10 +40,8 @@ export class SigninComponent implements OnInit {
   onSignIn() {
     this.inProgress = true;
     const params = this.signInForm.value;
-    console.log(this.signInForm, this.signInForm.value);
     if (params.email && (params.password || params.otp)) {
       this.signinService.signIn(params).subscribe( (res) => {
-        console.log('signin res', res);
         this.inProgress = false;
         if (res && res.status === 200) {
           this.router.navigate(['/account']);
@@ -70,7 +68,6 @@ export class SigninComponent implements OnInit {
     const email = this.signInForm.value.email;
     if (email) {
       this.signinService.mailOTP({'email': email}).subscribe((res) => {
-        console.log(res, 'otp gen');
         if (res.status === 200) {
           this.commonUtilityService.setNotificationObject(this.notification, 'success', 'OTP sent to your mail');
         }
@@ -99,8 +96,9 @@ export class SigninComponent implements OnInit {
   }
   enableSignInButton() {
     const formValue = this.signInForm.value;
-    console.log(formValue.otp.trim().length, formValue.otp.trim());
-    if (this.emailHasContent && (formValue.password.trim() !== '' || formValue.otp.trim() !== '')) {
+    if (this.emailHasContent &&
+      (formValue.otp.trim().length === environment.otpDigit ||
+       formValue.password.length >= environment.passwordMinLength)) {
       this.enableSignInBtn = true;
     } else {
       this.enableSignInBtn = false;
