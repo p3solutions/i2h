@@ -52,7 +52,9 @@ export class CommonUtilityService {
     }
     setTimeout(() => {
       const closeBtn = <HTMLButtonElement> document.querySelector('#notification-block button');
-      closeBtn.click();
+      if (closeBtn) {
+        closeBtn.click();
+      }
     }, 4000);
   }
 }
