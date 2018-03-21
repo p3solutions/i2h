@@ -88,15 +88,16 @@ export class SigninComponent implements OnInit {
     this.commonUtilityService.pasteOnlyNumbers(e);
   }
   enableOTPButton() {
-    if (this.signInForm.value.email.trim() !== '' && this.signInForm.controls.email.status === 'VALID') {
+    if (this.signInForm.controls.email.status === 'VALID') {
       this.emailHasContent = true;
     } else {
       this.emailHasContent = false;
     }
+    this.enableSignInButton();
   }
   enableSignInButton() {
     const formValue = this.signInForm.value;
-    if (this.emailHasContent &&
+    if (this.signInForm.controls.email.status === 'VALID' &&
       (formValue.otp.trim().length === environment.otpDigit ||
       (formValue.password.length >= environment.passwordMinLength && formValue.password.length <= environment.passwordMaxLength))) {
       this.enableSignInBtn = true;
