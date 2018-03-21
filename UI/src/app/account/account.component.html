@@ -1,3 +1,63 @@
-<p>
-  account works!
-</p>
+<div class="account-div">
+
+    <div class="input-effect-div input-effect m-t-20 m-b-10">
+      <input type="email" class="labelled-effect" (focusout)="handleLabelName($event)" required="true"
+       [(ngModel)]='fname' (keyup)="enableSaveButton()"/>
+      <label>First Name</label>
+      <span class="focus-bg"></span>
+      <i class="fa fa-envelope fa-lg input-icon" aria-hidden="true"></i>
+    </div>
+
+    <div class="input-effect-div input-effect m-t-20 m-b-10">
+      <input type="password" class="labelled-effect" (focusout)="handleLabelName($event)" (keyup)="enableSaveButton()" [(ngModel)]='lname'/>
+      <label>Last Name</label>
+      <span class="focus-bg"></span>
+      <i class="fa fa-key fa-lg input-icon" aria-hidden="true"></i>
+    </div>
+
+    <div class="input-effect-div input-effect m-t-20 m-b-10" style="width: 50%;">
+      <input type="date" class="labelled-effect has-content" (keyup)="enableSaveButton()" [(ngModel)]='dob'/>
+      <label>DOB</label>
+      <span class="focus-bg"></span>
+      <i class="fa fa-hashtag fa-lg input-icon" aria-hidden="true"></i>
+    </div>
+
+    <div class="input-effect-div input-effect m-t-30 m-b-10 col-md-6" style="width: 50%;">
+      <input type="radio" value="male" name="sex" [(ngModel)]="sex" class="m-l-10"/>
+      <label class="m-r-5">Male</label>
+      <input type="radio" value="female" name="sex" [(ngModel)]="sex" class=""/>
+      <label class="m-r-5">Female</label>
+      <input type="radio" value="others" name="sex" [(ngModel)]="sex" class=""/>
+      <label class="m-r-5">Others</label>
+    </div>
+
+    <div class="input-effect-div input-effect m-t-20 m-b-10">
+      <input type="text" class="labelled-effect" (focusout)="handleLabelName($event)" 
+        (keydown)="allowOnlyNumbers($event)" (paste)="pasteOnlyNumbers($event)" (keyup)="enableSaveButton()" [(ngModel)]='mobile'/>
+      <label>Mobile</label>
+      <span class="focus-bg"></span>
+      <i class="fa fa-hashtag fa-lg input-icon" aria-hidden="true"></i>
+    </div>
+
+    <div class="input-effect-div input-effect m-t-20 m-b-10">
+      <input type="password" class="labelled-effect" (focusout)="handleLabelName($event)" (keyup)="enableSaveButton()"  [(ngModel)]='password'/>
+      <label>Password</label>
+      <span class="focus-bg"></span>
+      <i class="fa fa-hashtag fa-lg input-icon" aria-hidden="true"></i>
+    </div>
+
+    <div class="input-effect-div input-effect m-t-20 m-b-10">
+      <input type="password" class="labelled-effect" (focusout)="handleLabelName($event)"  [(ngModel)]='password2'/>
+      <label>Retype new Password</label>
+      <span class="focus-bg"></span>
+      <i class="fa fa-hashtag fa-lg input-icon" aria-hidden="true"></i>
+    </div>
+
+    <div class="col-md-12 p-0 m-t-10 text-center">
+      <button type="submit" class="btn btn-form btn-i2h pull-right" disabled="{{enableSaveBtn ? null : 'true'}}" (click)="onSave()">
+        save
+        <i *ngIf="inProgress" class="fa fa-spinner fa-spin inline-loader col-fff"></i>
+      </button>
+    </div>
+
+</div>

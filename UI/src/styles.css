@@ -91,6 +91,9 @@ progress {
 .m-r-10 {
   margin-right: 10px;
 }
+.m-r-5 {
+  margin-right: 5px;
+}
 .p-0 {
   padding: 0;
 }
@@ -144,6 +147,7 @@ progress {
 input[type="text"],
 input[type="email"],
 input[type="password"],
+input[type="date"],
 input[type="number"] {
   font: 15px/24px "Lato", Arial, sans-serif;
   color: #333;

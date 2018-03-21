@@ -98,7 +98,7 @@ export class SigninComponent implements OnInit {
     const formValue = this.signInForm.value;
     if (this.emailHasContent &&
       (formValue.otp.trim().length === environment.otpDigit ||
-       formValue.password.length >= environment.passwordMinLength)) {
+      (formValue.password.length >= environment.passwordMinLength && formValue.password.length <= environment.passwordMaxLength))) {
       this.enableSignInBtn = true;
     } else {
       this.enableSignInBtn = false;
