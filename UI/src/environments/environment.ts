@@ -7,5 +7,6 @@ export const environment = {
   production: false,
   apiUrl: 'http://localhost:3000/',
   otpDigit: 6,
-  passwordMinLength: 6
+  passwordMinLength: 6,
+  passwordMaxLength: 20
 };
