@@ -11,6 +11,7 @@ import { CommonUtilityService } from './common-utility.service';
 import { SigninService } from './signin/signin.service';
 import { HttpClientModule } from '@angular/common/http';
 import { AccountComponent } from './account/account.component';
+import { OrderComponent } from './order/order.component';
 
 @NgModule({
   declarations: [
@@ -18,7 +19,8 @@ import { AccountComponent } from './account/account.component';
     SigninComponent,
     LabelInputComponent,
     NavbarComponent,
-    AccountComponent
+    AccountComponent,
+    OrderComponent
   ],
   imports: [
     BrowserModule,
