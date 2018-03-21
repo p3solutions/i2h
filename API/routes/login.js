@@ -1,14 +1,11 @@
 const router = require('express').Router();
 const configs = require('../config');
 const otpMap = new Map();
+const successObj = {status: 200};
+const loginErrObj = {status: 401}
 // this url is relatively 'login/'
 router.get('/', function (req, res, next) {
     res.send('I2H RESTful API');
-});
-router.post('/password', (req, res, next) => {
-    const email = req.body.email;
-    const password = req.body.password;
-    
 });
 
 router.post('/mailOTP', (req, res, next) => {
@@ -16,7 +13,7 @@ router.post('/mailOTP', (req, res, next) => {
     const otp = getSetOTP(req.body.email);
     console.log('OTP generated: ', otp, ' for mail:', req.body.email);
     // send otp on mail id
-    res.json({status: 200});
+    res.json(successObj);
 });
 
 router.post('/otp', (req, res, next) => {
@@ -35,6 +32,24 @@ router.post('/otp', (req, res, next) => {
     }
     // send otp on mail id
     res.json(resp);
+});
+router.post('/password', (req, res, next) => {
+    const email = req.body.email;
+    const password = req.body.password;
+    // db matching username-password
+    res.json(successObj);
+});
+
+router.post('/saveUserInfo', (req, res, next) => {
+    const fname = req.body.fname;
+    const lname = req.body.lname;
+    const dob = req.body.dob;
+    const sex = req.body.sex;
+    const mobile = req.body.mobile;
+    const password = req.body.password;
+    console.log(fname, lname, dob, sex, mobile, password);
+    // db matching username-password
+    res.json(successObj);
 });
 
 function getSetOTP(email) {
