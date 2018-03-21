@@ -15,7 +15,7 @@ import { environment } from '../../environments/environment';
 export class SigninComponent implements OnInit {
   signInForm: FormGroup;
   inProgress = false;
-  notification = new NotificationObject();
+  notification: NotificationObject;
   enableSignInBtn: boolean;
   emailHasContent: boolean;
 
@@ -39,14 +39,21 @@ export class SigninComponent implements OnInit {
 
   onSignIn() {
     this.inProgress = true;
-    const params = this.signInForm.value;
-    if (params.email && (params.password || params.otp)) {
-      this.signinService.signIn(params).subscribe( (res) => {
+    const formValue = this.signInForm.value;
+    if (formValue.email && (formValue.password || formValue.otp)) {
+      const credentials: any = { 'email': formValue.email };
+      if (formValue.password.length >= environment.passwordMinLength && formValue.password.length <= environment.passwordMaxLength) {
+        credentials.password = formValue.password.trim();
+      }
+      if (formValue.otp.length >= environment.otpDigit) {
+        credentials.otp = formValue.otp.trim();
+      }
+      this.signinService.signIn(credentials).subscribe( (res) => {
         this.inProgress = false;
         if (res && res.status === 200) {
           this.router.navigate(['/account']);
         } else {
-          this.commonUtilityService.setNotificationObject(this.notification, 'error', 'Wrong Password / OTP');
+          this.notification = this.commonUtilityService.setNotificationObject('error', 'Wrong Password / OTP');
         }
       },
       (err: HttpErrorResponse) => {
@@ -55,13 +62,13 @@ export class SigninComponent implements OnInit {
             // A client-side or network error occurred. Handle it accordingly.
             console.log('An error occurred:', err.error.message);
           } else {
-            this.commonUtilityService.setNotificationObject(this.notification, 'error', err.error.errorMessage);
+            this.notification = this.commonUtilityService.setNotificationObject('error', err.error.errorMessage);
             console.log(`Backend returned code ${err.status}, body was: ${JSON.stringify(err.error)}`);
           }
       });
     } else {
       this.inProgress = false;
-      this.commonUtilityService.setNotificationObject(this.notification, 'error', 'Enter Password / mailed OTP');
+      this.notification = this.commonUtilityService.setNotificationObject('error', 'Enter Password / mailed OTP');
     }
   }
   mailOTP() {
@@ -69,7 +76,7 @@ export class SigninComponent implements OnInit {
     if (email) {
       this.signinService.mailOTP({'email': email}).subscribe((res) => {
         if (res.status === 200) {
-          this.commonUtilityService.setNotificationObject(this.notification, 'success', 'OTP sent to your mail');
+          this.notification = this.commonUtilityService.setNotificationObject('success', 'OTP sent to your mail');
         }
         this.inProgress = false;
       });
@@ -87,9 +94,12 @@ export class SigninComponent implements OnInit {
   pasteOnlyNumbers(e) {
     this.commonUtilityService.pasteOnlyNumbers(e);
   }
-  enableOTPButton() {
+  enableOTPButton(e) {
     if (this.signInForm.controls.email.status === 'VALID') {
       this.emailHasContent = true;
+      if (e && (e.keyCode === 13 || e.which === 13)) {
+        this.mailOTP();
+      }
     } else {
       this.emailHasContent = false;
     }

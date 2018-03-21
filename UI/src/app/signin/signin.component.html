@@ -3,11 +3,11 @@
     <i class="fa fa-user-circle fa-5x"></i>
   </div>
   <div class="header-content {{notification?.show ? 'header-content-notif' : ''}}"> 
-    <form class="form-horizontal" [formGroup]="signInForm">
+    <form class="form-horizontal" [formGroup]="signInForm" (ngSubmit)="onSignIn()">
 
       <div class="input-effect-div input-effect m-t-10 m-b-10">
         <input type="email" class="labelled-effect" (focusout)="handleLabelName($event)" required="true" formControlName="email"
-         (keyup)="enableOTPButton()"/>
+         (keyup)="enableOTPButton($event)"/>
         <label>Email Id</label>
         <span class="focus-bg"></span>
         <i class="fa fa-envelope fa-lg input-icon" aria-hidden="true"></i>
@@ -33,11 +33,11 @@
       </div>
 
       <div class="col-md-4 p-0 m-b-10 fl-r" style="z-index: 1;">
-        <button class="btn btn-form btn-i2h fl-r" disabled="{{emailHasContent ? null : 'true'}}" (click)="mailOTP()">Send OTP</button>
+        <button type="button" class="btn btn-form btn-i2h fl-r" disabled="{{emailHasContent ? null : 'true'}}" (click)="mailOTP()">Send OTP</button>
       </div>
       
       <div class="col-md-12 p-0 m-t-10 text-center">
-        <button type="submit" class="col-md-12 btn btn-form btn-i2h" disabled="{{enableSignInBtn ? null : 'true'}}" (click)="onSignIn()">
+        <button type="submit" class="col-md-12 btn btn-form btn-i2h" disabled="{{enableSignInBtn ? null : 'true'}}">
           LOG IN
           <i *ngIf="inProgress" class="fa fa-spinner fa-spin inline-loader col-fff"></i>
         </button>

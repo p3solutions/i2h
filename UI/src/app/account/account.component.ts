@@ -19,7 +19,9 @@ export class AccountComponent implements OnInit {
   dob: any = '';
   mobile: any = '';
   password: any = '';
-  password2: any;
+  password2: any = '';
+  sex: any = '';
+  notification: NotificationObject;
 
   constructor(
     private commonUtilityService: CommonUtilityService,
@@ -41,19 +43,34 @@ export class AccountComponent implements OnInit {
   pasteOnlyNumbers(e) {
     this.commonUtilityService.pasteOnlyNumbers(e);
   }
-  enableSaveButton() {
-    console.log(this.fname, this.lname, this.dob, this.mobile, this.password, this.password2);
-    // this.fname.trim() !== '' || this.lname.trim() !== '' || this.mobile.trim() !== '' ||
-    if (this.password !== '' && this.password.length >= environment.passwordMinLength &&
-      this.password.length <= environment.passwordMaxLength &&
-      this.password === this.password2) {
+
+  enableSaveButton(type) {
+    // needs validation & notification https://docs.angularjs.org/api/ng/input/input%5Bdate%5D
+    console.log(type, this.fname, this.lname, this.dob, this.mobile, this.password, this.password2, this.sex);
+    if (this.fname.trim() !== '' && this.lname.trim() !== '' &&
+      this.mobile.length === environment.mobileDigit && this.dob !== '' && this.sex !== '' &&
+    this.password.length >= environment.passwordMinLength &&
+    this.password.length <= environment.passwordMaxLength &&
+    this.password === this.password2) {
       this.enableSaveBtn = true;
     } else {
       this.enableSaveBtn = false;
+      // this.notification = this.commonUtilityService.setNotificationObject('error', 'Wrong input');
     }
+  }
+  closeNotification() {
+    this.notification = new NotificationObject();
   }
 
   onSave() {
-
+    this.inProgress = true;
+    const userInfo = { fname: this.fname, lname: this.lname, dob: this.dob, sex: this.sex, mobile: this.mobile, password: this.password };
+    this.signinService.saveUserInfo(userInfo).subscribe((res) => {
+      this.inProgress = false;
+      console.log(res);
+      if (res && res.status === 200) {
+        this.router.navigate(['/order']);
+      }
+    });
   }
 }

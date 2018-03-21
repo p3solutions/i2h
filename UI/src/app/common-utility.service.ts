@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { NotificationObject } from './i2h-objects';
 
 @Injectable()
 export class CommonUtilityService {
@@ -24,6 +25,7 @@ export class CommonUtilityService {
     const notNum = e.shiftKey || (!(e.keyCode === 8) && // backspace
       (e.keyCode < 35 || e.keyCode > 40) &&
       !(e.keyCode === 46) && // delete
+      !(e.keyCode === 9) && // tab
       (e.keyCode < 48 || e.keyCode > 57));
     if (notNum && !ctrlA && !ctrlC && !ctrlX && !ctrlV ) { // allowing Ctrl combo keys & disallowing non-numbers
       // console.log('preventing');
@@ -38,7 +40,8 @@ export class CommonUtilityService {
       // console.log(pastedText, 'prevented');
     }
   }
-  setNotificationObject(notification, type, msg) {
+  setNotificationObject(type, msg) {
+    const notification = new NotificationObject();
     notification.show = true;
     if (type.toLowerCase() === 'error') {
       notification.message = msg ? msg : 'Error';
@@ -56,5 +59,6 @@ export class CommonUtilityService {
         closeBtn.click();
       }
     }, 4000);
+    return notification;
   }
 }

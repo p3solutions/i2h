@@ -6,6 +6,11 @@ body {
 .fa {
   color: #ef7e1c4a
 }
+.btn {
+  border-radius: 2px;
+  text-transform: uppercase;
+}
+
 /* End of over-riding css */
 
 input,
