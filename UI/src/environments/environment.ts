@@ -8,5 +8,6 @@ export const environment = {
   apiUrl: 'http://localhost:3000/',
   otpDigit: 6,
   passwordMinLength: 6,
-  passwordMaxLength: 20
+  passwordMaxLength: 20,
+  mobileDigit: 10
 };
