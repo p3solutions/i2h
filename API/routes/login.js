@@ -5,8 +5,13 @@ const otpMap = new Map();
 router.get('/', function (req, res, next) {
     res.send('I2H RESTful API');
 });
+router.post('/password', (req, res, next) => {
+    const email = req.body.email;
+    const password = req.body.password;
+    
+});
 
-router.post('/mailOTP', function (req, res, next) {
+router.post('/mailOTP', (req, res, next) => {
     // console.log('res->', req.body);
     const otp = getSetOTP(req.body.email);
     console.log('OTP generated: ', otp, ' for mail:', req.body.email);
@@ -14,7 +19,7 @@ router.post('/mailOTP', function (req, res, next) {
     res.json({status: 200});
 });
 
-router.post('/otp', function (req, res, next) {
+router.post('/otp', (req, res, next) => {
     console.log('res->', req.body);
     const email = req.body.email;
     const otp = req.body.otp;
