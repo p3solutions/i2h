@@ -12,3 +12,6 @@ First start mongoDB service, then start node server & then start angular server.
 2. https://docs.mongodb.com/tutorials/install-mongodb-on-windows/
 3. https://mongodb.github.io/node-mongodb-native/api-generated/mongoclient.html
 4. https://www.djamware.com/post/5a0673c880aca7739224ee21/mean-stack-angular-5-crud-web-application-example
+5. https://dzone.com/articles/using-mongodb-and-mongoose
+6. https://blog.upstate.agency/how-to-send-an-email-using-angular-sails-js-and-mailgun-95226ad51064
+7. https://scotch.io/tutorials/using-mongoosejs-in-node-js-and-mongodb-applications
