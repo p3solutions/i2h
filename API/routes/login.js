@@ -1,8 +1,10 @@
 const router = require('express').Router();
 const configs = require('../config');
-const otpMap = new Map();
+const tempOtpMap = new Map();
 const successObj = {status: 200};
 const loginErrObj = {status: 401}
+const accountController = require('../controllers/account');
+
 // this url is relatively 'login/'
 router.get('/', function (req, res, next) {
     res.send('I2H RESTful API');
@@ -21,16 +23,17 @@ router.post('/otp', (req, res, next) => {
     const email = req.body.email;
     const otp = req.body.otp;
     let resp = {};
-    if (otpMap.get(email) === otp) {
+    if (tempOtpMap.get(email) === otp) {
         resp.status = 200;
     } else {
         resp.status = 401;
     }
+    // logs
     console.log('loging via OTP: ', otp, ' for mail:', email);
-    for (var value of otpMap.values()) {
+    for (var value of tempOtpMap.values()) {
         console.log(value);
     }
-    // send otp on mail id
+    
     res.json(resp);
 });
 router.post('/password', (req, res, next) => {
@@ -57,8 +60,8 @@ function getSetOTP(email) {
     do {
         otp = generateOTP();
         console.log('generated otp:', otp);
-    } while (otp === otpMap.get(email));
-    otpMap.set(email, otp.toString());
+    } while (otp === tempOtpMap.get(email));
+    tempOtpMap.set(email, otp.toString());
     console.log('otp to be mailed', otp);
     // send otp to the email id
     deleteOtpEntryLater(email);
@@ -75,7 +78,7 @@ function generateOTP() {
 
 // this should be in UI
 function deleteOtpEntryLater(email) {
-    setTimeout(function () { otpMap.delete(email); }, configs.OTPdeletionTime);
+    setTimeout(function () { tempOtpMap.delete(email); }, configs.OTPdeletionTime);
 }
 
 module.exports = router;
