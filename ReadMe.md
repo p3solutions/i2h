@@ -15,3 +15,5 @@ First start mongoDB service, then start node server & then start angular server.
 5. https://dzone.com/articles/using-mongodb-and-mongoose
 6. https://blog.upstate.agency/how-to-send-an-email-using-angular-sails-js-and-mailgun-95226ad51064
 7. https://scotch.io/tutorials/using-mongoosejs-in-node-js-and-mongodb-applications
+8. https://coursework.vschool.io/mongoose-crud/
+9. https://github.com/Smi0001/MEAN-stack-authentication
