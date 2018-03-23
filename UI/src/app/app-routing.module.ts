@@ -10,7 +10,7 @@ const routes: Routes = [
     {
         path: 'sign-in', component: SigninComponent
     }, {
-        path: 'account', component: AccountComponent
+        path: 'account/:email', component: AccountComponent
     }, {
         path: 'order', component: OrderComponent
     }, {

@@ -8,10 +8,13 @@ import { SigninComponent } from './signin/signin.component';
 import { LabelInputComponent } from './label-input/label-input.component';
 import { NavbarComponent } from './navbar/navbar.component';
 import { CommonUtilityService } from './common-utility.service';
-import { SigninService } from './signin/signin.service';
+import { MailerService } from './mailer.service';
 import { HttpClientModule } from '@angular/common/http';
 import { AccountComponent } from './account/account.component';
 import { OrderComponent } from './order/order.component';
+import { AuthGuardService } from './auth-guard.service';
+import { AuthenticationService } from './authentication.service';
+import { RouterModule, Routes } from '@angular/router';
 
 @NgModule({
   declarations: [
@@ -31,7 +34,9 @@ import { OrderComponent } from './order/order.component';
   ],
   providers: [
     CommonUtilityService,
-    SigninService
+    AuthGuardService,
+    MailerService,
+    AuthenticationService
   ],
   bootstrap: [AppComponent]
 })

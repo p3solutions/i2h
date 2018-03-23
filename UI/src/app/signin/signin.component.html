@@ -45,11 +45,11 @@
       
     </form>
     <div id="notification-block" class="col-md-12 p-0 m-t-10">
-      <div *ngIf="notification?.show" role="alert" class="alert {{notification.classCss}} alert-fade-in alert-dismissible" >
+      <div *ngIf="notification?.show" role="alert" class="text-center alert {{notification.classCss}} alert-fade-in alert-dismissible" >
         <button type="button" class="close" aria-label="Close" (click)="closeNotification()">
           <span aria-hidden="true">&times;</span>
         </button>
-        <i class="fa fa-info-circle"></i> {{notification?.message}}
+        <i class="fa fa-info-circle"></i> &nbsp; {{notification?.message}}
       </div>
     </div>
   </div>  

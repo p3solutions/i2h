@@ -4,7 +4,7 @@ import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { NotificationObject } from '../i2h-objects';
 import { HttpErrorResponse } from '@angular/common/http';
 import { environment } from '../../environments/environment';
-import { SigninService } from '../signin/signin.service';
+import { AuthenticationService, TokenPayload } from '../authentication.service';
 
 @Component({
   selector: 'app-account',
@@ -12,27 +12,30 @@ import { SigninService } from '../signin/signin.service';
   styleUrls: ['./account.component.css']
 })
 export class AccountComponent implements OnInit {
+  userInfo: TokenPayload = {
+    email: '',
+    password: '',
+    fname: '',
+    lname: '',
+    dob: '',
+    sex: '',
+    mobile: '',
+  };
   inProgress = false;
   enableSaveBtn: boolean;
-  fname: any = '';
-  lname: any = '';
-  dob: any = '';
-  mobile: any = '';
-  password: any = '';
-  password2: any = '';
-  sex: any = '';
+  password2 = '';
   notification: NotificationObject;
 
   constructor(
+    private auth: AuthenticationService,
     private commonUtilityService: CommonUtilityService,
-    private signinService: SigninService,
-    private router: Router
-  ) { }
-
-  ngOnInit() {
-    // check if user-info avilable redirect to order pg
-    // this.router.navigate(['/order']);
+    private router: Router,
+    private route: ActivatedRoute
+  ) {
+    this.route.params.subscribe(params => this.userInfo.email = params.email);
   }
+
+  ngOnInit() { }
 
   handleLabelName(e) {
     this.commonUtilityService.handleInputLabelName(e);
@@ -44,14 +47,10 @@ export class AccountComponent implements OnInit {
     this.commonUtilityService.pasteOnlyNumbers(e);
   }
 
-  enableSaveButton(type) {
+  enableSaveButton() {
     // needs validation & notification https://docs.angularjs.org/api/ng/input/input%5Bdate%5D
-    console.log(type, this.fname, this.lname, this.dob, this.mobile, this.password, this.password2, this.sex);
-    if (this.fname.trim() !== '' && this.lname.trim() !== '' &&
-      this.mobile.length === environment.mobileDigit && this.dob !== '' && this.sex !== '' &&
-    this.password.length >= environment.passwordMinLength &&
-    this.password.length <= environment.passwordMaxLength &&
-    this.password === this.password2) {
+    // console.log(this.userInfo, this.password2);
+    if (this.enableSave()) {
       this.enableSaveBtn = true;
     } else {
       this.enableSaveBtn = false;
@@ -64,13 +63,20 @@ export class AccountComponent implements OnInit {
 
   onSave() {
     this.inProgress = true;
-    const userInfo = { fname: this.fname, lname: this.lname, dob: this.dob, sex: this.sex, mobile: this.mobile, password: this.password };
-    this.signinService.saveUserInfo(userInfo).subscribe((res) => {
+    this.auth.register(this.userInfo).subscribe((res) => {
+      console.log('reg resp->', res);
+      this.router.navigateByUrl('/order');
       this.inProgress = false;
-      console.log(res);
-      if (res && res.status === 200) {
-        this.router.navigate(['/order']);
-      }
+    }, (err) => {
+      this.notification = this.commonUtilityService.setNotificationObject('error', err.error.message);
+      console.error(err);
     });
+  }
+  enableSave() {
+    return this.userInfo.fname.trim() !== '' && this.userInfo.lname.trim() !== '' &&
+      this.userInfo.mobile.length === environment.mobileDigit && this.userInfo.dob !== '' && this.userInfo.sex !== '' &&
+      this.userInfo.password.length >= environment.passwordMinLength &&
+      this.userInfo.password.length <= environment.passwordMaxLength &&
+      this.userInfo.password === this.password2;
   }
 }
