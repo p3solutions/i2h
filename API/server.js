@@ -1,26 +1,29 @@
+//  to clear terminal
+console.reset = function () {
+  return process.stdout.write('\033c');
+}
+// console.reset();
+
 const express = require('express');
-let path = require('path');
-let morgan = require('morgan');
+const path = require('path');
+const morgan = require('morgan');
 const fs = require('fs');
-let rfs = require('rotating-file-stream');
+const rfs = require('rotating-file-stream');
 const bodyParser = require('body-parser');
-const configs = require('./config');
-const app = express();
+const configs = require('./config/config');
 const http = require('http');
-const login = require('./routes/login');
-/*
-let db;
-const mongoDB = require('mongodb');
-const mongoClient = mongoDB.MongoClient;
-mongoClient.connect(configs.dbConnectionUrl, (err, dbClient) => {
-    if (err) return console.log(err);
-    db = dbClient.db(configs.dbName);
-    // console.log(db);
-    app.listen(configs.apiPort, () => {
-      console.log(`Listening on port ${configs.apiPort}`);
-    });
-  });
-*/
+var cookieParser = require('cookie-parser');
+var cors = require('cors');
+// [SH] Require Passport
+var passport = require('passport');
+// [SH] Bring in the data model
+require('./models/db');
+// [SH] Bring in the Passport config after model is defined
+require('./config/passport');
+// [SH] Bring in the routes for the API (delete the default routes)
+const routesApi = require('./routes/index');
+
+const app = express();
 
 
 // ensure log directory exists
@@ -42,19 +45,21 @@ let accessLogStream = rfs(configs.logFile, {
 app.use(morgan('combined', {
     stream: accessLogStream
 }));
+
+// view engine setup
+app.set('views', path.join(__dirname, 'views'));
+app.set('view engine', 'jade');
+
 // app.use(express.session());
-app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
-
-app.use(function (req, res, next) {
-  res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-  next();
-});
-
-app.use('/login', login);
+app.use(bodyParser.urlencoded({ extended: true }));
 
 // Add headers
+  app.use(function (req, res, next) {
+    res.header("Access-Control-Allow-Origin", "*"); // allow all origin to access
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    next();
+  });
 // app.use(function (req, res, next) {
 //   // Website you wish to allow to connect
 //   res.setHeader('Access-Control-Allow-Origin', configs.IPallowedForUI);
@@ -72,62 +77,48 @@ app.use('/login', login);
 //   next();
 // });
 
-// // dynamically include routes (Controller)
-// fs.readdirSync('./controllers').forEach(function (file) {
-//   if (file.substr(-3) == '.js') {
-//     route = require('./controllers/' + file);
-//     console.log('route->', route);
-//     route.controller(app);
-//   }
-// });
+app.use(cookieParser());
+app.use(cors());
 
-//Import the mongoose module
-const mongoose = require('mongoose');
-//Set up default mongoose connection
-mongoose.connect(configs.dbConnectionUrl);
-// Get Mongoose to use the global promise library
-mongoose.Promise = global.Promise;
-//Get the default connection
-const db = mongoose.connection;
-//Bind connection to error event (to get notification of connection errors)
-db.on('error', console.error.bind(console, 'MongoDB connection error:'));
+// [SH] Initialise Passport before using the route middleware
+app.use(passport.initialize());
 
-//Define a schema
-var Schema = mongoose.Schema;
-
-var userInfoSchema = new Schema({
-  email: String,
-  firstName: String,
-  lastName: String,
-  passwordHash: String,
-  passwordSalt: String
-});
-
-
-let User = mongoose.model("User", userInfoSchema);
-
-app.post("/addname", (req, res) => {
-  // Create an instance of model SomeModel
-  const userInstance = new User(req.body);
-
-  userInstance.save()
-  .then(item => {
-    console.log('item->', item);
-    res.send("item saved to database");
-  })
-  .catch(err => {
-    res.status(400).send("unable to save to database");
-  });
-});
-
+// [SH] Use the API routes when path starts with /api
+app.use('/', routesApi);
 
 // catch 404 and forward to error handler
 app.use(function (req, res) {
   console.log('ERROR 404, URL NOT FOUND');
   res.send('ERROR 404, URL NOT FOUND');
 });
+
+// development error handler
+// will print stacktrace
+if (app.get('env') === 'development') {
+  app.use(function (err, req, res, next) {
+    res.status(err.status || 500);
+    res.render('error', {
+      message: err.message,
+      error: err
+    });
+  });
+}
+
+// production error handler
+// no stacktraces leaked to user
+/*
+app.use(function (err, req, res, next) {
+  res.status(err.status || 500);
+  res.render('error', {
+    message: err.message,
+    error: {}
+  });
+});
+*/
+
 // server connection
 app.listen(configs.apiPort, () => {
   console.log(`Listening on port ${configs.apiPort}`);
 });
+
 module.exports = app;
