@@ -1,11 +1,14 @@
 .account-div{
     background: #fff;
     margin-left: auto;
-    min-height: 510px;
-    padding: 10px 20px;
+    min-height: 550px;
+    padding: 15px 20px;
     margin-top: 7%;
     width: 500px;
     margin-right: auto;
+}
+.account-div p {
+    font-size: x-large;
 }
 .hide-fa-icon:hover>.input-icon{
     display: none;
