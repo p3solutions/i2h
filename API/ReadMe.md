@@ -12,7 +12,7 @@ https://docs.mongodb.com/tutorials/install-mongodb-on-windows/
 
 ## If the mongoDB connection fails, API won't start, it is handled in this way.
 
-## Steps to deploy on cloud
+## Steps to deploy on cloud for the first time:
 For AWS follow : https://in.godaddy.com/help/set-up-nodejs-application-for-production-ubuntu-17352
 `or`
 1. Update your apt packages:
@@ -54,3 +54,30 @@ Manage Application with PM2
 2. Start the application with PM2 so that it runs in the background:
 `pm2 start hello.js`
 Your application will be added to PM2's process list, which will be displayed each time 
+
+## deploy latest changes from GIT
+1. Login in PuTTY, using username `ubuntu` & passphrase if `.ppk` key
+2. browse to API project folder
+`cd /home/ubuntu/i2h/i2h/`
+3. do a git pull from the branch you want the latest code
+`git pull origin dev`
+4. restart the server
+
+## commands after deployment
+1. for restarting `back-end` server
+`sudo service nginx restart`
+
+2. for restarting `front-end` server
+`sudo service apache2 restart`
+
+3. for restarting DB service
+`sudo service mongod restart`
+
+4. To get DB service status 
+`sudo service mongod status`
+
+5. To stop DB service
+`sudo service mongod stop`
+
+6. To start DB service
+`sudo service mongod start`
