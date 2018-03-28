@@ -5,6 +5,7 @@ import { NotificationObject } from '../i2h-objects';
 import { HttpErrorResponse } from '@angular/common/http';
 import { environment } from '../../environments/environment';
 import { AuthenticationService, TokenPayload } from '../authentication.service';
+import * as  $ from 'jquery';
 
 @Component({
   selector: 'app-account',
@@ -25,6 +26,9 @@ export class AccountComponent implements OnInit {
   enableSaveBtn: boolean;
   password2 = '';
   notification: NotificationObject;
+  today = (new Date()).toISOString().split('T')[0];
+  invalidDOB = true;
+  invalidPassword = true;
 
   constructor(
     private auth: AuthenticationService,
@@ -35,7 +39,8 @@ export class AccountComponent implements OnInit {
     this.route.params.subscribe(params => this.userInfo.email = params.email);
   }
 
-  ngOnInit() { }
+  ngOnInit() {
+  }
 
   handleLabelName(e) {
     this.commonUtilityService.handleInputLabelName(e);
@@ -48,13 +53,10 @@ export class AccountComponent implements OnInit {
   }
 
   enableSaveButton() {
-    // needs validation & notification https://docs.angularjs.org/api/ng/input/input%5Bdate%5D
-    // console.log(this.userInfo, this.password2);
     if (this.enableSave()) {
       this.enableSaveBtn = true;
     } else {
       this.enableSaveBtn = false;
-      // this.notification = this.commonUtilityService.setNotificationObject('error', 'Wrong input');
     }
   }
   closeNotification() {
@@ -64,19 +66,67 @@ export class AccountComponent implements OnInit {
   onSave() {
     this.inProgress = true;
     this.auth.register(this.userInfo).subscribe((res) => {
-      console.log('reg resp->', res);
-      this.router.navigateByUrl('/order');
       this.inProgress = false;
+      if (res && res.hasUserInfo) { // existing user with details
+        this.notification = this.commonUtilityService.setNotificationObject('success', res.message);
+        this.router.navigateByUrl('/order');
+      }
     }, (err) => {
-      this.notification = this.commonUtilityService.setNotificationObject('error', err.error.message);
       console.error(err);
+      this.inProgress = false;
+      this.notification = this.commonUtilityService.setNotificationObject('error', err.error.message);
     });
   }
   enableSave() {
-    return this.userInfo.fname.trim() !== '' && this.userInfo.lname.trim() !== '' &&
-      this.userInfo.mobile.length === environment.mobileDigit && this.userInfo.dob !== '' && this.userInfo.sex !== '' &&
-      this.userInfo.password.length >= environment.passwordMinLength &&
-      this.userInfo.password.length <= environment.passwordMaxLength &&
-      this.userInfo.password === this.password2;
+    return this.userInfo.fname.trim() !== '' &&
+      // this.userInfo.lname.trim() !== '' &&
+      this.userInfo.mobile.length === environment.mobileDigit &&
+      this.userInfo.dob !== '' && !this.invalidDOB &&
+      this.userInfo.sex !== '' &&
+      !this.invalidPassword;
+  }
+  validateDOB() {
+    const dob = this.userInfo.dob;
+    if (dob !== '') {
+      const dobArray = dob.split('-');
+      const dobyyyy = dobArray[0];
+      const dobmm = dobArray[1];
+      const dobdd = dobArray[2];
+      const yyyy = this.today.split('-')[0];
+      const mm = this.today.split('-')[1];
+      const dd = this.today.split('-')[2];
+      let msg;
+      if (!(dobyyyy >= '1900' && dobyyyy <= yyyy)) {
+        msg = 'Year range not allowed';
+      } else if (dobyyyy === yyyy && dobmm > mm) {
+        msg = 'Month range not allowed';
+      } else if (dobyyyy === yyyy && dobmm === mm && dobdd > dd) {
+        msg = 'Day range not allowed';
+      } else {
+        this.invalidDOB = false;
+      }
+      if (msg) {
+        this.invalidDOB = true;
+        this.notification = this.commonUtilityService.setNotificationObject('error', msg);
+      }
+      this.enableSaveButton();
+    }
+  }
+  checkPasswordMatch() {
+    const pswd = this.userInfo.password;
+    let msg;
+    if (!(pswd !== '' && pswd.length >= environment.passwordMinLength &&
+       pswd.length <= environment.passwordMaxLength)) {
+      msg = 'Invalid Password';
+    } else if (pswd !== this.password2) {
+      msg = 'Retype password mismatch';
+    } else {
+      this.invalidPassword = false;
+    }
+    if (msg) {
+      this.invalidPassword = true;
+      this.notification = this.commonUtilityService.setNotificationObject('error', msg);
+    }
+    this.enableSaveButton();
   }
 }
