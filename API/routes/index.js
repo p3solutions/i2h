@@ -12,6 +12,7 @@ var otpService = require('../controllers/otpservice');
 
 // mail OTP
 router.post('/mailOtp', otpService.mailotp);
+router.post('/deleteOtp', otpService.deleteOtpOfUserEmail);
 
 // profile
 router.get('/profile', auth, ctrlProfile.profileRead);

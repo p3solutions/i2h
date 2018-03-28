@@ -48,6 +48,26 @@ const deleteOtpList = function (emailId) {
 };
 module.exports.deleteOtpList = deleteOtpList;
 
+module.exports.deleteOtpOfUserEmail = function (req, res) {
+    const emailId = req.body.email;
+    User.findOne({ email: emailId }, function (err, foundUser) {
+        if (err) { throw err; }
+        // if user not found in database then creates new user & returns it
+        if (!foundUser) {
+            logger.info('wrong email, No user found with email', emailId);
+            ctrlUtility.sendJSONresponse(res, 404, { 'message': 'No user found with this email' });
+            return;
+        }
+        if (foundUser.otpList.length > 0) {
+            deleteOtpList(emailId);
+            ctrlUtility.sendJSONresponse(res, 200, { 'message': 'OTP deleted successfully' });
+        } else {
+            ctrlUtility.sendJSONresponse(res, 404, { 'message': 'No OTP found' });
+        }
+        return;
+    });
+};
+
 module.exports.mailotp = function (req, res) {
     // var returnedObj = ctrlProfile.createNewUserwithOnlyEmail(req.body.email);
     // logger.debug(returnedObj, 'returnedObj');
