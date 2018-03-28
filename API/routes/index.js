@@ -11,7 +11,7 @@ var ctrlAuth = require('../controllers/authentication');
 var otpService = require('../controllers/otpservice');
 
 // mail OTP
-router.post('/mailotp', otpService.mailotp);
+router.post('/mailOtp', otpService.mailotp);
 
 // profile
 router.get('/profile', auth, ctrlProfile.profileRead);

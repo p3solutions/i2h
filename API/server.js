@@ -1,21 +1,19 @@
-//  to clear terminal
-console.reset = function () {
-  return process.stdout.write('\033c');
-}
+// To clear the previous content of the terminal 
+// console.reset = function () {
+//   return process.stdout.write('\033c');
+// }
 // console.reset();
 
-const express = require('express');
-const path = require('path');
-const morgan = require('morgan');
-const fs = require('fs');
-const rfs = require('rotating-file-stream');
-const bodyParser = require('body-parser');
-const configs = require('./config/config');
-const http = require('http');
-var cookieParser = require('cookie-parser');
-var cors = require('cors');
+const express = require('express'),
+      path = require('path'),
+      morgan = require('morgan'),
+      bodyParser = require('body-parser'),
+      configs = require('./config/config'),
+      http = require('http'),
+      cookieParser = require('cookie-parser'),
+      cors = require('cors'),
 // [SH] Require Passport
-var passport = require('passport');
+      passport = require('passport');
 // [SH] Bring in the data model
 require('./models/db');
 // [SH] Bring in the Passport config after model is defined
@@ -25,25 +23,9 @@ const routesApi = require('./routes/index');
 
 const app = express();
 
-
-// ensure log directory exists
-if (fs.existsSync(configs.logDirectory))
-console.log(`Existing Log folder path: ${configs.logDirectory}`);
-else {
-    fs.mkdirSync(configs.logDirectory);
-    console.log(`Created log file, path: ${configs.logDirectory}`);
-}
-// create a rotating write stream
-let accessLogStream = rfs(configs.logFile, {
-    size: '5M', // rotate every 5 MegaBytes written
-    interval: '1d', // rotate daily
-    // compress: 'gzip', // compress rotated files
-    path: configs.logDirectory
-});
-
-// setup the logger
-app.use(morgan('combined', {
-    stream: accessLogStream
+// setup the http req logger
+app.use(morgan(`:remote-addr - :remote-user [:date[web]] ":method :url HTTP/:http-version" :status :res[content-length] ":referrer" ":user-agent"`, {
+  stream: configs.accessLogStream
 }));
 
 // view engine setup
@@ -92,9 +74,8 @@ app.use(function (req, res) {
   res.send('ERROR 404, URL NOT FOUND');
 });
 
-// development error handler
-// will print stacktrace
 if (app.get('env') === 'development') {
+  // development error handler will print stacktrace
   app.use(function (err, req, res, next) {
     res.status(err.status || 500);
     res.render('error', {
@@ -102,19 +83,17 @@ if (app.get('env') === 'development') {
       error: err
     });
   });
+} else if (app.get('env') === 'production') {
+  // production error handler no stacktraces leaked to user
+  app.use(function (err, req, res, next) {
+    res.status(err.status || 500);
+    res.render('error', {
+      message: err.message,
+      error: {}
+    });
+  });
 }
 
-// production error handler
-// no stacktraces leaked to user
-/*
-app.use(function (err, req, res, next) {
-  res.status(err.status || 500);
-  res.render('error', {
-    message: err.message,
-    error: {}
-  });
-});
-*/
 
 // server connection
 app.listen(configs.apiPort, () => {
