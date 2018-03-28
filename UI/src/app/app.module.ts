@@ -8,7 +8,7 @@ import { SigninComponent } from './signin/signin.component';
 import { LabelInputComponent } from './label-input/label-input.component';
 import { NavbarComponent } from './navbar/navbar.component';
 import { CommonUtilityService } from './common-utility.service';
-import { MailerService } from './mailer.service';
+import { UserInfoService } from './userinfo.service';
 import { HttpClientModule } from '@angular/common/http';
 import { AccountComponent } from './account/account.component';
 import { OrderComponent } from './order/order.component';
@@ -35,7 +35,7 @@ import { RouterModule, Routes } from '@angular/router';
   providers: [
     CommonUtilityService,
     AuthGuardService,
-    MailerService,
+    UserInfoService,
     AuthenticationService
   ],
   bootstrap: [AppComponent]
