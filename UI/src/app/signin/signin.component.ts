@@ -19,7 +19,8 @@ export class SigninComponent implements OnInit {
   notification: NotificationObject;
   enableSignInBtn: boolean;
   emailHasContent: boolean;
-
+  maxCountOTP = environment.maxCountOTP;
+  otpCount = 1;
   constructor(
     private auth: AuthenticationService,
     private commonUtilityService: CommonUtilityService,
@@ -77,15 +78,27 @@ export class SigninComponent implements OnInit {
     }
   }
 
+  disableOtpBtnHandling() {
+    const otpBtn = <HTMLButtonElement>document.getElementById('otp-btn');
+    otpBtn.disabled = true;
+    setTimeout(function () { otpBtn.disabled = false; }, environment.otpDisableTime);
+    this.notification = this.commonUtilityService.setNotificationObject('error', 'OTP sent limit reached');
+  }
+
   mailOTP() {
     const email = this.signInForm.value.email;
     if (email) {
-      this.userInfoService.mailOTP({'email': email}).subscribe((res) => {
-        if (res.status === 200) {
-          this.notification = this.commonUtilityService.setNotificationObject('success', 'OTP sent to your mail');
-        }
-        this.inProgress = false;
-      });
+      if (this.otpCount <= this.maxCountOTP) {
+        this.userInfoService.mailOTP({'email': email}).subscribe((res) => {
+          if (res.status === 200) {
+            this.otpCount++;
+            this.notification = this.commonUtilityService.setNotificationObject('success', 'OTP sent to your mail');
+          }
+          this.inProgress = false;
+        });
+      } else {
+        this.disableOtpBtnHandling();
+      }
     }
   }
   closeNotification() {

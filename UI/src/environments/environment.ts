@@ -10,5 +10,7 @@ export const environment = {
   otpDigit: 6,
   passwordMinLength: 6,
   passwordMaxLength: 20,
-  mobileDigit: 10
+  mobileDigit: 10,
+  maxCountOTP: 3,
+  otpDisableTime: 1000 * 60 * 2 // 2 minutes
 };
