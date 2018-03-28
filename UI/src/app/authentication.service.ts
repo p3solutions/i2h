@@ -63,9 +63,18 @@ export class AuthenticationService {
       return null;
     }
   }
-
+  public getLoggedInUserEmail(): string {
+    const user = this.getUserDetails();
+    console.log(user, 'from token');
+    if (user && (user.exp > Date.now() / 1000)) {
+      return user.email;
+    } else {
+      return '';
+    }
+  }
   public isLoggedIn(): boolean {
     const user = this.getUserDetails();
+    console.log(user, 'from token');
     if (user) {
       return user.exp > Date.now() / 1000;
     } else {

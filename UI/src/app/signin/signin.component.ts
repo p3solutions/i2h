@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { CommonUtilityService } from '../common-utility.service';
-import { MailerService } from '../mailer.service';
+import { UserInfoService } from '../userinfo.service';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { NotificationObject } from '../i2h-objects';
 import { HttpErrorResponse } from '@angular/common/http';
@@ -23,7 +23,7 @@ export class SigninComponent implements OnInit {
   constructor(
     private auth: AuthenticationService,
     private commonUtilityService: CommonUtilityService,
-    private mailerService: MailerService,
+    private userInfoService: UserInfoService,
     private router: Router
   ) { }
 
@@ -52,7 +52,8 @@ export class SigninComponent implements OnInit {
       }
       this.auth.login(credentials).subscribe((res) => {
         this.inProgress = false;
-        if ((res && res.email) || (res.token)) { // existing user with details
+        console.log(res);
+        if (res && res.hasUserInfo) { // existing user with details
           this.router.navigateByUrl('/order');
         } else {
           this.router.navigateByUrl('/account/' + formValue.email);
@@ -79,7 +80,7 @@ export class SigninComponent implements OnInit {
   mailOTP() {
     const email = this.signInForm.value.email;
     if (email) {
-      this.mailerService.mailOTP({'email': email}).subscribe((res) => {
+      this.userInfoService.mailOTP({'email': email}).subscribe((res) => {
         if (res.status === 200) {
           this.notification = this.commonUtilityService.setNotificationObject('success', 'OTP sent to your mail');
         }
