@@ -5,18 +5,27 @@ import { Observable } from 'rxjs/Observable';
 import { catchError, map, tap } from 'rxjs/operators';
 import { of } from 'rxjs/observable/of';
 import { environment } from '../environments/environment';
+import { JwtHelper } from 'angular2-jwt';
 
 @Injectable()
-export class MailerService {
+export class UserInfoService {
+  jwtHelper: JwtHelper = new JwtHelper();
 
   private headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-  private getOTPUrl = environment.apiUrl + '/mailotp';
+  private getOTPUrl = environment.apiUrl + '/mailOtp';
   private saveUserInfoUrl = environment.apiUrl + '/saveUserInfo';
-  constructor(private http: HttpClient) { }
+  private getUserInfoUrl = environment.apiUrl + '/getUserInfoUrl';
+  constructor(private http: HttpClient,
+
+  ) { }
 
   mailOTP(emailParam) {
     console.log(emailParam, 'mailOTP');
     return this.http.post<any>(this.getOTPUrl, emailParam, { headers: this.headers });
+  }
+
+  getUserInfo(emailId) {
+    return this.http.get<any>(this.getUserInfoUrl + '/' + emailId, { headers: this.headers });
   }
 
   saveUserInfo(params) {
