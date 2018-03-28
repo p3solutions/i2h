@@ -42,17 +42,18 @@ http://ec2-54-191-86-94.us-west-2.compute.amazonaws.com
 1. for restarting front end server
 `sudo service apache2 restart`
 
+Simiilar commands
+`sudo service apache2 status`
+`sudo service apache2 stop`
+`sudo service apache2 start`
+
 2. for restarting backend server
 `sudo service nginx restart`
 
 3. for restarting DB service
 `sudo service mongod restart`
 
-4. To get DB service status 
+Simiilar commands
 `sudo service mongod status`
-
-5. To stop DB service
 `sudo service mongod stop`
-
-6. To start DB service
 `sudo service mongod start`

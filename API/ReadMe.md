@@ -67,17 +67,18 @@ Your application will be added to PM2's process list, which will be displayed ea
 1. for restarting `back-end` server
 `sudo service nginx restart`
 
-2. for restarting `front-end` server
-`sudo service apache2 restart`
+similar commands
+`sudo service nginx status`
+`sudo service nginx stop`
+`sudo service nginx start`
 
-3. for restarting DB service
+2. for restarting DB service
 `sudo service mongod restart`
 
-4. To get DB service status 
+Similar commands
 `sudo service mongod status`
-
-5. To stop DB service
 `sudo service mongod stop`
-
-6. To start DB service
 `sudo service mongod start`
+
+3. for restarting `front-end` server
+`sudo service apache2 restart`
