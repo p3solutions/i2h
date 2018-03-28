@@ -14,7 +14,7 @@ configs.dbConnectionUrl = 'mongodb://' + configs.dbHost + '/' + configs.dbName;
 // used in login.js
 configs.OTPdigits = 6;
 configs.OTPdeletionTime = (1000 * 60) * 2; // 2 minutes or 1,20,000 ms
-configs.maxCountOTP = 3;
+
 // used below
 configs.logDirectory = `${__dirname}\\..\\log`;
 configs.terminalLogFile = 'terminal.log';
