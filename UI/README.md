@@ -29,5 +29,30 @@ To get more help on the Angular CLI use `ng help` or go check out the [Angular C
 
 # PORTS used
 1. mongodb use 27017
-2. server-side node-app use 3000 
+2. server-side node-app use 
+  'http://localhost:3000' or
+  'http://54.191.86.94:81'
 3. angular web-app use 4200
+
+
+# The Webapp is available publicly on 
+http://ec2-54-191-86-94.us-west-2.compute.amazonaws.com
+
+## commands after deployment
+1. for restarting front end server
+`sudo service apache2 restart`
+
+2. for restarting backend server
+`sudo service nginx restart`
+
+3. for restarting DB service
+`sudo service mongod restart`
+
+4. To get DB service status 
+`sudo service mongod status`
+
+5. To stop DB service
+`sudo service mongod stop`
+
+6. To start DB service
+`sudo service mongod start`
