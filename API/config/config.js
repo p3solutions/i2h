@@ -12,15 +12,23 @@ configs.dbConnectionUrl = 'mongodb://' + configs.dbHost + '/' + configs.dbName;
 // not used currently
 // configs.IPallowedForUI = 'http://localhost:4200';
 // used in login.js
-configs.OTPdigits = 6;
-configs.OTPdeletionTime = (1000 * 60) * 2; // 2 minutes or 1,20,000 ms
+configs.OTP_DIGITS = 6;
+configs.OTP_VALIDATION_MINUTES = 2; // 2 minutes or 1,20,000 ms
+configs.OTP_VALIDATION_DELAY = (1000 * 60) * configs.OTP_VALIDATION_MINUTES;
 
 // used below
 configs.logDirectory = `${__dirname}/../log`;
 configs.terminalLogFile = 'terminal.log';
 configs.apiAccesslogFile = 'api.access.log';
 
-//
+// mailer configs
+configs.EMAIL_HOST = 'smtp.office365.com';
+configs.EMAIL_PORT = '587';
+configs.EMAIL_HOST_USER = 'shammi.hans@platform3solutions.com';
+configs.EMAIL_HOST_PASSWORD = 'Smi1p3s@';
+configs.EMAIL_USE_TLS = true;
+
+// First log printed in terminal, rest writes in terminal.log file
 console.log(`All console logs / Terminal logs & API access logs are available here:
             Directory: ${configs.logDirectory}\\
             Files: ${configs.terminalLogFile} & ${configs.apiAccesslogFile} `);

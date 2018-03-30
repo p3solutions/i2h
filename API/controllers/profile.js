@@ -1,3 +1,4 @@
+const me = this;
 var mongoose = require('mongoose');
 var User = mongoose.model('User');
 var ApiMessages = require('../config/api-messages');
@@ -5,6 +6,7 @@ var ApiResponse = require('../config/api-response');
 var mailerService = require('../config/mailer-service');
 // var uuid = require('node-uuid');
 const logger = require('../config/logger');
+const ctrlUtility = require('./utility');
 
 module.exports.profileRead = function (req, res) {
 
@@ -16,13 +18,18 @@ module.exports.profileRead = function (req, res) {
         User
             .findById(req.payload._id)
             .exec(function (err, user) {
-                res.status(200).json(user);
+                const userCopy = JSON.parse(JSON.stringify(user));
+                delete userCopy._id;
+                delete userCopy.hash;
+                delete userCopy.salt;
+                delete userCopy.__v;
+
+                res.status(200).json(userCopy);
             });
     }
 
 };
-const createNewUserwithOnlyEmail =function (emailId) {
-    logger.debug('executing createNewUserwithOnlyEmail()');
+const createNewUserwithOnlyEmail = function (emailId) {
     var user = new User();
     user.email = emailId;
     user.otpList = [];
@@ -34,28 +41,94 @@ const createNewUserwithOnlyEmail =function (emailId) {
     if (!user.created_at)
         user.created_at = currentDate;
     user.save(function (err, usr) {
-        logger.debug('User created with email:', emailId); // saving user takes time
+        if (err) throw err;
+        logger.info(`#39 User created with email: ${emailId}`); // saving user takes time
     });
     return user;
 };
-// module.exports.createNewUserwithOnlyEmail = createNewUserwithOnlyEmail; // should not be available directly
-
-module.exports.handleUserByEmail = function (emailId, createIfNotFound, callbackFn) {
+// make sure res return in callbacks, specially if createIfNotFound == false, res must return in callbackUserFound or finalCallback, else API response never end until timeout
+const handleUserByEmail = function (emailId, createIfNotFound, callbackUserFound, callbackUserCreated, finalCallback) {
     User.findOne({ email: emailId }, function (err, user) {
         if (err) { throw err; }
+        // logger.debug(`#47 User found in handleUserByEmail: ${user.email}`);
+        if (user) {
+            callbackUserFound ? callbackUserFound(user) : true;
+        }
         // if user not found in database then creates new user & returns it
-        if (!user) {
-            logger.debug('No user found with email', emailId);
+        else {
             if (createIfNotFound) {
                 user = createNewUserwithOnlyEmail(emailId);
             }
+            callbackUserCreated ? callbackUserCreated(user) : true;
         }
-        logger.debug('#53 user found in handleUserByEmail', user);
-        if (callbackFn) {
-            callbackFn(user);
+        if (finalCallback) {
+            finalCallback(user);
         }
     });
 };
+module.exports.handleUserByEmail = handleUserByEmail;
+
+// should be available only to developers
+module.exports.createNewUserByEmail = function (req, res) {
+    const emailId = req.body.email;
+    try {
+        const callbackUserFound = function (foundUser) {
+            ctrlUtility.sendJSONresponse(res, 200, {
+                'status': 'Success',
+                'message': 'User already exist for ' + emailId
+            });
+            return;
+        };
+        const callbackUserCreated = function (foundUser) {
+            ctrlUtility.sendJSONresponse(res, 200, {
+                'status': 'Success',
+                'message': 'New user created for ' + emailId
+            });
+            return;
+        };
+        handleUserByEmail(emailId, true, callbackUserFound, callbackUserCreated, null);
+    } catch (error) {
+        logger.error(error);
+        ctrlUtility.sendJSONresponse(res, 500, {
+            'status': 'Error',
+            'message': 'Error in creating new user'
+        });
+        return;
+    }
+};
+
+// should be available only to developers
+module.exports.deleteUserByEmail = function (req, res) {
+    const emailId = req.body.email;
+    try {
+        const callbackUserFound = function (foundUser) {
+            foundUser.remove(function (err) {
+                if (err) throw err;
+                ctrlUtility.sendJSONresponse(res, 200, {
+                    'status': 'Success',
+                    'message': 'User deleted successfully for ' + emailId
+                });
+                return;
+            });
+        };
+        const callbackUserCreated = function (foundUser) {
+            ctrlUtility.sendJSONresponse(res, 200, {
+                'status': 'Error',
+                'message': 'User not found for ' + emailId
+            });
+            return;
+        };
+        handleUserByEmail(emailId, true, callbackUserFound, callbackUserCreated, null);
+    } catch (error) {
+        logger.error(error);
+        ctrlUtility.sendJSONresponse(res, 500, {
+            'status': 'Error',
+            'message': 'Error in deleting user ' + emailId
+        });
+        return;
+    }
+};
+
 // override with userObj except _id, hash, salt
 // module.exports.updateUserObjByEmail = function (emailId, userObj) {
 

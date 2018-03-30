@@ -16,7 +16,7 @@ module.exports.register = function (req, res) {
         user.mobile = req.body.mobile;
         user.otpList = [];
         user.setPassword(req.body.password);
-        logger.debug('saving user details in register() ->', user);
+        logger.debug('#19 Saving user details in register() ->', user);
         user.save(function (err, user) {
             if (err) {
                 logger.error(err);
@@ -37,25 +37,25 @@ module.exports.login = function (req, res) {
             if (err) { throw err; }
             // if user not found in database then creates new user & returns it
             if (!foundUser) {
-                logger.info('wrong email, No user found with email', emailId);
-                ctrlUtility.sendJSONresponse(res, 401, { 'message': 'wrong email' });
+                logger.info(`#40 Wrong Email. No user found with email: ${emailId}`);
+                ctrlUtility.sendJSONresponse(res, 401, { 'message': 'User not found' });
                 return;
             }
-            logger.debug('validate otpList -> ', foundUser.otpList);
+            // logger.debug('validate otpList -> ', foundUser.otpList);
             const otpInfo = ctrlUtility.getWholeObjFromArrayByVal(foundUser.otpList, 'otp', otp);
-            logger.debug(otpInfo, '<-otpInfo');
+            // logger.debug(otpInfo, ' <- otpInfo');
             if (otpInfo && otpInfo.validity) {
                 const currTime = (new Date()).getTime();
-                logger.debug('comparing', otpInfo, ' >= ', currTime);
+                // logger.debug('comparing', otpInfo, ' >= ', currTime);
                 validation = (otpInfo.validity >= currTime); // checking for otp-validity, returns true/false
-                logger.debug(` returned ${validation}`);
             }
+            logger.info(`#52 OTP validation: ${validation}`);
             if (validation) {
                 ctrlOtpService.deleteOtpList(emailId);
                 // send login notification
                 ctrlUtility.sendJSONresponse(res, 200, { 'token': foundUser.generateJwt(), 'hasUserInfo': (!!foundUser.fname), 'message': 'Login Successful'});
             } else {
-                ctrlUtility.sendJSONresponse(res, 401, {'message': 'Wrong OTP'});
+                ctrlUtility.sendJSONresponse(res, 401, {'message': 'Invalid OTP'});
                 return;
             }
         });
@@ -68,8 +68,7 @@ module.exports.login = function (req, res) {
                 ctrlUtility.sendJSONresponse(res, 404, err);
                 return;
             }
-            logger.debug('user found in login-pswd->', user);
-            logger.debug('info in login-pswd->', info);
+            logger.info(`#71 Login via password:\n User: ${user ? user.email : 'NULL'} \n ${info ? JSON.stringify(info) : ''}`);
             // If a user is found
             if (user) {
                 token = user.generateJwt();

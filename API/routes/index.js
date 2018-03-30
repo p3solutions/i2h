@@ -21,4 +21,8 @@ router.get('/profile', auth, ctrlProfile.profileRead);
 router.post('/register', ctrlAuth.register);
 router.post('/login', ctrlAuth.login);
 
+// developer APIs
+router.post('/createNewUserByEmail', ctrlProfile.createNewUserByEmail);
+router.post('/deleteUserByEmail', ctrlProfile.deleteUserByEmail);
+
 module.exports = router;
