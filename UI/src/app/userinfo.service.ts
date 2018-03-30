@@ -20,7 +20,6 @@ export class UserInfoService {
   ) { }
 
   mailOTP(emailParam) {
-    console.log(emailParam, 'mailOTP');
     return this.http.post<any>(this.getOTPUrl, emailParam, { headers: this.headers });
   }
 
