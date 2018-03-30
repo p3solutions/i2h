@@ -16,6 +16,7 @@ import { AuthenticationService } from '../authentication.service';
 export class SigninComponent implements OnInit {
   signInForm: FormGroup;
   inProgress = false;
+  mailProgress = false;
   notification: NotificationObject;
   enableSignInBtn: boolean;
   emailHasContent: boolean;
@@ -53,7 +54,6 @@ export class SigninComponent implements OnInit {
       }
       this.auth.login(credentials).subscribe((res) => {
         this.inProgress = false;
-        console.log(res);
         if (res && res.hasUserInfo) { // existing user with details
           this.router.navigateByUrl('/order');
         } else {
@@ -65,12 +65,11 @@ export class SigninComponent implements OnInit {
         if (err.error instanceof Error) {
           // A client-side or network error occurred. Handle it accordingly.
           console.log('An error occurred:', err.error.message);
-        } else {
-          this.notification = this.commonUtilityService.setNotificationObject('error', err.error.message);
-          if (!environment.production) { // not for production
-            console.log(`Backend returned code ${err.status}, body was: ${JSON.stringify(err.error)}`);
-          }
         }
+        if (!environment.production) { // not for production
+          console.log(`Backend returned code ${err.status}, body was: ${JSON.stringify(err.error)}`);
+        }
+        this.notification = this.commonUtilityService.setNotificationObject('error', err.error.message);
       });
     } else {
       this.inProgress = false;
@@ -86,15 +85,16 @@ export class SigninComponent implements OnInit {
   }
 
   mailOTP() {
+    this.mailProgress = true;
     const email = this.signInForm.value.email;
     if (email) {
       if (this.otpCount <= this.maxCountOTP) {
         this.userInfoService.mailOTP({'email': email}).subscribe((res) => {
-          if (res.status === 200) {
+          this.mailProgress = false;
+          if (res.status === 'success') {
             this.otpCount++;
             this.notification = this.commonUtilityService.setNotificationObject('success', 'OTP sent to your mail');
           }
-          this.inProgress = false;
         });
       } else {
         this.disableOtpBtnHandling();
@@ -122,14 +122,17 @@ export class SigninComponent implements OnInit {
     } else {
       this.emailHasContent = false;
     }
-    this.enableSignInButton();
+    this.enableSignInButton(null);
   }
-  enableSignInButton() {
+  enableSignInButton(e) {
     const formValue = this.signInForm.value;
     if (this.signInForm.controls.email.status === 'VALID' &&
       (formValue.otp.trim().length === environment.otpDigit ||
       (formValue.password.length >= environment.passwordMinLength && formValue.password.length <= environment.passwordMaxLength))) {
       this.enableSignInBtn = true;
+      if (e && (e.keyCode === 13 || e.which === 13)) {
+        this.onSignIn();
+      }
     } else {
       this.enableSignInBtn = false;
     }
