@@ -5,8 +5,8 @@
 
 export const environment = {
   production: false,
-  // apiUrl: 'http://54.191.86.94:81',
-  apiUrl: 'http://localhost:3000',
+  apiUrl: 'http://54.191.86.94:81',
+  // apiUrl: 'http://localhost:3000',
   otpDigit: 6,
   passwordMinLength: 6,
   passwordMaxLength: 20,
