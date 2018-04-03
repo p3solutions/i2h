@@ -93,7 +93,6 @@ module.exports.mailotp = function (req, res) {
             'status': 'success',
             'message': 'OTP mailed successfully'});
         logger.debug('info->\n', info);
-        logger.debug('res\n', res);
         return;
     };
     transporter.sendMail(mailerOptions, mailCallbackFn);

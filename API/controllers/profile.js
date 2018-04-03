@@ -9,7 +9,6 @@ const logger = require('../config/logger');
 const ctrlUtility = require('./utility');
 
 module.exports.profileRead = function (req, res) {
-
     if (!req.payload._id) {
         res.status(401).json({
             "message": "UnauthorizedError: private profile"
@@ -18,16 +17,17 @@ module.exports.profileRead = function (req, res) {
         User
             .findById(req.payload._id)
             .exec(function (err, user) {
+                if (err) logger.error(err);
                 const userCopy = JSON.parse(JSON.stringify(user));
-                delete userCopy._id;
+                delete userCopy.updated_at;
+                delete userCopy.created_at;
+                delete userCopy.otpList;
                 delete userCopy.hash;
                 delete userCopy.salt;
                 delete userCopy.__v;
-
                 res.status(200).json(userCopy);
             });
     }
-
 };
 const createNewUserwithOnlyEmail = function (emailId) {
     var user = new User();
