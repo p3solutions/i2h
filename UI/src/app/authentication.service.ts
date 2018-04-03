@@ -23,6 +23,7 @@ interface TokenResponse {
 }
 
 export interface TokenPayload {
+  _id: string;
   email: string;
   password?: string;
   otp?: string;
@@ -37,19 +38,32 @@ export interface TokenPayload {
 export class AuthenticationService {
   private token: string;
   private apiUrl = environment.apiUrl;
+  private loginUrl = '/sign-in';
+  private registerUrl = '/landing/register/';
+  private orderUrl = '/landing/order';
 
   constructor(private http: HttpClient, private router: Router) { }
 
   private saveToken(token: string): void {
-    localStorage.setItem('mean-token', token);
+    localStorage.setItem('i2h-token', token);
     this.token = token;
   }
 
   private getToken(): string {
     if (!this.token) {
-      this.token = localStorage.getItem('mean-token');
+      this.token = localStorage.getItem('i2h-token');
     }
     return this.token;
+  }
+
+  getRegisterUrl(email) {
+    return this.registerUrl + email;
+  }
+  getLoginUrl(): string {
+    return this.loginUrl;
+  }
+  getOrderUrl(): string {
+    return this.orderUrl;
   }
 
   public getUserDetails(): UserDetails {
@@ -63,12 +77,12 @@ export class AuthenticationService {
       return null;
     }
   }
-  public getLoggedInUserEmail(): string {
+  public getLoggedInUser(): UserDetails {
     const user = this.getUserDetails();
     if (user && (user.exp > Date.now() / 1000)) {
-      return user.email;
+      return user;
     } else {
-      return '';
+      return null;
     }
   }
   public isLoggedIn(): boolean {
@@ -86,7 +100,10 @@ export class AuthenticationService {
     if (method === 'post') {
       base = this.http.post(`${this.apiUrl}/${type}`, user);
     } else {
-      base = this.http.get(`${this.apiUrl}/${type}`, { headers: { Authorization: `Bearer ${this.getToken()}` } });
+      if (type === 'profile') {
+        base = this.http.get(`${this.apiUrl}/${type}`, { headers: { Authorization: `Bearer ${this.getToken()}` } });
+      }
+      // base = this.http.get(`${this.apiUrl}/${type}`, { headers: { Authorization: `Bearer ${this.getToken()}` } });
     }
 
     const request = base.pipe(
@@ -115,7 +132,7 @@ export class AuthenticationService {
 
   public logout(): void {
     this.token = '';
-    window.localStorage.removeItem('mean-token');
+    window.localStorage.removeItem('i2h-token');
     this.router.navigateByUrl('/');
   }
 }
