@@ -1,0 +1,28 @@
+<div class="sidenav">
+  <div class="avatar">
+    <i class="fa fa-user-circle fa-10x"></i>
+  </div>
+  <span href="javascript:void(0)" class="closebtn" hidden >&times;</span>
+  <div class="menu-block">
+    <div class="sidenav-title">
+      Account
+    </div>
+    <a [routerLink]="['profile']" class="">Profile</a>
+    <a [routerLink]="['address']" class="">Address</a>
+  </div>
+  <div class="menu-block">
+    <div class="sidenav-title">
+      Dependents
+    </div>
+    <a [routerLink]="['dependents']" class="">List</a>
+  </div>
+  <div class="menu-block last-menu-block">
+    <div class="sidenav-title">
+      Reports
+    </div>
+    <a [routerLink]="['compare']" class="">Compare</a>
+  </div>
+</div>
+<div style="margin-left: 210px;">
+  <router-outlet></router-outlet>
+</div>
