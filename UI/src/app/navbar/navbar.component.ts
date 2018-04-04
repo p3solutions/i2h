@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { AuthenticationService } from '../authentication.service';
+import { AuthenticationService, UserDetails } from '../authentication.service';
 import { UserInfoService } from '../userinfo.service';
+import { CommonUtilityService } from '../common-utility.service';
 
 @Component({
   selector: 'app-navbar',
@@ -8,20 +9,28 @@ import { UserInfoService } from '../userinfo.service';
   styleUrls: ['./navbar.component.css']
 })
 export class NavbarComponent implements OnInit {
-  info: any;
+  userDetails: UserDetails;
 
   constructor(
     private auth: AuthenticationService,
-    private userInfoService: UserInfoService
+    private userInfoService: UserInfoService,
+    private commonUtilityService: CommonUtilityService
   ) { }
 
   ngOnInit() {
+    const loggedInUser = this.auth.getLoggedInUser();
+    if (loggedInUser) {
+      this.getUserInfo();
+    }
   }
   getUserInfo() {
-    const email = this.auth.getLoggedInUserEmail();
-    this.userInfoService.getUserInfo(email).subscribe((res) => {
-      // this.info = res.data;
-      console.log(res, '<-userInfo');
+    console.log('fetching User');
+    this.auth.profile().subscribe(user => {
+      console.log('fetched User', user);
+      this.userDetails = user;
+    }, (err) => {
+      console.error('usr profl -> ', err);
+       this.commonUtilityService.getErrorNotification(err);
     });
   }
 

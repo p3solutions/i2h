@@ -4,7 +4,7 @@ import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { NotificationObject } from '../i2h-objects';
 import { HttpErrorResponse } from '@angular/common/http';
 import { environment } from '../../environments/environment';
-import { AuthenticationService, TokenPayload } from '../authentication.service';
+import { AuthenticationService, TokenPayload, UserDetails } from '../authentication.service';
 import * as  $ from 'jquery';
 
 @Component({
@@ -14,13 +14,15 @@ import * as  $ from 'jquery';
 })
 export class AccountComponent implements OnInit {
   userInfo: TokenPayload = {
+    _id: '',
     email: '',
     password: '',
+    otp: '',
     fname: '',
     lname: '',
-    dob: '',
-    sex: '',
     mobile: '',
+    dob: '',
+    sex: ''
   };
   inProgress = false;
   enableSaveBtn: boolean;
@@ -69,7 +71,7 @@ export class AccountComponent implements OnInit {
       this.inProgress = false;
       if (res && res.hasUserInfo) { // existing user with details
         this.notification = this.commonUtilityService.setNotificationObject('success', res.message);
-        this.router.navigateByUrl('/order');
+        this.router.navigateByUrl(this.auth.getOrderUrl());
       }
     }, (err) => {
       console.error(err);

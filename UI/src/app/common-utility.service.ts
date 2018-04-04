@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { NotificationObject } from './i2h-objects';
+import { environment } from '../environments/environment';
 
 @Injectable()
 export class CommonUtilityService {
@@ -59,6 +60,19 @@ export class CommonUtilityService {
         closeBtn.click();
       }
     }, 4000);
+    return notification;
+  }
+
+  getErrorNotification(err) {
+    // if (err.error instanceof Error) {
+    //   // A client-side or network error occurred. Handle it accordingly.
+    //   console.log('An error occurred:', err.error.message);
+    // }
+    if (!environment.production) { // not for production
+      console.log(`Backend returned code ${err.status}, body was: ${JSON.stringify(err.error)}`);
+    }
+    const msg = err && err.error && err.error.message ? err.error.message : err.statusText;
+    const notification = this.setNotificationObject('error', msg);
     return notification;
   }
 }

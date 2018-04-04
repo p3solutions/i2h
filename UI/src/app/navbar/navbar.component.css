@@ -10,8 +10,9 @@
 }
 .navbar-nav>li>a,
 .navbar-nav>li>a:active {
-  color: #fff;
-  text-align: right;
+  color: #000;
+  /* text-align: right; */
+  text-align: center;
   /* padding: 13px 18px 15px 12px; */
 }
 
@@ -26,7 +27,9 @@
 
 .user-menu,
 .user-menu .dropdown-menu {
-  max-width: 108px;
+  /* max-width: 130px; */
+  width: 130px;
+  background: #fff;
 }
 
 /* default .dropdown-menu css has min-width:160px, hence overriding for max 10 letters width*/
@@ -36,8 +39,7 @@
 }
 
 .user-menu li>a {
-  width: 95px;
-  margin: 0 8px;
+  width: 125px;
 }
 
 .user-menu a>.caret {
@@ -49,7 +51,9 @@
 .navbar-default .navbar-nav>.active>a,
 .navbar-default .navbar-nav>.active>a:focus,
 .navbar-default .navbar-nav>.active>a:hover {
-  background-color: #269af8;
+  /* background-color: #269af8; */
+  /* background-color: #fff; */
+  background-color: transparent;
 }
 
 ul.msg_list li {
@@ -100,4 +104,9 @@ ul.msg_list li a .message {
   top: 0;
   position: absolute;
   margin: 5px;
+}
+.nav-username-icon {
+  left: 5px;
+  position: absolute;
+  top: 18px;
 }

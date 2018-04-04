@@ -17,7 +17,7 @@ export class SigninComponent implements OnInit {
   signInForm: FormGroup;
   inProgress = false;
   mailProgress = false;
-  notification: NotificationObject;
+  notification = new NotificationObject();
   enableSignInBtn: boolean;
   emailHasContent: boolean;
   maxCountOTP = environment.maxCountOTP;
@@ -42,9 +42,8 @@ export class SigninComponent implements OnInit {
   }
 
   onSignIn() {
-    this.inProgress = true;
     const formValue = this.signInForm.value;
-    if (formValue.email && (formValue.password || formValue.otp)) {
+    if (formValue.email && (formValue.password || formValue.otp) && !this.inProgress) {
       const credentials: any = { 'email': formValue.email };
       if (formValue.password.length >= environment.passwordMinLength && formValue.password.length <= environment.passwordMaxLength) {
         credentials.password = formValue.password;
@@ -52,24 +51,18 @@ export class SigninComponent implements OnInit {
       if (formValue.otp.length >= environment.otpDigit) {
         credentials.otp = formValue.otp.trim();
       }
+      this.inProgress = true;
       this.auth.login(credentials).subscribe((res) => {
         this.inProgress = false;
         if (res && res.hasUserInfo) { // existing user with details
-          this.router.navigateByUrl('/order');
+          this.router.navigateByUrl(this.auth.getOrderUrl());
         } else {
-          this.router.navigateByUrl('/account/' + formValue.email);
+          this.router.navigateByUrl(this.auth.getRegisterUrl(formValue.email));
         }
       },
       (err: HttpErrorResponse) => {
         this.inProgress = false;
-        if (err.error instanceof Error) {
-          // A client-side or network error occurred. Handle it accordingly.
-          console.log('An error occurred:', err.error.message);
-        }
-        if (!environment.production) { // not for production
-          console.log(`Backend returned code ${err.status}, body was: ${JSON.stringify(err.error)}`);
-        }
-        this.notification = this.commonUtilityService.setNotificationObject('error', err.error.message);
+        this.notification = this.commonUtilityService.getErrorNotification(err);
       });
     } else {
       this.inProgress = false;
@@ -85,9 +78,9 @@ export class SigninComponent implements OnInit {
   }
 
   mailOTP() {
-    this.mailProgress = true;
     const email = this.signInForm.value.email;
-    if (email) {
+    if (email && !this.mailProgress) {
+      this.mailProgress = true;
       if (this.otpCount <= this.maxCountOTP) {
         this.userInfoService.mailOTP({'email': email}).subscribe((res) => {
           this.mailProgress = false;
@@ -95,8 +88,13 @@ export class SigninComponent implements OnInit {
             this.otpCount++;
             this.notification = this.commonUtilityService.setNotificationObject('success', 'OTP sent to your mail');
           }
+        },
+        (err: HttpErrorResponse) => {
+          this.mailProgress = false;
+          this.notification = this.commonUtilityService.getErrorNotification(err);
         });
       } else {
+        this.mailProgress = false;
         this.disableOtpBtnHandling();
       }
     }

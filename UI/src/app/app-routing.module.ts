@@ -5,14 +5,61 @@ import { Component } from '@angular/core/src/metadata/directives';
 import { SigninComponent } from './signin/signin.component';
 import { AccountComponent } from './account/account.component';
 import { OrderComponent } from './order/order.component';
+import { AuthGuardService } from './auth-guard.service';
+import { SettingsComponent } from './settings/settings.component';
+import { LandingComponent } from './landing/landing.component';
+import { ProfileComponent } from './profile/profile.component';
+import { AddressComponent } from './address/address.component';
+import { DependentsComponent } from './dependents/dependents.component';
+import { CompareComponent } from './compare/compare.component';
+import { OrderHistoryComponent } from './order-history/order-history.component';
 
 const routes: Routes = [
     {
-        path: 'sign-in', component: SigninComponent
+        path: 'sign-in',
+        component: SigninComponent
     }, {
-        path: 'account/:email', component: AccountComponent
-    }, {
-        path: 'order', component: OrderComponent
+        path: 'landing',
+        canActivate: [AuthGuardService],
+        component: LandingComponent,
+        children: [
+            {
+                path: 'register/:email',
+                canActivate: [AuthGuardService],
+                component: AccountComponent
+            }, {
+                path: 'settings',
+                canActivate: [AuthGuardService],
+                component: SettingsComponent,
+                children: [
+                    {
+                        path: 'profile',
+                        canActivate: [AuthGuardService],
+                        component: ProfileComponent
+                    }, {
+                        path: 'address',
+                        canActivate: [AuthGuardService],
+                        component: AddressComponent
+                    }, {
+                        path: 'dependents',
+                        canActivate: [AuthGuardService],
+                        component: DependentsComponent
+                    }, {
+                        path: 'compare',
+                        canActivate: [AuthGuardService],
+                        component: CompareComponent
+                    }
+                ]
+            }, {
+                path: 'order',
+                canActivate: [AuthGuardService],
+                component: OrderComponent
+            }, {
+                path: 'history',
+                canActivate: [AuthGuardService],
+                component: OrderHistoryComponent
+            }
+        ]
     }, {
         path: '', redirectTo: '/sign-in', pathMatch: 'full'
     }

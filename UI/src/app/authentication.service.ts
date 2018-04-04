@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 import { map } from 'rxjs/operators/map';
 import { Router } from '@angular/router';
@@ -41,6 +41,7 @@ export class AuthenticationService {
   private loginUrl = '/sign-in';
   private registerUrl = '/landing/register/';
   private orderUrl = '/landing/order';
+  private headers = new HttpHeaders({ 'Content-Type': 'application/json' });
 
   constructor(private http: HttpClient, private router: Router) { }
 
@@ -88,6 +89,7 @@ export class AuthenticationService {
   public isLoggedIn(): boolean {
     const user = this.getUserDetails();
     if (user) {
+      // console.log(user.exp, Date.now() / 1000, user.exp > Date.now() / 1000);
       return user.exp > Date.now() / 1000;
     } else {
       return false;
@@ -98,7 +100,7 @@ export class AuthenticationService {
     let base;
 
     if (method === 'post') {
-      base = this.http.post(`${this.apiUrl}/${type}`, user);
+      base = this.http.post(`${this.apiUrl}/${type}`, user, { headers: this.headers });
     } else {
       if (type === 'profile') {
         base = this.http.get(`${this.apiUrl}/${type}`, { headers: { Authorization: `Bearer ${this.getToken()}` } });

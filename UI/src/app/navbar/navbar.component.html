@@ -7,23 +7,25 @@
     </div>
     <div>
       <ul class="nav navbar-nav navbar-right">
-        <li *ngIf="info" class="dropdown user-menu active">
-          <a href="#" class="dropdown-toggle trim-text" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{info?.username}}
+        <li *ngIf="userDetails?.fname" class="dropdown user-menu active">
+          <a href="#" class="dropdown-toggle trim-text" data-toggle="dropdown" role="button"
+             aria-haspopup="true" aria-expanded="false" title="{{userDetails?.fname}}">
+             <i class="fa fa-user-circle-o fa-1x col-000 nav-username-icon"></i>&nbsp;{{userDetails?.fname}}
             <span class="caret"></span>
           </a>
           <ul class="dropdown-menu">
             <li title="Account">
-              <a routerLink="/user-account" class="trim-text">Account</a>
+              <a routerLink="/landing/settings" class="trim-text">Account</a>
             </li>
-            <li *ngIf="info?.show" role="separator" class="divider"></li>
-            <li *ngIf="info?.show" title="Order History">
-              <a routerLink="/order-history" class="trim-text">Order History</a>
+            <li role="separator" class="divider"></li>
+            <li title="Order History">
+              <a routerLink="/landing/history" class="trim-text">Order History</a>
             </li>
           </ul>
         </li>
-        <li role="presentation">
-          <a class="info-number cur-p" (click)="logOut()">
-            <i class="fa fa-sign-out fa-lg" aria-hidden="true" data-toggle="tooltip" data-placement="bottom" title="Help"></i>
+        <li *ngIf="userDetails" role="presentation">
+          <a class="cur-p" (click)="logOut()">
+            <i class="fa fa-sign-out fa-lg" aria-hidden="true" data-toggle="tooltip" data-placement="bottom" title="Log out"></i>
           </a>
         </li>
       </ul>

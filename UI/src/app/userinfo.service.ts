@@ -21,10 +21,12 @@ export class UserInfoService {
 
   mailOTP(emailParam) {
     return this.http.post<any>(this.getOTPUrl, emailParam, { headers: this.headers });
+      // .pipe(catchError(this.handleError<any>('mailOTP')));
   }
 
-  getUserInfo(emailId) {
-    return this.http.get<any>(this.getUserInfoUrl + '/' + emailId, { headers: this.headers });
+  getUserInfo(loggedInuser) {
+    // const emailId = loggedInuser.emailId;
+    return this.http.get<any>(this.getUserInfoUrl, { headers: this.headers });
   }
 
   saveUserInfo(params) {

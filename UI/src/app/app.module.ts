@@ -15,6 +15,13 @@ import { OrderComponent } from './order/order.component';
 import { AuthGuardService } from './auth-guard.service';
 import { AuthenticationService } from './authentication.service';
 import { RouterModule, Routes } from '@angular/router';
+import { LandingComponent } from './landing/landing.component';
+import { SettingsComponent } from './settings/settings.component';
+import { ProfileComponent } from './profile/profile.component';
+import { AddressComponent } from './address/address.component';
+import { DependentsComponent } from './dependents/dependents.component';
+import { CompareComponent } from './compare/compare.component';
+import { OrderHistoryComponent } from './order-history/order-history.component';
 
 @NgModule({
   declarations: [
@@ -23,7 +30,14 @@ import { RouterModule, Routes } from '@angular/router';
     LabelInputComponent,
     NavbarComponent,
     AccountComponent,
-    OrderComponent
+    OrderComponent,
+    LandingComponent,
+    SettingsComponent,
+    ProfileComponent,
+    AddressComponent,
+    DependentsComponent,
+    CompareComponent,
+    OrderHistoryComponent
   ],
   imports: [
     BrowserModule,

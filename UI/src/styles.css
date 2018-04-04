@@ -6,6 +6,9 @@ body {
 .fa {
   color: #ef7e1c4a
 }
+.fa-1o5x {
+  font-size: 1.5em;
+}
 .btn {
   border-radius: 2px;
   text-transform: uppercase;
@@ -123,16 +126,22 @@ progress {
   color: #000;
 }
 .col-i2h {
-  color: #ef7f1a;
+  color: #ef7f1a !important;
 }
 .col-fff{
-  color: #fff;
+  color: #fff !important;
 }
 .col-000 {
-  color: #000;
+  color: #000 !important;
 }
 .cur-p{
-  cursor: pointer;
+  cursor: pointer !important;
+}
+.trim-text {
+  display: inline-block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 /*= input focus effects css
@@ -243,3 +252,81 @@ input[type="number"] {
     opacity: 1;
   }
 }
+
+/* sidemenu css */
+.avatar {
+  width: 200px;
+  padding: 15px;
+}
+.fa-10x {
+  font-size: 10em;
+}
+.sidenav {
+  height: 100%;
+  width: 200px;
+  position: fixed;
+  top: 40px;
+  overflow-x: hidden;
+  -webkit-transition: 0.5s;
+  transition: 0.5s;
+  padding-top: 5px;
+  margin: 0;
+  box-shadow: 1px 13px 1px grey;
+  -moz-box-shadow: 1px 13px 1px grey;
+  -webkit-box-shadow: 1px 13px 1px grey;
+
+}
+
+.sidenav a {
+  padding: 8px 8px 8px 32px;
+  text-decoration: none;
+  font-size: 15px;
+  color: #818181;
+  display: block;
+  transition: 0.3s;
+}
+
+.sidenav a:hover {
+  color: #000;
+  background: #fff;
+}
+
+.sidenav a.active {
+  background: #fff;
+  color: #000;
+}
+
+.sidenav .closebtn {
+  position: absolute;
+  top: 15px;
+  right: 5px;
+  font-size: 30px;
+  margin-left: 50px;
+}
+
+@media screen and (max-height: 450px) {
+  .sidenav {
+    padding-top: 15px;
+  }
+  .sidenav a {
+    font-size: 18px;
+  }
+}
+.sidenav-title{
+  font-size: 20px;
+  padding: 5px 10px;
+  background: #ccc;
+  border-bottom: 1px solid;
+  border-top: 1px solid;
+}
+.menu-block a:last-child {
+  border-bottom: none;
+}
+.menu-block a,
+.last-menu-block a:last-child {
+  border-bottom: 1px solid #ccc;
+}
+
+
+/* End of sidemenu css */
+
