@@ -10,6 +10,11 @@ var ctrlProfile = require('../controllers/profile');
 var ctrlAuth = require('../controllers/authentication');
 var otpService = require('../controllers/otpservice');
 
+// open Url
+router.get('/', (req, res) => {
+    res.send('SERVER IS WORKING');
+});
+
 // mail OTP
 router.post('/mailOtp', otpService.mailotp);
 router.post('/deleteOtp', otpService.deleteOtpOfUserEmail);
