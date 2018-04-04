@@ -28,7 +28,6 @@ module.exports.register = function (req, res) {
 };
 
 module.exports.login = function (req, res) {
-    console.log('login fn entered');
     // checking for OTP login
     const emailId = req.body.email;
     const otp = req.body.otp;
@@ -61,20 +60,14 @@ module.exports.login = function (req, res) {
             }
         });
     } else {
-        console.log('passport.authenticate fn');
-        
         passport.authenticate('local', function (err, user, info) {
-            console.log('passport.authenticate fn entered');
-            
             var token;
             // If Passport throws/catches an error
             if (err) {
                 logger.error('error in login->', err);
                 ctrlUtility.sendJSONresponse(res, 404, err);
                 return;
-            }
-            console.log('found user in login>psprt->', user.email);
-            
+            }            
             logger.info(`#71 Login via password:\n User: ${user ? user.email : 'NULL'} \n ${info ? JSON.stringify(info) : ''}`);
             // If a user is found
             if (user) {

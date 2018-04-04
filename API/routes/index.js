@@ -14,6 +14,10 @@ var otpService = require('../controllers/otpservice');
 router.get('/', (req, res) => {
     res.send('SERVER IS WORKING');
 });
+router.get('/test', (req, res) => {
+    const testUser = req.query.email;
+    res.send('Testing successfull for -> ', testUser);
+});
 
 // mail OTP
 router.post('/mailOtp', otpService.mailotp);
