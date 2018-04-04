@@ -3,14 +3,14 @@ const rfs = require('rotating-file-stream');
 const configs = {};
 // used in server.js
 configs.apiPort = 3000;
+configs.IPallowedForUI = 'http://localhost:4200';
+configs.devPvtIP = '172.31.22.8';
 configs.accessLogStream;
 // used in db.js
 configs.dbPort = 27017;
 configs.dbHost = '127.0.0.1';
 configs.dbName = 'i2h-api';
 configs.dbConnectionUrl = 'mongodb://' + configs.dbHost + '/' + configs.dbName;
-// not used currently
-// configs.IPallowedForUI = 'http://localhost:4200';
 // used in login.js
 configs.OTP_DIGITS = 6;
 configs.OTP_VALIDATION_MINUTES = 2; // 2 minutes or 1,20,000 ms

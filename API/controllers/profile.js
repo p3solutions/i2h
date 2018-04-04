@@ -19,6 +19,7 @@ module.exports.profileRead = function (req, res) {
             .exec(function (err, user) {
                 if (err) logger.error(err);
                 const userCopy = JSON.parse(JSON.stringify(user));
+                logger.debug('userCopy', userCopy);
                 delete userCopy.updated_at;
                 delete userCopy.created_at;
                 delete userCopy.otpList;
