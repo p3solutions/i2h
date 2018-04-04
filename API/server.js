@@ -66,13 +66,18 @@ app.use(cors());
 app.use(passport.initialize());
 
 // [SH] Use the API routes when path starts with /api
-app.use('/', routesApi);
+// app.use('/', routesApi);
+app.use('/', () => {
+  res.send('URL Not found OR SOMETHING WENT WRONG');  
+});
 
 // catch 404 and forward to error handler
 app.use(function (err, req, res, next) {
   console.log('URL NOT FOUND OR SOMETHING WENT WRONG', err);
   res.send('URL NOT FOUND OR SOMETHING WENT WRONG');
 });
+
+/*
 
 if (app.get('env') === 'development') {
   // development error handler will print stacktrace
@@ -105,5 +110,10 @@ if (app.get('env') === 'development') {
     console.log(`Local Env\nListening on port ${configs.apiPort}`);
   });
 }
+
+*/
+app.listen(configs.apiPort, '192.168.2.3', () => {
+  console.log(`Local Env\nListening on port ${configs.apiPort}`);
+});
 
 module.exports = app;
