@@ -1,0 +1,9 @@
+.filter-div {
+    padding: 5px 10px;
+    min-height: 450px;
+    border-bottom: 1px solid black;
+    background-color: #fff;
+}
+.dropdown-menu{
+    z-index: 100;
+}
