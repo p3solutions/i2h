@@ -66,10 +66,8 @@ app.use(cors());
 app.use(passport.initialize());
 
 // [SH] Use the API routes when path starts with /api
-// app.use('/', routesApi);
-app.use('/', () => {
-  res.send('URL Not found OR SOMETHING WENT WRONG');  
-});
+app.use('/', routesApi);
+
 
 // catch 404 and forward to error handler
 app.use(function (err, req, res, next) {
