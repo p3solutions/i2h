@@ -40,7 +40,7 @@ export class AuthenticationService {
   private apiUrl = environment.apiUrl;
   private loginUrl = '/sign-in';
   private registerUrl = '/landing/register/';
-  private orderUrl = '/landing/order';
+  private orderUrl = '/landing/history';
   private headers = new HttpHeaders({ 'Content-Type': 'application/json' });
 
   constructor(private http: HttpClient, private router: Router) { }

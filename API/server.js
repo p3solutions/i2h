@@ -37,11 +37,12 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 // Add headers
-app.use(function (req, res, next) {
-  res.header("Access-Control-Allow-Origin", "*"); // allow all origin to access
-  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-  next();
-});
+// app.use(function (req, res, next) {
+//   res.header("Access-Control-Allow-Origin", "*"); // allow all origin to access
+//   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+//   next();
+// });
+app.use(cors());
 // app.use(function (req, res, next) {
 //   // Website you wish to allow to connect
 //   res.setHeader('Access-Control-Allow-Origin', configs.IPallowedForUI);
@@ -60,7 +61,6 @@ app.use(function (req, res, next) {
 // });
 
 app.use(cookieParser());
-app.use(cors());
 
 // [SH] Initialise Passport before using the route middleware
 app.use(passport.initialize());
@@ -110,7 +110,8 @@ if (app.get('env') === 'development') {
 
 */
 // const pvtIP = '192.168.2.3';
-const pvtIP = '172.31.22.8'; // aws pvt IP
+const pvtIP = 'localhost';
+// const pvtIP = '172.31.22.8'; // aws pvt IP
 app.listen(configs.apiPort, pvtIP, () => {
   console.log(`Local Env\nListening on ${pvtIP} : ${configs.apiPort}`);
 });
