@@ -109,7 +109,8 @@ if (app.get('env') === 'development') {
 }
 
 */
-const pvtIP = '192.168.2.3';
+// const pvtIP = '192.168.2.3';
+const pvtIP = '172.31.22.8'; // aws pvt IP
 app.listen(configs.apiPort, pvtIP, () => {
   console.log(`Local Env\nListening on ${pvtIP} : ${configs.apiPort}`);
 });
