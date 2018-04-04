@@ -16,7 +16,7 @@ passport.use(new LocalStrategy({
                     message: 'User not found'
                 });
             }
-            logger.debug('NOTE: if it throws error just after this line, then it means user is new user login with password, but the user details(password & all are not in DB for->', user.email);
+            console.log('NOTE: if it throws error just after this line, then it means user is new user login with password, but the user details(password & all are not in DB for->', user.email);
             // Return if password is wrong
             if (!user.validPassword(password)) {
                 return done(null, false, {
