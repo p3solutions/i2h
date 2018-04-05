@@ -12,7 +12,7 @@
     </div>
 
     <div class="input-effect-div input-effect m-t-20 m-b-10">
-      <input type="password" class="labelled-effect" (focusout)="handleLabelName($event)" (keyup)="enableSaveButton()" [(ngModel)]='userInfo.lname'/>
+      <input type="text" class="labelled-effect" (focusout)="handleLabelName($event)" (keyup)="enableSaveButton()" [(ngModel)]='userInfo.lname'/>
       <label>Last Name</label>
       <span class="focus-bg"></span>
       <i class="fa fa-user fa-lg input-icon" aria-hidden="true"></i>
