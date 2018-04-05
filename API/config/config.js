@@ -29,7 +29,8 @@ configs.EMAIL_HOST_PASSWORD = 'Smi1p3s@';
 configs.EMAIL_USE_TLS = true;
 
 // First log printed in terminal, rest writes in terminal.log file
-console.log(`All console logs / Terminal logs & API access logs are available here:
+console.log(`Log start time: ${new Date()}
+            All console logs / Terminal logs & API access logs are available here:
             Directory: ${configs.logDirectory}\\
             Files: ${configs.terminalLogFile} & ${configs.apiAccesslogFile} `);
 
@@ -68,7 +69,7 @@ process.stdout.write = process.stderr.write = access.write.bind(access);
 
 // starting of logging in file
 console.log(`\n************************************************************\n************************************************************`);
-const currentTime = (new Date()).toLocaleString();
+const currentTime = (new Date());
 console.log(`Log begins: ${currentTime}`);
 console.log(`${dirInfo} ${configs.logDirectory}`);
 
