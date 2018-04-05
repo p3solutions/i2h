@@ -24,12 +24,9 @@ export class NavbarComponent implements OnInit {
     }
   }
   getUserInfo() {
-    console.log('fetching User');
     this.auth.profile().subscribe(user => {
-      console.log('fetched User', user);
       this.userDetails = user;
     }, (err) => {
-      console.error('usr profl -> ', err);
        this.commonUtilityService.getErrorNotification(err);
     });
   }
