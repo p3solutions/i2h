@@ -1,11 +1,10 @@
-const logger = require('../config/logger');
 
 // set array-obj val into the key
 module.exports.updateArrayOfObj = function(myArray, key, val) {
     for (var i = 0; i < myArray.length; i++) {
         if (myArray[i][key] === key) {
             myArray[i][key] = val;
-            logger.debug(`${key} updated with ${val}`);
+            console.logD(`${key} updated with ${val}`);
             break;
         }
     }
@@ -17,7 +16,7 @@ module.exports.searchInArrayOfObj = function (myArray, ObjKey, val) {
     for (var i = 0; i < myArray.length; i++) {
         if (myArray[i][ObjKey] === val) {
             flag = true;
-            logger.debug(`found key:${ObjKey} , val:${val}`);
+            console.logD(`found key:${ObjKey} , val:${val}`);
             break;
         }
     }
@@ -29,7 +28,7 @@ module.exports.getWholeObjFromArrayByVal = function (myArray, ObjKey, val) {
     for (var i = 0; i < myArray.length; i++) {
         if (myArray[i][ObjKey] === val) {
             item = myArray[i];
-            logger.debug(`found obj in getWholeObjFromArrayByVal(): ${JSON.stringify(item)}`);
+            console.logD(`found obj in getWholeObjFromArrayByVal(): ${JSON.stringify(item)}`);
             break;
         }
     }

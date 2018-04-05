@@ -10,13 +10,12 @@ passport.use(new LocalStrategy({
     function (username, password, done) {
         User.findOne({ email: username }, function (err, user) {
             if (err) { return done(err); }
-            // Return if user not found in database
-            if (!user) {
+            // Return if user not found in database or new user with no password found
+            if (!user || !user.hash) {
                 return done(null, false, {
                     message: 'User not found'
                 });
             }
-            console.log('NOTE: if it throws error just after this line, then it means user is new user login with password, but the user details(password & all are not in DB for->', user.email);
             // Return if password is wrong
             if (!user.validPassword(password)) {
                 return done(null, false, {

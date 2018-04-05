@@ -1,9 +1,5 @@
-// To clear the previous content of the terminal 
-// console.reset = function () {
-//   return process.stdout.write('\033c');
-// }
-// console.reset();
-
+// importing logger that overrides console.log to format logging time
+require('./config/logger');
 const express = require('express'),
       path = require('path'),
       morgan = require('morgan'),
@@ -36,13 +32,40 @@ app.set('view engine', 'jade');
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
+app.use(cors());
+
+app.use(cookieParser());
+
+// [SH] Initialise Passport before using the route middleware
+app.use(passport.initialize());
+
+// [SH] Use the API routes when path starts with /api
+app.use('/', routesApi);
+
+// catch 404 and forward to error handler
+app.use(function (err, req, res, next) {
+  console.logE('URL NOT FOUND OR SOMETHING WENT WRONG', err);
+  res.send('URL NOT FOUND OR SOMETHING WENT WRONG');
+});
+
+// const pvtIP = '192.168.2.3';
+// const pvtIP = 'localhost';
+const pvtIP = '172.31.22.8'; // aws pvt IP
+app.listen(configs.apiPort, pvtIP, () => {
+  console.logI(`Listening on ${pvtIP} : ${configs.apiPort}`);
+});
+
+module.exports = app;
+/*
+ * can be used later
+ * 
+ **/
 // Add headers
 // app.use(function (req, res, next) {
 //   res.header("Access-Control-Allow-Origin", "*"); // allow all origin to access
 //   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
 //   next();
 // });
-app.use(cors());
 // app.use(function (req, res, next) {
 //   // Website you wish to allow to connect
 //   res.setHeader('Access-Control-Allow-Origin', configs.IPallowedForUI);
@@ -60,22 +83,7 @@ app.use(cors());
 //   next();
 // });
 
-app.use(cookieParser());
-
-// [SH] Initialise Passport before using the route middleware
-app.use(passport.initialize());
-
-// [SH] Use the API routes when path starts with /api
-app.use('/', routesApi);
-
-// catch 404 and forward to error handler
-app.use(function (err, req, res, next) {
-  console.log('URL NOT FOUND OR SOMETHING WENT WRONG', err);
-  res.send('URL NOT FOUND OR SOMETHING WENT WRONG');
-});
-
 /*
-
 if (app.get('env') === 'development') {
   // development error handler will print stacktrace
   app.use(function (err, req, res, next) {
@@ -108,12 +116,10 @@ if (app.get('env') === 'development') {
   });
 }
 
-*/
-// const pvtIP = '192.168.2.3';
-// const pvtIP = 'localhost';
-const pvtIP = '172.31.22.8'; // aws pvt IP
-app.listen(configs.apiPort, pvtIP, () => {
-  console.log(`Local Env\nListening on ${pvtIP} : ${configs.apiPort}`);
-});
+// To clear the previous content of the terminal
+// console.reset = function () {
+//   return process.stdout.write('\033c');
+// }
+// console.reset();
 
-module.exports = app;
+*/

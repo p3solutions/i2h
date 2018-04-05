@@ -68,15 +68,14 @@ const access = configs.terminalLogStream;
 process.stdout.write = process.stderr.write = access.write.bind(access);
 
 // starting of logging in file
-console.log(`\n************************************************************\n************************************************************`);
-const currentTime = (new Date());
-console.log(`Log begins: ${currentTime}`);
-console.log(`${dirInfo} ${configs.logDirectory}`);
+console.log(`\n************************************************************`);
+console.logI(`Log begins`);
+console.logI(`${dirInfo} ${configs.logDirectory}`);
 
 process.on('uncaughtException', function (err) {
     const error = (err && err.stack) ? err.stack : err;
     // console.error();
-    console.log(`${currentTime} ${error}`);
+    console.logE(new Date(), error);
 });
 
 module.exports = configs;

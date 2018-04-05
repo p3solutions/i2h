@@ -1,11 +1,8 @@
 const me = this;
 var mongoose = require('mongoose');
 var User = mongoose.model('User');
-var ApiMessages = require('../config/api-messages');
-var ApiResponse = require('../config/api-response');
-var mailerService = require('../config/mailer-service');
+var mailerService = require('../config/mailerservice');
 // var uuid = require('node-uuid');
-const logger = require('../config/logger');
 const ctrlUtility = require('./utility');
 
 module.exports.profileRead = function (req, res) {
@@ -17,9 +14,9 @@ module.exports.profileRead = function (req, res) {
         User
             .findById(req.payload._id)
             .exec(function (err, user) {
-                if (err) logger.error(err);
+                if (err) console.logE(err);
                 const userCopy = JSON.parse(JSON.stringify(user));
-                logger.debug('userCopy', userCopy);
+                console.logD(`user found for ${userCopy.email} with fname ${userCopy.fname}`);
                 delete userCopy.updated_at;
                 delete userCopy.created_at;
                 delete userCopy.otpList;
@@ -43,7 +40,7 @@ const createNewUserwithOnlyEmail = function (emailId) {
         user.created_at = currentDate;
     user.save(function (err, usr) {
         if (err) throw err;
-        logger.info(`#39 User created with email: ${emailId}`); // saving user takes time
+        console.logI(`#39 User created with email: ${emailId}`); // saving user takes time
     });
     return user;
 };
@@ -51,7 +48,7 @@ const createNewUserwithOnlyEmail = function (emailId) {
 const handleUserByEmail = function (emailId, createIfNotFound, callbackUserFound, callbackUserCreated, finalCallback) {
     User.findOne({ email: emailId }, function (err, user) {
         if (err) { throw err; }
-        // logger.debug(`#47 User found in handleUserByEmail: ${user.email}`);
+        // console.logD(`#47 User found in handleUserByEmail: ${user.email}`);
         if (user) {
             callbackUserFound ? callbackUserFound(user) : true;
         }
@@ -89,7 +86,7 @@ module.exports.createNewUserByEmail = function (req, res) {
         };
         handleUserByEmail(emailId, true, callbackUserFound, callbackUserCreated, null);
     } catch (error) {
-        logger.error(error);
+        console.logE(error);
         ctrlUtility.sendJSONresponse(res, 500, {
             'status': 'Error',
             'message': 'Error in creating new user'
@@ -112,16 +109,16 @@ module.exports.deleteUserByEmail = function (req, res) {
                 return;
             });
         };
-        const callbackUserCreated = function (foundUser) {
-            ctrlUtility.sendJSONresponse(res, 200, {
+        const callbackUserNotFound = function (foundUser) {
+            ctrlUtility.sendJSONresponse(res, 404, {
                 'status': 'Error',
                 'message': 'User not found for ' + emailId
             });
             return;
         };
-        handleUserByEmail(emailId, true, callbackUserFound, callbackUserCreated, null);
+        handleUserByEmail(emailId, false, callbackUserFound, callbackUserNotFound, null);
     } catch (error) {
-        logger.error(error);
+        console.logE(error);
         ctrlUtility.sendJSONresponse(res, 500, {
             'status': 'Error',
             'message': 'Error in deleting user ' + emailId
@@ -146,11 +143,11 @@ module.exports.findAllUsers = function (req, res) {
             }
             foundUser.total = users.length;
             // object of all the users
-            logger.debug('found', foundUser.total);
+            console.logD('findAllUsers() found users -> ', foundUser.total);
             res.send(foundUser);
         });
     } catch (error) {
-        logger.error(error);
+        console.logE(error);
         ctrlUtility.sendJSONresponse(res, 500, {
             'status': 'Error',
             'message': 'Error in deleting user ' + emailId
@@ -164,18 +161,18 @@ module.exports.findAllUsers = function (req, res) {
 
 //     handleUserByEmail(emailId)
 //     .then(function (foundUser) {
-//         logger.debug('user found in updateUserObjByEmail', foundUser);
+//         console.logD('user found in updateUserObjByEmail', foundUser);
 //         delete userObj._id;
 //         delete userObj.hash;
 //         delete userObj.salt;
 //         Object.assign(foundUser, userObj);
 //         foundUser.save(function (err) {
 //             if (err) throw err;
-//             logger.debug(`${key} of User ${emailId} successfully updated with ${val.toString()}`);
+//             console.logD(`${key} of User ${emailId} successfully updated with ${val.toString()}`);
 //         });
 //     })
 //     .error(function (error) {
-//         logger.debug(error);
+//         console.logE(error);
 //     });
 // };
 

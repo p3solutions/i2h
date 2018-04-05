@@ -3,7 +3,6 @@
  * 
  */
 const nodemailer = require('nodemailer');
-const logger = require('../config/logger');
 const configs = require('../config/config');
 
 const mailerOptions = {

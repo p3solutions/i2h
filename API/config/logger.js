@@ -1,40 +1,69 @@
 /*
-Reference: https://www.npmjs.com/package/simple-node-logger
- __ _                 _            __          _          __
-/ _(_)_ __ ___  _ __ | | ___    /\ \ \___   __| | ___    / /  ___   __ _  __ _  ___ _ __
-\ \| | '_ ` _ \| '_ \| |/ _ \  /  \/ / _ \ / _` |/ _ \  / /  / _ \ / _` |/ _` |/ _ \ '__|
-_\ \ | | | | | | |_) | |  __/ / /\  / (_) | (_| |  __/ / /__| (_) | (_| | (_| |  __/ |
-\__/_|_| |_| |_| .__/|_|\___| \_\ \/ \___/ \__,_|\___| \____/\___/ \__, |\__, |\___|_|
-               |_|                                                 |___/ |___/
-*/
+Author: Shammi Hans
+Dependency: JavaScript (ES6) 
+Description: Overriding console.log to log current time along with passed logs
+   __
+  / /  ___   __ _  __ _  ___ _ __
+ / /  / _ \ / _` |/ _` |/ _ \ '__|
+/ /__| (_) | (_| | (_| |  __/ |
+\____/\___/ \__, |\__, |\___|_|
+             __| | __| |                                  
+            |___/ |___/
 
-const configs = require('./config'),
-SimpleNodeLogger = require('simple-node-logger'),
-// opts = {
-//     errorEventName: 'error',
-//     logDirectory: `${configs.logDirectory}`, // NOTE: folder must exist and be writable...
-//     fileNamePattern: 'dev.<DATE>.log',
-//     dateFormat: 'YYYY.MM.DD'
-// },
-opts = {
-    errorEventName: 'error',
-    logDirectory: `${configs.logDirectory}`,
-    fileNamePattern: `${configs.terminalLogFile}`
-},
-
-log = SimpleNodeLogger.createRollingFileLogger(opts);
-// levels: trace, debug, info, warn, error and fatal levels (plus all and off)
-log.setLevel('debug'); // by-default 'info' is set
-// console.log(log); // to see existing methods available in this logger
-
-
-module.exports = log;
-
-
-/* HOW TO LOG FROM ANY FILE:
-
-const logger = require('./config/logger');
-logger.debug('Debug statement');
-logger.info('Info statement');
+================================ HOW TO USE ================================
+console.log('Original logging');     // [2018-4-5 16:43:23] Original logging
+console.logI('info format');         // [2018-4-5 16:43:23] INFO info format
+console.logD('debug fromat');        // [2018-4-5 16:43:23] DEBUG debug fromat
+console.logE('Error format');        // [2018-4-5 16:43:23] ERROR Error format
 
 */
+
+var origlog = console.log;
+
+console.log = function (obj, ...placeholders) {
+    var dateString = new Date().toLocaleString();
+    if (typeof obj === 'string')
+        placeholders.unshift(`[${dateString}] ${obj}`);
+    else {
+        // This handles console.log( object )
+        placeholders.unshift(obj);
+        placeholders.unshift(`[${dateString}] %j`);
+    }
+    origlog.apply(this, placeholders);
+};
+
+console.logD = function (obj, ...placeholders) {
+    var dateString = new Date().toLocaleString();
+    if (typeof obj === 'string')
+        placeholders.unshift(`[${dateString}] DEBUG ${obj}`);
+    else {
+        // This handles console.log( object )
+        placeholders.unshift(obj);
+        placeholders.unshift(`[${dateString}] DEBUG %j`);
+    }
+    origlog.apply(this, placeholders);
+};
+
+console.logI = function (obj, ...placeholders) {
+    var dateString = new Date().toLocaleString();
+    if (typeof obj === 'string')
+        placeholders.unshift(`[${dateString}] INFO ${obj}`);
+    else {
+        // This handles console.log( object )
+        placeholders.unshift(obj);
+        placeholders.unshift(`[${dateString}] INFO %j`);
+    }
+    origlog.apply(this, placeholders);
+};
+
+console.logE = function (obj, ...placeholders) {
+    var dateString = new Date().toLocaleString();
+    if (typeof obj === 'string')
+        placeholders.unshift(`[${dateString}] ERROR ${obj}`);
+    else {
+        // This handles console.log( object )
+        placeholders.unshift(obj);
+        placeholders.unshift(`[${dateString}] ERROR %j`);
+    }
+    origlog.apply(this, placeholders);
+};
