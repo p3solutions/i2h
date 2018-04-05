@@ -1,11 +1,26 @@
 import { Injectable } from '@angular/core';
 import { NotificationObject } from './i2h-objects';
 import { environment } from '../environments/environment';
+import { Observable } from 'rxjs/Observable';
+import { Subject } from 'rxjs/Subject';
 
 @Injectable()
 export class CommonUtilityService {
+  private subject = new Subject<any>();
 
   constructor() { }
+
+  sendData(message: string) {
+    this.subject.next(message);
+  }
+
+  clearData() {
+    this.subject.next();
+  }
+
+  getData(): Observable<any> {
+    return this.subject.asObservable();
+  }
 
   handleInputLabelName(e) {
     const inputValue = e.target.value;
