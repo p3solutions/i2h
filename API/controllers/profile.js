@@ -130,6 +130,35 @@ module.exports.deleteUserByEmail = function (req, res) {
     }
 };
 
+module.exports.findAllUsers = function (req, res) {
+    const onlyEmail = req.query.onlyEmail;
+    let foundUser = {total:0, users: []};
+    try {
+        // get all the users
+        User.find({}, function (err, users) {
+            if (err) throw err;
+            if (onlyEmail) {
+                users.forEach(usr => {
+                    foundUser.users.push(usr.email);
+                });
+            } else {
+                foundUser.users = users;
+            }
+            foundUser.total = users.length;
+            // object of all the users
+            logger.debug('found', foundUser.total);
+            res.send(foundUser);
+        });
+    } catch (error) {
+        logger.error(error);
+        ctrlUtility.sendJSONresponse(res, 500, {
+            'status': 'Error',
+            'message': 'Error in deleting user ' + emailId
+        });
+        return;
+    }
+};
+
 // override with userObj except _id, hash, salt
 // module.exports.updateUserObjByEmail = function (emailId, userObj) {
 

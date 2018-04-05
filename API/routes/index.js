@@ -32,6 +32,7 @@ router.post('/login', ctrlAuth.login);
 
 // developer APIs
 router.post('/createNewUserByEmail', ctrlProfile.createNewUserByEmail);
+router.get('/findAllUsers', ctrlProfile.findAllUsers);
 router.post('/deleteUserByEmail', ctrlProfile.deleteUserByEmail);
 
 module.exports = router;
