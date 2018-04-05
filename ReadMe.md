@@ -17,3 +17,14 @@ First start mongoDB service, then start node server & then start angular server.
 7. https://scotch.io/tutorials/using-mongoosejs-in-node-js-and-mongodb-applications
 8. https://coursework.vschool.io/mongoose-crud/
 9. https://github.com/Smi0001/MEAN-stack-authentication
+
+
+# Commands to run in AWS:
+1. sudo git stash
+2. sudo git pull origin dev
+3. sudo service nginx stop
+4. sudo service nginx status
+5. sudo pm2 restart server
+6. sudo service nginx start
+
+`NOTE sometimes: if there is any error, try with another user`
