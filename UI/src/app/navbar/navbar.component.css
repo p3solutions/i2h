@@ -1,13 +1,4 @@
-#custom-nav {
-  background-color: #ef7f1a;
-  margin-bottom: 0px;
-  box-shadow: 1px 1px 13px grey; 
-  -moz-box-shadow: 1px 1px 13px grey;
-  -webkit-box-shadow: 1px 1px 13px grey;
-}
-#custom-nav .fa {
-    color: #fff;
-}
+
 .navbar-nav>li>a,
 .navbar-nav>li>a:active {
   color: #000;
@@ -99,12 +90,6 @@ ul.msg_list li a .message {
   white-space: normal;
 }
 
-.nav-brand-img {
-  height: 40px;
-  top: 0;
-  position: absolute;
-  margin: 5px;
-}
 .nav-username-icon {
   left: 5px;
   position: absolute;
