@@ -7,3 +7,7 @@
 .dropdown-menu{
     z-index: 100;
 }
+.input-effect-div .btn.dropdown-toggle {
+  border: 1px solid #ccc;    
+  background: #ededed;
+}
