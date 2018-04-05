@@ -25,7 +25,7 @@ body {
   color: #fff;
 }
 .nav-brand-img {
-  height: 40px;
+  height: 50px;
   top: 0;
   position: absolute;
   margin: 5px;
@@ -272,8 +272,9 @@ input[type="number"] {
 
 /* sidemenu css */
 .avatar {
-  width: 200px;
+  height: 180px;
   padding: 15px;
+  width: 200px;
 }
 .fa-10x {
   font-size: 10em;
@@ -282,15 +283,15 @@ input[type="number"] {
   height: 100%;
   width: 200px;
   position: fixed;
-  top: 40px;
+  /* top: 40px; */
   overflow-x: hidden;
   -webkit-transition: 0.5s;
   transition: 0.5s;
-  padding-top: 5px;
+  /* padding-top: 5px; */
   margin: 0;
-  box-shadow: 1px 13px 1px grey;
-  -moz-box-shadow: 1px 13px 1px grey;
-  -webkit-box-shadow: 1px 13px 1px grey;
+  box-shadow: 1px 1px 13px 1px grey;
+  -moz-box-shadow: 1px 1px 13px 1px grey;
+  -webkit-box-shadow: 1px 1px 13px 1px grey;
 
 }
 

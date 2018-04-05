@@ -1,8 +1,10 @@
 .filter-div {
-    padding: 5px 10px;
-    min-height: 450px;
     border-bottom: 1px solid black;
     background-color: #fff;
+    height: 68%;
+    padding: 5px 10px;
+    position: absolute;
+    width: 100%;
 }
 .dropdown-menu{
     z-index: 100;
@@ -10,4 +12,7 @@
 .input-effect-div .btn.dropdown-toggle {
   border: 1px solid #ccc;    
   background: #ededed;
+}
+button {
+  border: 1px solid #ccc;    
 }

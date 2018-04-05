@@ -8,9 +8,9 @@
     <div>
       <ul class="nav navbar-nav navbar-right">
         <li *ngIf="userDetails?.fname" class="dropdown user-menu active">
-          <a href="#" class="dropdown-toggle trim-text" data-toggle="dropdown" role="button"
+          <a href="#" class="dropdown-toggle trim-text sidenav-title" data-toggle="dropdown" role="button"
              aria-haspopup="true" aria-expanded="false" title="{{userDetails?.fname}}">
-             <i class="fa fa-user-circle-o fa-1x col-000 nav-username-icon"></i>&nbsp;{{userDetails?.fname}}
+             <i class="fa fa-user-circle-o fa-lg col-000 nav-username-icon"></i>&nbsp;{{userDetails?.fname}}
             <span class="caret"></span>
           </a>
           <ul class="dropdown-menu">
@@ -25,7 +25,7 @@
         </li>
         <li *ngIf="userDetails" role="presentation">
           <a class="cur-p" (click)="logOut()">
-            <i class="fa fa-sign-out fa-lg" aria-hidden="true" data-toggle="tooltip" data-placement="bottom" title="Log out"></i>
+            <i class="fa fa-sign-out fa-2x" aria-hidden="true" data-toggle="tooltip" data-placement="bottom" title="Log out"></i>
           </a>
         </li>
       </ul>
