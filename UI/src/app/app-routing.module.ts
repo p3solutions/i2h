@@ -24,6 +24,8 @@ const routes: Routes = [
         component: LandingComponent,
         children: [
             {
+                path: '', redirectTo: 'history', pathMatch: 'full'
+            }, {
                 path: 'register/:email',
                 canActivate: [AuthGuardService],
                 component: AccountComponent
@@ -32,6 +34,9 @@ const routes: Routes = [
                 canActivate: [AuthGuardService],
                 component: SettingsComponent,
                 children: [
+                    {
+                        path: '', redirectTo: 'profile', pathMatch: 'full'
+                    },
                     {
                         path: 'profile',
                         canActivate: [AuthGuardService],
