@@ -98,6 +98,9 @@ progress {
 .m-10 {
   margin: 10px;
 }
+.m-20 {
+  margin: 20px;
+}
 .m-t-10 {
   margin-top: 10px;
 }
@@ -131,6 +134,19 @@ progress {
 .bg-i2h {
   background-color: #ef7f1a;
 }
+.progressDiv {
+  margin: 25% 20%;
+}
+.bg-i2h.active {
+  animation: progress-bar-stripes 1s linear infinite;
+  -webkit-animation: progress-bar-stripes 1s linear infinite;
+  -moz-animation: progress-bar-stripes 1s linear infinite;
+}
+.progressDiv .progress {
+  box-shadow: inset 0 0px 5px 2px rgba(0, 0, 0, .1);
+  -moz-box-shadow: inset 0 0px 5px 2px rgba(0, 0, 0, .1);
+  -webkit-box-shadow: inset 0 0px 5px 2px rgba(0, 0, 0, .1);
+}
 .btn-i2h {
   background-color: #6a6a6ac4;
   color: #fff;
@@ -163,7 +179,9 @@ progress {
 
 /*= input focus effects css
 =========================== */
-
+.cur-disabled {
+  cursor: not-allowed !important;
+}
 :focus {
   outline: none;
 }
