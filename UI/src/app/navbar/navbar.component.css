@@ -93,6 +93,9 @@ ul.msg_list li a .message {
   white-space: normal;
 }
 
+.nav-username{
+  font-size: 20px;
+}
 .nav-username-icon {
   left: 5px;
   position: absolute;
