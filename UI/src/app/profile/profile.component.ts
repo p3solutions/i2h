@@ -11,7 +11,6 @@ import { environment } from '../../environments/environment';
 export class ProfileComponent implements OnInit, OnDestroy {
   componentIcon = 'fa-user-circle';
   userInfo: UserDetails;
-  loaderImage = environment.loaderImage;
 
   constructor(
     private auth: AuthenticationService,
