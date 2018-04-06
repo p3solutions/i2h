@@ -3,6 +3,7 @@ import { NotificationObject } from './i2h-objects';
 import { environment } from '../environments/environment';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
+import * as $ from 'jquery';
 
 @Injectable()
 export class CommonUtilityService {
@@ -41,6 +42,7 @@ export class CommonUtilityService {
     const notNum = e.shiftKey || (!(e.keyCode === 8) && // backspace
       (e.keyCode < 35 || e.keyCode > 40) &&
       !(e.keyCode === 46) && // delete
+      !(e.keyCode === 13) && // enter
       !(e.keyCode === 9) && // tab
       (e.keyCode < 48 || e.keyCode > 57));
     if (notNum && !ctrlA && !ctrlC && !ctrlX && !ctrlV ) { // allowing Ctrl combo keys & disallowing non-numbers
@@ -89,5 +91,13 @@ export class CommonUtilityService {
     const msg = err && err.error && err.error.message ? err.error.message : err.statusText;
     const notification = this.setNotificationObject('error', msg);
     return notification;
+  }
+
+  handlePageLinkCLicks() {
+    const pageLinks = $('.jq-page-link');
+    pageLinks.on('click', function () {
+      pageLinks.removeClass('active');
+      $(this).addClass('active');
+    });
   }
 }
