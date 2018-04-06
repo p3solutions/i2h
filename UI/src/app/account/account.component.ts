@@ -43,7 +43,6 @@ export class AccountComponent implements OnInit {
 
   ngOnInit() {
   }
-
   handleLabelName(e) {
     this.commonUtilityService.handleInputLabelName(e);
   }
@@ -71,7 +70,7 @@ export class AccountComponent implements OnInit {
       this.inProgress = false;
       if (res && res.hasUserInfo) { // existing user with details
         this.notification = this.commonUtilityService.setNotificationObject('success', res.message);
-        this.router.navigateByUrl(this.auth.getOrderUrl());
+        this.router.navigateByUrl(this.auth.getLandingUrl());
       }
     }, (err) => {
       console.error(err);
