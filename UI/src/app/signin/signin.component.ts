@@ -55,7 +55,7 @@ export class SigninComponent implements OnInit {
       this.auth.login(credentials).subscribe((res) => {
         this.inProgress = false;
         if (res && res.hasUserInfo) { // existing user with details
-          this.router.navigateByUrl(this.auth.getOrderUrl());
+          this.router.navigateByUrl(this.auth.getLandingUrl());
         } else {
           this.router.navigateByUrl(this.auth.getRegisterUrl(formValue.email));
         }
@@ -111,26 +111,27 @@ export class SigninComponent implements OnInit {
   pasteOnlyNumbers(e) {
     this.commonUtilityService.pasteOnlyNumbers(e);
   }
-  enableOTPButton(e) {
+  enableOTPButton() {
     if (this.signInForm.controls.email.status === 'VALID') {
       this.emailHasContent = true;
-      if (e && (e.keyCode === 13 || e.which === 13)) {
-        this.mailOTP();
-      }
+      // send OTP should not be automatic triggered hence commenting
+      // if (e && (e.keyCode === 13 || e.which === 13)) {
+      //   this.mailOTP();
+      // }
     } else {
       this.emailHasContent = false;
     }
-    this.enableSignInButton(null);
+    this.enableSignInButton();
   }
-  enableSignInButton(e) {
+  enableSignInButton() {
     const formValue = this.signInForm.value;
     if (this.signInForm.controls.email.status === 'VALID' &&
       (formValue.otp.trim().length === environment.otpDigit ||
       (formValue.password.length >= environment.passwordMinLength && formValue.password.length <= environment.passwordMaxLength))) {
       this.enableSignInBtn = true;
-      if (e && (e.keyCode === 13 || e.which === 13)) {
-        this.onSignIn();
-      }
+      // if (e && (e.keyCode === 13 || e.which === 13)) {
+      //   // this.onSignIn();
+      // }
     } else {
       this.enableSignInBtn = false;
     }

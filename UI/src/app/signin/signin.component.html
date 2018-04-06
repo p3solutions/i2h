@@ -18,13 +18,13 @@
       <div class="input-effect-div input-effect m-t-10 m-b-10">
         <input type="email" class="labelled-effect" (focusout)="handleLabelName($event)" required="true" formControlName="email"
          (keyup)="enableOTPButton($event)"/>
-        <label>Email Id</label>
+        <label>Employer ID / Email Id</label>
         <span class="focus-bg"></span>
         <i class="fa fa-envelope fa-lg input-icon" aria-hidden="true"></i>
       </div>
 
       <div class="input-effect-div input-effect m-t-20 m-b-10">
-        <input type="password" class="labelled-effect" (focusout)="handleLabelName($event)" formControlName="password" (keyup)="enableSignInButton($event)" />
+        <input type="password" class="labelled-effect" (focusout)="handleLabelName($event)" formControlName="password" (keyup)="enableSignInButton()" />
         <label>Password</label>
         <span class="focus-bg"></span>
         <i class="fa fa-key fa-lg input-icon" aria-hidden="true"></i>
@@ -36,7 +36,7 @@
       
       <div class="input-effect-div input-effect m-b-10" style="width: 60%;">
         <input type="text" class="labelled-effect" (focusout)="handleLabelName($event)" formControlName="otp" 
-          (keydown)="allowOnlyNumbers($event)" (paste)="pasteOnlyNumbers($event)" (keyup)="enableSignInButton($event)"/>
+          (keydown)="allowOnlyNumbers($event)" (paste)="pasteOnlyNumbers($event)" (keyup)="enableSignInButton()" />
         <label>OTP</label>
         <span class="focus-bg"></span>
         <i class="fa fa-hashtag fa-lg input-icon" aria-hidden="true"></i>
