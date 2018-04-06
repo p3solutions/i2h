@@ -26,10 +26,29 @@ module.exports.register = function (req, res) {
 };
 
 module.exports.login = function (req, res) {
-    // checking for OTP login
     const emailId = req.body.email;
+    const password = req.body.password;
     const otp = req.body.otp;
-    if (otp) {
+    if (password) { // checking for password login
+        passport.authenticate('local', function (err, user, info) {
+            var token;
+            // If Passport throws/catches an error
+            if (err) {
+                console.logE('error in login->', err);
+                ctrlUtility.sendJSONresponse(res, 404, err);
+                return;
+            }
+            console.logI(`#71 Login via password -> ${info ? JSON.stringify(info) : ''}`);
+            // If a user is found
+            if (user) {
+                token = user.generateJwt();
+                ctrlUtility.sendJSONresponse(res, 200, { 'token': token, 'hasUserInfo': (!!user.fname), 'message': 'Login Successful' });
+            } else {
+                // If user is not found
+                ctrlUtility.sendJSONresponse(res, 401, info);
+            }
+        })(req, res);
+    } else if (otp) { // checking for OTP login
         let validation = false;
         User.findOne({ email: emailId }, function (err, foundUser) {
             if (err) { throw err; }
@@ -57,24 +76,5 @@ module.exports.login = function (req, res) {
                 return;
             }
         });
-    } else {
-        passport.authenticate('local', function (err, user, info) {
-            var token;
-            // If Passport throws/catches an error
-            if (err) {
-                console.logE('error in login->', err);
-                ctrlUtility.sendJSONresponse(res, 404, err);
-                return;
-            }            
-            console.logI(`#71 Login via password:\n User: ${user ? user.email : 'NULL'} \n ${info ? JSON.stringify(info) : ''}`);
-            // If a user is found
-            if (user) {
-                token = user.generateJwt();
-                ctrlUtility.sendJSONresponse(res, 200, { 'token': token, 'hasUserInfo': (!!user.fname), 'message': 'Login Successful' });
-            } else {
-                // If user is not found
-                ctrlUtility.sendJSONresponse(res, 401, info);
-            }
-        })(req, res);
     }
 };
