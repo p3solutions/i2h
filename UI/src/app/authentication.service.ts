@@ -40,7 +40,7 @@ export class AuthenticationService {
   private apiUrl = environment.apiUrl;
   private loginUrl = '/sign-in';
   private registerUrl = '/landing/register/';
-  private orderUrl = '/landing/history';
+  private landingUrl = '/landing/history';
   private headers = new HttpHeaders({ 'Content-Type': 'application/json' });
 
   constructor(private http: HttpClient, private router: Router) { }
@@ -51,9 +51,7 @@ export class AuthenticationService {
   }
 
   private getToken(): string {
-    if (!this.token) {
-      this.token = localStorage.getItem('i2h-token');
-    }
+    this.token = localStorage.getItem('i2h-token');
     return this.token;
   }
 
@@ -63,8 +61,8 @@ export class AuthenticationService {
   getLoginUrl(): string {
     return this.loginUrl;
   }
-  getOrderUrl(): string {
-    return this.orderUrl;
+  getLandingUrl(): string {
+    return this.landingUrl;
   }
 
   public getUserDetails(): UserDetails {
