@@ -8,6 +8,7 @@ import * as $ from 'jquery';
 @Injectable()
 export class CommonUtilityService {
   private subject = new Subject<any>();
+  private today = (new Date()).toISOString().split('T')[0];
 
   constructor() { }
 
@@ -99,5 +100,25 @@ export class CommonUtilityService {
       pageLinks.removeClass('active');
       $(this).addClass('active');
     });
+  }
+  validateDOB(dob) {
+    let msg;
+    if (dob !== '') {
+      const dobArray = dob.split('-');
+      const dobyyyy = dobArray[0];
+      const dobmm = dobArray[1];
+      const dobdd = dobArray[2];
+      const yyyy = this.today.split('-')[0];
+      const mm = this.today.split('-')[1];
+      const dd = this.today.split('-')[2];
+      if (!(dobyyyy >= '1900' && dobyyyy <= yyyy)) {
+        msg = 'Year range not allowed';
+      } else if (dobyyyy === yyyy && dobmm > mm) {
+        msg = 'Month range not allowed';
+      } else if (dobyyyy === yyyy && dobmm === mm && dobdd > dd) {
+        msg = 'Day range not allowed';
+      }
+    }
+    return msg;
   }
 }

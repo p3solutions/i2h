@@ -28,7 +28,6 @@ export class AccountComponent implements OnInit {
   enableSaveBtn: boolean;
   password2 = '';
   notification: NotificationObject;
-  today = (new Date()).toISOString().split('T')[0];
   invalidDOB = true;
   invalidPassword = true;
 
@@ -87,29 +86,12 @@ export class AccountComponent implements OnInit {
       !this.invalidPassword;
   }
   validateDOB() {
-    const dob = this.userInfo.dob;
-    if (dob !== '') {
-      const dobArray = dob.split('-');
-      const dobyyyy = dobArray[0];
-      const dobmm = dobArray[1];
-      const dobdd = dobArray[2];
-      const yyyy = this.today.split('-')[0];
-      const mm = this.today.split('-')[1];
-      const dd = this.today.split('-')[2];
-      let msg;
-      if (!(dobyyyy >= '1900' && dobyyyy <= yyyy)) {
-        msg = 'Year range not allowed';
-      } else if (dobyyyy === yyyy && dobmm > mm) {
-        msg = 'Month range not allowed';
-      } else if (dobyyyy === yyyy && dobmm === mm && dobdd > dd) {
-        msg = 'Day range not allowed';
-      } else {
-        this.invalidDOB = false;
-      }
-      if (msg) {
-        this.invalidDOB = true;
-        this.notification = this.commonUtilityService.setNotificationObject('error', msg);
-      }
+    const msg = this.commonUtilityService.validateDOB(this.userInfo.dob);
+    if (msg) {
+      this.invalidDOB = true;
+      this.notification = this.commonUtilityService.setNotificationObject('error', msg);
+    } else {
+      this.invalidDOB = false;
       this.enableSaveButton();
     }
   }
