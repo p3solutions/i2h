@@ -94,16 +94,25 @@ export class AuthenticationService {
     }
   }
 
-  private request(method: 'post' | 'get', type: 'login' | 'register' | 'profile', user?: TokenPayload): Observable<any> {
+  private request(
+    method: 'post' | 'get',
+    type: 'login' | 'register' | 'profile' | 'updateUser',
+    useAuth,
+    user?: TokenPayload): Observable<any> {
     let base;
 
     if (method === 'post') {
-      base = this.http.post(`${this.apiUrl}/${type}`, user, { headers: this.headers });
-    } else {
-      if (type === 'profile') {
-        base = this.http.get(`${this.apiUrl}/${type}`, { headers: { Authorization: `Bearer ${this.getToken()}` } });
+      if (useAuth) {
+        base = this.http.post(`${this.apiUrl}/${type}`, user, { headers: { Authorization: `Bearer ${this.getToken()}` } });
+      } else {
+        base = this.http.post(`${this.apiUrl}/${type}`, user, { headers: this.headers });
       }
-      // base = this.http.get(`${this.apiUrl}/${type}`, { headers: { Authorization: `Bearer ${this.getToken()}` } });
+    } else {
+      if (useAuth) {
+        base = this.http.get(`${this.apiUrl}/${type}`, { headers: { Authorization: `Bearer ${this.getToken()}` } });
+      } else {
+        base = this.http.get(`${this.apiUrl}/${type}`, { headers: this.headers });
+      }
     }
 
     const request = base.pipe(
@@ -119,15 +128,19 @@ export class AuthenticationService {
   }
 
   public register(user: TokenPayload): Observable<any> {
-    return this.request('post', 'register', user);
+    return this.request('post', 'register', false, user);
   }
 
   public login(user: TokenPayload): Observable<any> {
-    return this.request('post', 'login', user);
+    return this.request('post', 'login', false, user);
   }
 
   public profile(): Observable<any> {
-    return this.request('get', 'profile');
+    return this.request('get', 'profile', true);
+  }
+
+  public updateUser(user: TokenPayload): Observable<any> {
+    return this.request('post', 'updateUser', true, user);
   }
 
   public logout(): void {
