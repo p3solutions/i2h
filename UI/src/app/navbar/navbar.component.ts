@@ -30,7 +30,9 @@ export class NavbarComponent implements OnInit {
        this.commonUtilityService.getErrorNotification(err);
     });
   }
-
+  reloadNavbar() {
+    this.getUserInfo();
+  }
   logOut() {
     this.auth.logout();
   }
