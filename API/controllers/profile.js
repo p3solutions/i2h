@@ -8,7 +8,7 @@ const ctrlUtility = require('./utility');
 module.exports.profileRead = function (req, res) {
     if (!req.payload._id) {
         res.status(401).json({
-            "message": "UnauthorizedError: private profile"
+            'message': 'UnauthorizedError: private profile'
         });
     } else {
         User
@@ -156,25 +156,60 @@ module.exports.findAllUsers = function (req, res) {
     }
 };
 
+const handleUserById = function (id, callbackUserFound, callbackUserCreated, finalCallback) {
+    User.findOne({ _id: id }, function (err, user) {
+        if (err) { throw err; }
+        if (user) {
+            callbackUserFound ? callbackUserFound(user) : true;
+        }
+        // if user not found in database then creates new user & returns it
+        else {
+            callbackUserCreated ? callbackUserCreated(user) : true;
+        }
+        if (finalCallback) {
+            finalCallback(user);
+        }
+    });
+};
 // override with userObj except _id, hash, salt
-// module.exports.updateUserObjByEmail = function (emailId, userObj) {
-
-//     handleUserByEmail(emailId)
-//     .then(function (foundUser) {
-//         console.logD('user found in updateUserObjByEmail', foundUser);
-//         delete userObj._id;
-//         delete userObj.hash;
-//         delete userObj.salt;
-//         Object.assign(foundUser, userObj);
-//         foundUser.save(function (err) {
-//             if (err) throw err;
-//             console.logD(`${key} of User ${emailId} successfully updated with ${val.toString()}`);
-//         });
-//     })
-//     .error(function (error) {
-//         console.logE(error);
-//     });
-// };
+module.exports.updateUser = function (req, res) {
+    if (!req.payload._id) {
+        res.status(401).json({
+            'success': 'false',
+            'message': 'UnauthorizedError: private profile'
+        });
+    } else {
+        const callbackUserFound = function (foundUser) {
+            console.logD('req body', req.body);
+            req.body.fname ? foundUser.fname = req.body.fname : '';
+            req.body.lname ? foundUser.lname = req.body.lname : '';
+            req.body.dob ? foundUser.dob = req.body.dob : '';
+            req.body.sex ? foundUser.sex = req.body.sex : '';
+            req.body.mobile ? foundUser.mobile = req.body.mobile : '';
+            foundUser.otpList = [];
+            console.logD('b4 save', foundUser);
+            foundUser.save(function (err, user) {
+                if (err) {
+                    console.logE(err);
+                    ctrlUtility.sendJSONresponse(res, 503, { 'status': 'error', 'message': 'Service Unavailable' });
+                }
+                ctrlUtility.sendJSONresponse(res, 200, { 'status': 'Success', 'message': 'User updated successfully' });
+                console.logI('User updated successfully -> ', user.email);
+            });
+        };
+        const callbackUserNotFound = function (foundUser) {
+            ctrlUtility.sendJSONresponse(res, 404, {
+                'status': 'Error',
+                'message': 'User not found'
+            });
+        };
+        try {
+            handleUserById(req.payload._id, callbackUserFound, callbackUserNotFound, null)
+        } catch (err) {
+            console.logE(err);
+        }
+    }
+};
 
 
 
