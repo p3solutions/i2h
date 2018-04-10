@@ -121,4 +121,14 @@ export class CommonUtilityService {
     }
     return msg;
   }
+  checkPasswordMatch(newPassword, confirmPassword) {
+    let msg;
+    if (!(newPassword !== '' && newPassword.length >= environment.passwordMinLength &&
+      newPassword.length <= environment.passwordMaxLength)) {
+      msg = 'Invalid Password';
+    } else if (newPassword !== confirmPassword) {
+      msg = 'Retype password mismatch';
+    }
+    return msg;
+  }
 }

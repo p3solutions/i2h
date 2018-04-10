@@ -96,20 +96,13 @@ export class AccountComponent implements OnInit {
     }
   }
   checkPasswordMatch() {
-    const pswd = this.userInfo.password;
-    let msg;
-    if (!(pswd !== '' && pswd.length >= environment.passwordMinLength &&
-       pswd.length <= environment.passwordMaxLength)) {
-      msg = 'Invalid Password';
-    } else if (pswd !== this.password2) {
-      msg = 'Retype password mismatch';
-    } else {
-      this.invalidPassword = false;
-    }
+    const msg = this.commonUtilityService.checkPasswordMatch(this.userInfo.password, this.password2);
     if (msg) {
       this.invalidPassword = true;
       this.notification = this.commonUtilityService.setNotificationObject('error', msg);
+    } else {
+      this.invalidPassword = false;
+      this.enableSaveButton();
     }
-    this.enableSaveButton();
   }
 }
