@@ -78,7 +78,7 @@ module.exports.createNewUserByEmail = function (req, res) {
             return;
         };
         const callbackUserCreated = function (foundUser) {
-            ctrlUtility.sendJSONresponse(res, 200, {
+            ctrlUtility.sendJSONresponse(res, 201, {
                 'status': 'Success',
                 'message': 'New user created for ' + emailId
             });
@@ -161,9 +161,7 @@ const handleUserById = function (id, callbackUserFound, callbackUserCreated, fin
         if (err) { throw err; }
         if (user) {
             callbackUserFound ? callbackUserFound(user) : true;
-        }
-        // if user not found in database then creates new user & returns it
-        else {
+        } else {
             callbackUserCreated ? callbackUserCreated(user) : true;
         }
         if (finalCallback) {
@@ -211,6 +209,35 @@ module.exports.updateUser = function (req, res) {
     }
 };
 
+module.exports.validatePassword = function (req, res) {
+    if (!req.payload._id) {
+        res.status(401).json({
+            'success': 'false',
+            'message': 'UnauthorizedError: private profile'
+        });
+    } else {
+        const password = req.body.password;
+        const callbackUserFound = function (foundUser) {
+            console.logD('verifying');
+            if (!foundUser.validPassword(password)) {
+                ctrlUtility.sendJSONresponse(res, 203, { 'status': 'error', 'message': 'Password is wrong' });
+            }
+            console.logD('password verified', password);
+            ctrlUtility.sendJSONresponse(res, 202, { 'status': 'success', 'message': 'Password is correct' });
+        };
+        const callbackUserNotFound = function (foundUser) {
+            ctrlUtility.sendJSONresponse(res, 404, {
+                'status': 'Error',
+                'message': 'User not found'
+            });
+        };
+        try {
+            handleUserById(req.payload._id, callbackUserFound, callbackUserNotFound, null)
+        } catch (err) {
+            console.logE(err);
+        }
+    }
+};
 
 
 /*
