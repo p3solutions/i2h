@@ -128,65 +128,81 @@
 
 </div>
 
+
+<!-- Change Password Modal -->
 <div class="modal fade" id="changePasswordModal" role="dialog">
-  <form (ngSubmit)="changeUserPassword()" [formGroup]="changePasswordForm">
+  <form class="form-horizontal" [formGroup]="changePasswordForm" (ngSubmit)="updatePassword()">
     <div class="modal-dialog">
       <!-- Modal content-->
-      <div class="modal-content">
-        <div class="modal-header">
-          <div class="row col-md-12">
-            <div class="col-md-">
-              <h3 class="change-password-panel-heading">
-                Change Password
-              </h3>
-            </div>
-          </div>
+      <div class="center-card">
+        <div class="header-cap">
+          <i class="fa fa-user-circle fa-5x"></i>
         </div>
-        <div class="modal-body">
-          <!-- <form (ngSubmit)="changeUserPassword()" [formGroup]="changePasswordForm"> -->
-          <div class="form-group row">
-            <label for="oldPassword" class="col-sm-2 col-form-label">Current Password</label>
-            <div class="col-sm-7">
-              <input type="password" class="form-control" id="oldPassword" formControlName="oldPassword" placeholder="Enter Current Password">
+        <div class="header-content {{passwordNotif?.show ? 'header-content-notif' : ''}}">
+            <div class="input-effect-div input-effect m-t-20 m-b-10">
+              <input type="password" class="labelled-effect" (focusout)="handleLabelName($event); validateOldPassword()" formControlName="oldPassword" />
+              <label>Current Password</label>
+              <span class="focus-bg"></span>
+              <i *ngIf="!pswdValidatorLoader && invalidPassword" class="fa fa-key fa-lg input-icon" aria-hidden="true"></i>
+              <i *ngIf="pswdValidatorLoader" class="fa fa-spinner fa-spin inline-loader fa-lg col-000 input-icon"></i>               
+              <i *ngIf="!invalidPassword" class="fa fa-check fa-lg input-icon col-success" aria-hidden="true"></i>
             </div>
-          </div>
 
-          <!-- <div class="col-md-12 form-group has-feedback">
-            <input type="password" class="form-control input-form" name="signin-password" formControlName="password" placeholder="Password">
-            <span class="fa fa-key fa-lg form-control-feedback right" aria-hidden="true"></span>
-          </div> -->
+            <div class="col-md-12 m-b-10 text-center">
+              (or)
+            </div>
 
-          <div class="form-group row">
-            <label for="newPassword" class="col-sm-2 col-form-label">Enter New Password</label>
-            <div class="col-sm-7">
-              <input type="password" class="form-control" id="newPassword" formControlName="newPassword" placeholder="Enter New Password">
+            <div class="input-effect-div input-effect m-b-10" style="width: 60%;">
+              <input type="text" class="labelled-effect" (focusout)="handleLabelName($event); validateOTP()" formControlName="otp" (keydown)="allowOnlyNumbers($event)"
+                (paste)="pasteOnlyNumbers($event)" />
+              <label>OTP</label>
+              <span class="focus-bg"></span>
+              <i *ngIf="!otpValidatorLoader && invalidOTP" class="fa fa-hashtag fa-lg input-icon" aria-hidden="true"></i>
+              <i *ngIf="otpValidatorLoader" class="fa fa-spinner fa-spin inline-loader fa-lg col-000 input-icon"></i>
+              <i *ngIf="!invalidOTP" class="fa fa-check fa-lg input-icon col-success" aria-hidden="true"></i>
             </div>
-          </div>
-          <div class="form-group row">
-            <label for="confirmPassword" class="col-sm-2 col-form-label">Confirm Password</label>
-            <div class="col-sm-7">
-              <input type="password" class="form-control" id="confirmPassword" formControlName="confirmPassword" placeholder="Enter New Password">
-            </div>
-          </div>
-          <div class="col-md-12 form-group">
-            <div *ngIf="errorObject?.show" class="alert alert-danger alert-dismissible" role="alert">
-              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
+            
+            <div class="col-md-4 p-0 m-b-10 fl-r" style="z-index: 1;">
+              <button type="button" id="otp-btn" class="btn btn-form btn-i2h fl-r" (click)="mailOTP()">
+                Send OTP
+                <i *ngIf="mailProgress" class="fa fa-spinner fa-spin inline-loader col-fff"></i>
               </button>
-              <strong>Error!</strong> {{errorObject?.message}}
             </div>
-          </div>
-          <!-- </form> -->
-        </div>
-        <div class="modal-footer">
-          <div class="row">
-            <button type="button" class="btn btn-primary btn-popup cancel" data-dismiss="modal">Cancel</button>
-            <button type="submit" (click)="closeErrorMsg()" class="btn btn-primary btn-popup {{  enableChangePassBtn ? '' : 'bg-disabled'}}"
-              [disabled]="! enableChangePassBtn">
-              CONFIRM
-              <i *ngIf="inProgress" class="fa fa-spinner fa-spin inline-loader"></i>
-            </button>
-          </div>
+
+
+            <div class="input-effect-div input-effect m-t-20 m-b-10">
+              <input type="password" class="labelled-effect" (focusout)="handleLabelName($event)" (keyup)="enableSavePswd()" formControlName="newPassword"
+                (blur)="checkPasswordMatch()" />
+              <label>New Password</label>
+              <span class="focus-bg"></span>
+              <i class="fa fa-key fa-lg input-icon" aria-hidden="true"></i>
+            </div>
+            <div class="input-effect-div input-effect m-t-20 m-b-10">
+              <input type="password" class="labelled-effect" (focusout)="handleLabelName($event)" (keyup)="enableSavePswd()" formControlName="confirmPassword"
+                (blur)="checkPasswordMatch()" />
+              <label>Confirm Password</label>
+              <span class="focus-bg"></span>
+              <i class="fa fa-key fa-lg input-icon" aria-hidden="true"></i>
+            </div>
+            
+            <div class="col-md-12 p-0 m-t-10 text-center">
+              <button type="button" class="btn btn-i2h pull-left cancel" data-dismiss="modal">Cancel</button>
+
+              <button type="submit" class="col-md-7 btn btn-form btn-i2h pull-right" disabled="{{enableSaveBtn ? null : 'true'}}">
+                Change Password
+                <i *ngIf="!inProgress" class="fa fa-spinner fa-spin inline-loader col-fff"></i>
+              </button>
+            </div>
+            
+            <div id="notification-block" class="col-md-12 p-0 m-t-10">
+              <div *ngIf="passwordNotif?.show" role="alert" class="text-center alert {{passwordNotif.classCss}} alert-fade-in alert-dismissible">
+                <button type="button" class="close" aria-label="Close" (click)="closePasswordNotif()">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+                <i class="fa fa-info-circle"></i> &nbsp; {{passwordNotif?.message}}
+              </div>
+            </div>
+
         </div>
       </div>
     </div>

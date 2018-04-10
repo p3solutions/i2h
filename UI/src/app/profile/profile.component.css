@@ -1,0 +1,7 @@
+.header-content {
+    height: 380px;
+}
+.header-content-notif {
+  height: 430px;
+  /* transition-duration: opac 1.2s; */
+}

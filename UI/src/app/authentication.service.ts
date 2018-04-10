@@ -96,16 +96,17 @@ export class AuthenticationService {
 
   private request(
     method: 'post' | 'get',
-    type: 'login' | 'register' | 'profile' | 'updateUser',
+    type: 'login' | 'register' | 'profile' | 'updateUser' | 'validatePassword',
     useAuth,
-    user?: TokenPayload): Observable<any> {
+    user?: TokenPayload,
+    params?: any): Observable<any> {
     let base;
 
     if (method === 'post') {
       if (useAuth) {
-        base = this.http.post(`${this.apiUrl}/${type}`, user, { headers: { Authorization: `Bearer ${this.getToken()}` } });
+        base = this.http.post(`${this.apiUrl}/${type}`, user ? user : params, { headers: { Authorization: `Bearer ${this.getToken()}` } });
       } else {
-        base = this.http.post(`${this.apiUrl}/${type}`, user, { headers: this.headers });
+        base = this.http.post(`${this.apiUrl}/${type}`, user ? user : params, { headers: this.headers });
       }
     } else {
       if (useAuth) {
@@ -137,6 +138,10 @@ export class AuthenticationService {
 
   public profile(): Observable<any> {
     return this.request('get', 'profile', true);
+  }
+
+  public validatePassword(password: String): Observable<any> {
+    return this.request('post', 'validatePassword', true, null, { password: password});
   }
 
   public updateUser(user: TokenPayload): Observable<any> {

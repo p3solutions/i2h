@@ -4,11 +4,15 @@ import { UserDetails, AuthenticationService } from '../authentication.service';
 import { environment } from '../../environments/environment';
 import { NotificationObject } from '../i2h-objects';
 import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
+import { HttpErrorResponse } from '@angular/common/http';
+import { UserInfoService } from '../userinfo.service';
 
 export interface ChangePassword {
   userId: string;
+  email: string;
   oldPassword: string;
   newPassword: string;
+  confirmPassword: string;
 }
 
 @Component({
@@ -24,14 +28,24 @@ export class ProfileComponent implements OnInit, OnDestroy {
   private today = (new Date()).toISOString().split('T')[0];
   inProgress = false;
   notification = new NotificationObject();
-  pswdNotifi = new NotificationObject();
+  passwordNotif = new NotificationObject();
+  mailProgress = false;
+  maxCountOTP = environment.maxCountOTP;
+  otpCount = 1;
   invalidDOB = false;
   enableUpdateBtn: boolean;
-  changepassword: ChangePassword;
+  changePassword: ChangePassword;
   changePasswordForm: FormGroup;
+  enableSaveBtn = false;
+  invalidPassword = true;
+  invalidOTP = true;
+  mismatchPassword = true;
+  pswdValidatorLoader = false;
+  otpValidatorLoader = false;
 
   constructor(
     private auth: AuthenticationService,
+    private userInfoService: UserInfoService,
     private commonUtilityService: CommonUtilityService
   ) { }
 
@@ -50,6 +64,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
 
   createForm() {
     this.changePasswordForm = new FormGroup({
+      otp: new FormControl('', [Validators.required]),
       oldPassword: new FormControl('', [Validators.required]),
       newPassword: new FormControl('', [Validators.required]),
       confirmPassword: new FormControl('', [Validators.required])
@@ -139,13 +154,95 @@ export class ProfileComponent implements OnInit, OnDestroy {
       this.notification = this.commonUtilityService.setNotificationObject('error', err.error.message);
     });
   }
-  changeUserPassword() {
-    //
+
+  // change password
+  checkPasswordMatch() {
+    const passwordForm = this.changePasswordForm.value;
+    console.log(passwordForm, passwordForm.oldPassword, passwordForm.confirmPassword);
+    // const msg = this.commonUtilityService.checkPasswordMatch(this.oldPassword, this.password2);
+    // if (msg) {
+    //   this.mismatchPassword = true;
+    //   this.notification = this.commonUtilityService.setNotificationObject('error', msg);
+    // } else {
+    //   this.mismatchPassword = false;
+    //   this.enableSavePswd();
+    // }
   }
-  closeErrorMsg() {
-    this.pswdNotifi = null;
+  enableSavePswd() {
+    if (this.isValid()) {
+      this.enableSaveBtn = true;
+    } else {
+      this.enableSaveBtn = false;
+    }
+  }
+  isValid() {
+    return (!this.invalidOTP || !this.invalidPassword) &&
+      !this.mismatchPassword;
+  }
+  validateOldPassword() {
+    const passwordForm = this.changePasswordForm.value;
+    console.log(passwordForm);
+    if (passwordForm.oldPassword.length >= environment.passwordMinLength) {
+      this.pswdValidatorLoader = true;
+      this.auth.validatePassword(passwordForm.oldPassword).subscribe( (res) => {
+        console.log(res);
+        this.pswdValidatorLoader = false;
+        if (res && res.status === 'success') {
+          this.invalidPassword = false;
+        } else {
+          this.invalidPassword = true;
+          this.passwordNotif = this.commonUtilityService.setNotificationObject('error', 'Old Password is wrong');
+        }
+      });
+    } else {
+      this.invalidPassword = true;
+      this.passwordNotif = this.commonUtilityService.setNotificationObject('error', 'Old Password is wrong');
+      this.pswdValidatorLoader = false;
+    }
+  }
+  updatePassword() {
+    this.inProgress = true;
+    //
   }
   closeNotification() {
     this.notification = new NotificationObject();
+  }
+  closePasswordNotif() {
+    this.passwordNotif = new NotificationObject();
+  }
+  disableOtpBtnHandling() {
+    this.commonUtilityService.disableOTP();
+    this.passwordNotif = this.commonUtilityService.setNotificationObject('error', 'OTP sent limit reached');
+  }
+
+  validateOTP() {
+
+  }
+  mailOTP() {
+    const user = this.auth.getLoggedInUser();
+    if (user) {
+      const email = user.email;
+      if (email && !this.mailProgress) {
+        this.mailProgress = true;
+        if (this.otpCount <= this.maxCountOTP) {
+          this.userInfoService.mailOTP({ 'email': email }).subscribe((res) => {
+            this.mailProgress = false;
+            if (res.status === 'success') {
+              this.otpCount++;
+              this.passwordNotif = this.commonUtilityService.setNotificationObject('success', 'OTP sent to your mail');
+            }
+          },
+            (err: HttpErrorResponse) => {
+              this.mailProgress = false;
+              this.passwordNotif = this.commonUtilityService.getErrorNotification(err);
+            });
+        } else {
+          this.mailProgress = false;
+          this.disableOtpBtnHandling();
+        }
+      }
+    } else {
+      this.passwordNotif = this.commonUtilityService.setNotificationObject('error', 'User is logged out');
+    }
   }
 }
