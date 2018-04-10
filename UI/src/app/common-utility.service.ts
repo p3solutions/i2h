@@ -131,4 +131,9 @@ export class CommonUtilityService {
     }
     return msg;
   }
+  disableOTP() {
+    const otpBtn = <HTMLButtonElement>document.getElementById('otp-btn');
+    otpBtn.disabled = true;
+    setTimeout(function () { otpBtn.disabled = false; }, environment.otpDisableTime);
+  }
 }

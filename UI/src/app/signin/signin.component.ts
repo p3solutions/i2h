@@ -71,9 +71,7 @@ export class SigninComponent implements OnInit {
   }
 
   disableOtpBtnHandling() {
-    const otpBtn = <HTMLButtonElement>document.getElementById('otp-btn');
-    otpBtn.disabled = true;
-    setTimeout(function () { otpBtn.disabled = false; }, environment.otpDisableTime);
+    this.commonUtilityService.disableOTP();
     this.notification = this.commonUtilityService.setNotificationObject('error', 'OTP sent limit reached');
   }
 
