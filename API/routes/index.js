@@ -27,6 +27,7 @@ router.post('/deleteOtp', otpService.deleteOtpOfUserEmail);
 router.get('/profile', auth, ctrlProfile.profileRead);
 router.post('/updateUser', auth, ctrlProfile.updateUser);
 router.post('/validatePassword', auth, ctrlProfile.validatePassword);
+router.post('/validateThenSetPassword', auth, ctrlProfile.validateThenSetPassword);
 
 // authentication
 router.post('/register', ctrlAuth.register);

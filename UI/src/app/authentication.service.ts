@@ -96,7 +96,7 @@ export class AuthenticationService {
 
   private request(
     method: 'post' | 'get',
-    type: 'login' | 'register' | 'profile' | 'updateUser' | 'validatePassword',
+    type: 'login' | 'register' | 'profile' | 'updateUser' | 'validatePassword' | 'validateThenSetPassword',
     useAuth,
     user?: TokenPayload,
     params?: any): Observable<any> {
@@ -142,6 +142,14 @@ export class AuthenticationService {
 
   public validatePassword(password: String): Observable<any> {
     return this.request('post', 'validatePassword', true, null, { password: password});
+  }
+
+  // public validateOTP(otp: String): Observable<any> {
+  //   return this.request('post', 'validateOTP', true, null, { otp: otp });
+  // }
+
+  public validateThenSetPassword(params: any): Observable<any> {
+    return this.request('post', 'validateThenSetPassword', true, null, params);
   }
 
   public updateUser(user: TokenPayload): Observable<any> {
