@@ -49,3 +49,9 @@ Simiilar commands
 `sudo service mongod status`
 `sudo service mongod stop`
 `sudo service mongod start`
+
+
+
+## NOTES
+1. Password attempt limitation not yet implemented.
+2. should we redirect to sign-in after successful password change
