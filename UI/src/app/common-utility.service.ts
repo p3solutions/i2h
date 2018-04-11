@@ -127,7 +127,7 @@ export class CommonUtilityService {
       newPassword.length <= environment.passwordMaxLength)) {
       msg = 'Invalid Password';
     } else if (newPassword !== confirmPassword) {
-      msg = 'Retype password mismatch';
+      msg = 'Confirmation password mismatch';
     }
     return msg;
   }
