@@ -52,5 +52,3 @@ module.exports.getTransport = function () {
         }
     });
 };
-
-// module.exports.send = nodemailer.send;
