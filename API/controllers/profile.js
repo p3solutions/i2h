@@ -4,6 +4,7 @@ var User = mongoose.model('User');
 var mailerService = require('../config/mailerservice');
 // var uuid = require('node-uuid');
 const ctrlUtility = require('./utility');
+const ctrlOtpService = require('./otpservice');
 
 module.exports.profileRead = function (req, res) {
     if (!req.payload._id) {
@@ -44,27 +45,6 @@ const createNewUserwithOnlyEmail = function (emailId) {
     });
     return user;
 };
-// make sure res return in callbacks, specially if createIfNotFound == false, res must return in callbackUserFound or finalCallback, else API response never end until timeout
-const handleUserByEmail = function (emailId, createIfNotFound, callbackUserFound, callbackUserCreated, finalCallback) {
-    User.findOne({ email: emailId }, function (err, user) {
-        if (err) { throw err; }
-        // console.logD(`#47 User found in handleUserByEmail: ${user.email}`);
-        if (user) {
-            callbackUserFound ? callbackUserFound(user) : true;
-        }
-        // if user not found in database then creates new user & returns it
-        else {
-            if (createIfNotFound) {
-                user = createNewUserwithOnlyEmail(emailId);
-            }
-            callbackUserCreated ? callbackUserCreated(user) : true;
-        }
-        if (finalCallback) {
-            finalCallback(user);
-        }
-    });
-};
-module.exports.handleUserByEmail = handleUserByEmail;
 
 // should be available only to developers
 module.exports.createNewUserByEmail = function (req, res) {
@@ -84,7 +64,7 @@ module.exports.createNewUserByEmail = function (req, res) {
             });
             return;
         };
-        handleUserByEmail(emailId, true, callbackUserFound, callbackUserCreated, null);
+        ctrlUtility.handleUserByEmail(emailId, true, callbackUserFound, callbackUserCreated, null);
     } catch (error) {
         console.logE(error);
         ctrlUtility.sendJSONresponse(res, 500, {
@@ -116,7 +96,7 @@ module.exports.deleteUserByEmail = function (req, res) {
             });
             return;
         };
-        handleUserByEmail(emailId, false, callbackUserFound, callbackUserNotFound, null);
+        ctrlUtility.handleUserByEmail(emailId, false, callbackUserFound, callbackUserNotFound, null);
     } catch (error) {
         console.logE(error);
         ctrlUtility.sendJSONresponse(res, 500, {
@@ -156,19 +136,7 @@ module.exports.findAllUsers = function (req, res) {
     }
 };
 
-const handleUserById = function (id, callbackUserFound, callbackUserCreated, finalCallback) {
-    User.findOne({ _id: id }, function (err, user) {
-        if (err) { throw err; }
-        if (user) {
-            callbackUserFound ? callbackUserFound(user) : true;
-        } else {
-            callbackUserCreated ? callbackUserCreated(user) : true;
-        }
-        if (finalCallback) {
-            finalCallback(user);
-        }
-    });
-};
+
 // override with userObj except _id, hash, salt
 module.exports.updateUser = function (req, res) {
     if (!req.payload._id) {
@@ -178,21 +146,23 @@ module.exports.updateUser = function (req, res) {
         });
     } else {
         const callbackUserFound = function (foundUser) {
-            console.logD('req body', req.body);
+            // console.logD('req body', req.body);
             req.body.fname ? foundUser.fname = req.body.fname : '';
             req.body.lname ? foundUser.lname = req.body.lname : '';
             req.body.dob ? foundUser.dob = req.body.dob : '';
             req.body.sex ? foundUser.sex = req.body.sex : '';
             req.body.mobile ? foundUser.mobile = req.body.mobile : '';
             foundUser.otpList = [];
-            console.logD('b4 save', foundUser);
+            // console.logD('b4 save', foundUser);
             foundUser.save(function (err, user) {
                 if (err) {
                     console.logE(err);
                     ctrlUtility.sendJSONresponse(res, 503, { 'status': 'error', 'message': 'Service Unavailable' });
+                    return;
                 }
-                ctrlUtility.sendJSONresponse(res, 200, { 'status': 'Success', 'message': 'User updated successfully' });
                 console.logI('User updated successfully -> ', user.email);
+                ctrlUtility.sendJSONresponse(res, 200, { 'status': 'Success', 'message': 'User updated successfully' });
+                return;
             });
         };
         const callbackUserNotFound = function (foundUser) {
@@ -202,7 +172,7 @@ module.exports.updateUser = function (req, res) {
             });
         };
         try {
-            handleUserById(req.payload._id, callbackUserFound, callbackUserNotFound, null)
+            ctrlUtility.handleUserById(req.payload._id, callbackUserFound, callbackUserNotFound, null)
         } catch (err) {
             console.logE(err);
         }
@@ -218,26 +188,108 @@ module.exports.validatePassword = function (req, res) {
     } else {
         const password = req.body.password;
         const callbackUserFound = function (foundUser) {
-            console.logD('verifying');
             if (!foundUser.validPassword(password)) {
+                console.logD('wrong password');
                 ctrlUtility.sendJSONresponse(res, 203, { 'status': 'error', 'message': 'Password is wrong' });
+                return;
             }
-            console.logD('password verified', password);
+            console.logD('password verified');
             ctrlUtility.sendJSONresponse(res, 202, { 'status': 'success', 'message': 'Password is correct' });
+            return;
         };
         const callbackUserNotFound = function (foundUser) {
             ctrlUtility.sendJSONresponse(res, 404, {
                 'status': 'Error',
                 'message': 'User not found'
             });
+            return;
         };
         try {
-            handleUserById(req.payload._id, callbackUserFound, callbackUserNotFound, null)
+            ctrlUtility.handleUserById(req.payload._id, callbackUserFound, callbackUserNotFound, null)
         } catch (err) {
             console.logE(err);
         }
     }
 };
+
+module.exports.validateThenSetPassword = function (req, res) {
+    const _id = req.payload._id;
+    if (!_id) {
+        res.status(401).json({
+            'success': 'false',
+            'message': 'UnauthorizedError: private profile'
+        });
+    } else {
+        const newPassword = req.body.newPassword;
+        // validate old password
+        const password = req.body.password;
+        if (password) {
+            const callbackUserFound = function (foundUser) {
+                if (!foundUser.validPassword(password)) {
+                    console.logD('wrong password');
+                    ctrlUtility.sendJSONresponse(res, 203, { 'status': 'error', 'message': 'Old password mismatch' });
+                    return;
+                }
+                console.logD('password verified, old->', foundUser.hash);
+                foundUser.setPassword(newPassword);
+                console.logD('password verified, new->', foundUser.hash);
+                 foundUser.save(function (err, user) {
+                    if (err) {
+                        console.logE(err);
+                        ctrlUtility.sendJSONresponse(res, 503, { 'status': 'error', 'message': 'Service Unavailable' });
+                        return;
+                    }
+                    ctrlUtility.sendJSONresponse(res, 202, { 'status': 'success', 'message': 'Password changed successfully' });
+                    return;
+                });
+            };
+            const callbackUserNotFound = function (foundUser) {
+                ctrlUtility.sendJSONresponse(res, 404, { 'status': 'error', 'message': 'User not found' });
+                return;
+            };
+            try {
+                ctrlUtility.handleUserById(_id, callbackUserFound, callbackUserNotFound, null)
+            } catch (err) {
+                console.logE(err);
+            }
+        } else {
+        // validate OTP
+            const otp = req.body.otp;
+            const callbackUserFound = function (foundUser) {
+                const validation = ctrlUtility.isValidOTP(foundUser.otpList, req.body.otp);
+                if (validation) {
+                    ctrlOtpService.deleteOtpList({ _id: _id });
+                    console.logD('otp verified, old->', foundUser.hash);
+                    foundUser.setPassword(newPassword);
+                    console.logD('otp verified, new->', foundUser.hash);
+                     foundUser.save(function (err, user) {
+                    if (err) {
+                        console.logE(err);
+                        ctrlUtility.sendJSONresponse(res, 503, { 'status': 'error', 'message': 'Service Unavailable' });
+                        return;
+                    }
+                    ctrlUtility.sendJSONresponse(res, 200, { 'status': 'success', 'message': 'Password changed successfully' });
+                    return;
+                });
+                } else {
+                    console.logD('wrong otp');
+                    ctrlUtility.sendJSONresponse(res, 203, { 'message': 'OTP mismatch' });
+                    return;
+                }
+            };
+            const callbackUserNotFound = function (foundUser) {
+                ctrlUtility.sendJSONresponse(res, 404, { 'status': 'error', 'message': 'User not found' });
+                return;
+            };
+            try {
+                ctrlUtility.handleUserById(_id, callbackUserFound, callbackUserNotFound, null)
+            } catch (err) {
+                console.logE(err);
+            }
+        }
+    }
+};
+
 
 
 /*

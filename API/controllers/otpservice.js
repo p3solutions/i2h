@@ -30,12 +30,12 @@ var getNewOTP = function (emailId) {
             console.logI(`${usr.email} details saved to DB`);
         });
     };
-    ctrlProfile.handleUserByEmail(emailId, true, null, null, callbackFn); // this true param ensure that it will always return a user
+    ctrlUtility.handleUserByEmail(emailId, true, null, null, callbackFn); // this true param ensure that it will always return a user
     console.logI('OTP to be mailed ', otp);
     return otp;
 };
 
-const deleteOtpList = function (emailId) {
+const deleteOtpList = function (queryObject) {
     // saving empty array in otpList in the DB
     const callbackFn = function (foundUser) {
         foundUser.otpList = [];
@@ -44,22 +44,34 @@ const deleteOtpList = function (emailId) {
             console.logI(`${usr.email} otpList is deleted & saved to DB`);
         });
     };
-    ctrlProfile.handleUserByEmail(emailId, false, callbackFn) // logically that should return a user, i.e. we should always call this for an exisiting user
+    if (queryObject.email) {
+        ctrlUtility.handleUserByEmail(queryObject.email, false, callbackFn) // logically that should return a user, i.e. we should always call this for an exisiting user
+    } else {
+        ctrlUtility.handleUserById(queryObject._id, callbackFn); // logically that should return a user, i.e. we should always call this for an exisiting user
+    }
 };
 module.exports.deleteOtpList = deleteOtpList; // rename deleteUserOTP
 
 module.exports.deleteOtpOfUserEmail = function (req, res) {
     const emailId = req.body.email;
-    User.findOne({ email: emailId }, function (err, foundUser) {
+    let queryObject;
+    let _id;
+    if (emailId) {
+        queryObject = { email: emailId };
+    } else {
+        _id = req.body._id;
+        queryObject = { _id: _id };
+    }
+    User.findOne( queryObject, function (err, foundUser) {
         if (err) console.logE(err);
         // if user not found in database then creates new user & returns it
         if (!foundUser) {
-            console.logI('wrong email, No user found with email', emailId);
+            console.logI('wrong email, No user found for', emailId ? emailId : _id);
             ctrlUtility.sendJSONresponse(res, 404, { 'message': 'No user found with this email' });
             return;
         }
         if (foundUser.otpList.length > 0) {
-            deleteOtpList(emailId);
+            deleteOtpList(queryObject);
             ctrlUtility.sendJSONresponse(res, 200, { 'message': 'OTP deleted successfully' });
         } else {
             ctrlUtility.sendJSONresponse(res, 404, { 'message': 'No OTP found' });
@@ -79,7 +91,7 @@ module.exports.mailotp = function (req, res) {
     };
     const mailerOptions = mailerService.getmailerOptions(params);
     // console.logD(`#84 Mailer Options: \n${mailerOptions.toString()}`);
-    console.logD('#84 Mailer Options:\n' + JSON.stringify(mailerOptions));
+    // console.logD('#84 Mailer Options:\n' + JSON.stringify(mailerOptions));
     const transporter = mailerService.getTransport();
     const mailCallbackFn = function (err, info) {
         if (err) {
@@ -91,7 +103,7 @@ module.exports.mailotp = function (req, res) {
         ctrlUtility.sendJSONresponse(res, 200, {
             'status': 'success',
             'message': 'OTP mailed successfully'});
-        console.logD('info->\n', info);
+        // console.logD('info->\n', info);
         return;
     };
     transporter.sendMail(mailerOptions, mailCallbackFn);
