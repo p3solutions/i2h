@@ -38,7 +38,7 @@ module.exports.login = function (req, res) {
                 ctrlUtility.sendJSONresponse(res, 404, err);
                 return;
             }
-            console.logI(`#71 Login via password -> ${info ? JSON.stringify(info) : ''}`);
+            console.logI(`Login via password -> ${info ? JSON.stringify(info) : ''}`);
             // If a user is found
             if (user) {
                 token = user.generateJwt();
@@ -49,26 +49,18 @@ module.exports.login = function (req, res) {
             }
         })(req, res);
     } else if (otp) { // checking for OTP login
-        let validation = false;
-        User.findOne({ email: emailId }, function (err, foundUser) {
+        const paramObject = {email: emailId};
+        User.findOne(paramObject, function (err, foundUser) {
             if (err) { throw err; }
-            // if user not found in database then creates new user & returns it
             if (!foundUser) {
-                console.logI(`#40 Wrong Email. No user found with email: ${emailId}`);
+                console.logI(`Wrong Email. No user found with email: ${emailId}`);
                 ctrlUtility.sendJSONresponse(res, 401, { 'message': 'User not found' });
                 return;
             }
-            // console.logD('validate otpList -> ', foundUser.otpList);
-            const otpInfo = ctrlUtility.getWholeObjFromArrayByVal(foundUser.otpList, 'otp', otp);
-            // console.logD(otpInfo, ' <- otpInfo');
-            if (otpInfo && otpInfo.validity) {
-                const currTime = (new Date()).getTime();
-                // console.logD('comparing', otpInfo, ' >= ', currTime);
-                validation = (otpInfo.validity >= currTime); // checking for otp-validity, returns true/false
-            }
-            console.logI(`#52 OTP validation: ${validation}`);
+            const validation = ctrlUtility.isValidOTP(foundUser.otpList, req.body.otp);
+            console.logI(`OTP validation: ${validation}`);
             if (validation) {
-                ctrlOtpService.deleteOtpList(emailId);
+                ctrlOtpService.deleteOtpList(paramObject);
                 // send login notification
                 ctrlUtility.sendJSONresponse(res, 200, { 'token': foundUser.generateJwt(), 'hasUserInfo': (!!foundUser.fname), 'message': 'Login Successful'});
             } else {
