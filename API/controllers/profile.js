@@ -45,6 +45,7 @@ const createNewUserwithOnlyEmail = function (emailId) {
     });
     return user;
 };
+module.exports.createNewUserwithOnlyEmail = createNewUserwithOnlyEmail;
 
 // should be available only to developers
 module.exports.createNewUserByEmail = function (req, res) {
