@@ -1,5 +1,6 @@
 var mongoose = require('mongoose');
 const User = mongoose.model('User');
+var ctrlProfile = require('../controllers/profile');
 
 // set array-obj val into the key
 module.exports.updateArrayOfObj = function(myArray, key, val) {
@@ -81,7 +82,7 @@ module.exports.handleUserByEmail = function (emailId, createIfNotFound, callback
         // if user not found in database then creates new user & returns it
         else {
             if (createIfNotFound) {
-                user = createNewUserwithOnlyEmail(emailId);
+                user = ctrlProfile.createNewUserwithOnlyEmail(emailId);
             }
             callbackUserCreated ? callbackUserCreated(user) : true;
         }

@@ -20,7 +20,7 @@ router.get('/test', (req, res) => {
 });
 
 // mail OTP
-router.post('/mailOtp', otpService.mailotp);
+router.get('/mailOtp/:email', otpService.mailOtp);
 router.post('/deleteOtp', otpService.deleteOtpOfUserEmail);
 
 // profile

@@ -80,31 +80,36 @@ module.exports.deleteOtpOfUserEmail = function (req, res) {
     });
 };
 
-module.exports.mailotp = function (req, res) {
-    const emailId = req.body.email;
-    const otp = getNewOTP(emailId);
-    // send otp to the email id
-    const otpMailHtml = `Login with this OTP: <b>${otp}</b><br><i>NOTE: Kindly don't share OTP with anyone. This is valid for just ${configs.OTP_VALIDATION_MINUTES} minutes.</i>`;
-    const params = {
-        to: emailId,
-        html: otpMailHtml
-    };
-    const mailerOptions = mailerService.getmailerOptions(params);
-    // console.logD(`#84 Mailer Options: \n${mailerOptions.toString()}`);
-    // console.logD('#84 Mailer Options:\n' + JSON.stringify(mailerOptions));
-    const transporter = mailerService.getTransport();
-    const mailCallbackFn = function (err, info) {
-        if (err) {
-            console.logE(err);
-            ctrlUtility.sendJSONresponse(res, 500, {'message': 'Error sending mail for OTP'});
+module.exports.mailOtp = function (req, res) {
+    const emailId = req.params.email;
+    if (emailId) {
+        const otp = getNewOTP(emailId);
+        // send otp to the email id
+        const otpMailHtml = `Login with this OTP: <b>${otp}</b><br><i>NOTE: Kindly don't share OTP with anyone. This is valid for just ${configs.OTP_VALIDATION_MINUTES} minutes.</i>`;
+        const params = {
+            to: emailId,
+            html: otpMailHtml
+        };
+        const mailerOptions = mailerService.getmailerOptions(params);
+        // console.logD(`#84 Mailer Options: \n${mailerOptions.toString()}`);
+        // console.logD('#84 Mailer Options:\n' + JSON.stringify(mailerOptions));
+        const transporter = mailerService.getTransport();
+        const mailCallbackFn = function (err, info) {
+            if (err) {
+                console.logE(err);
+                ctrlUtility.sendJSONresponse(res, 500, {'message': 'Error sending mail for OTP'});
+                return;
+            }
+            console.logD('Mail sent with OTP to: ', emailId);
+            ctrlUtility.sendJSONresponse(res, 200, {
+                'status': 'success',
+                'message': 'OTP mailed successfully'});
+            // console.logD('info->\n', info);
             return;
-        }
-        console.logD('Mail sent with OTP to: ', emailId);
-        ctrlUtility.sendJSONresponse(res, 200, {
-            'status': 'success',
-            'message': 'OTP mailed successfully'});
-        // console.logD('info->\n', info);
+        };
+        transporter.sendMail(mailerOptions, mailCallbackFn);
+    } else {
+        ctrlUtility.sendJSONresponse(res, 404, { 'message': 'Email id not received' });
         return;
-    };
-    transporter.sendMail(mailerOptions, mailCallbackFn);
+    }
 };
