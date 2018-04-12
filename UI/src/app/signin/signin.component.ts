@@ -30,6 +30,9 @@ export class SigninComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    if (this.auth.isLoggedIn()) {
+      this.router.navigateByUrl(this.auth.getLandingUrl());
+    }
     this.createForm();
   }
 
@@ -80,7 +83,7 @@ export class SigninComponent implements OnInit {
     if (email && !this.mailProgress) {
       this.mailProgress = true;
       if (this.otpCount <= this.maxCountOTP) {
-        this.userInfoService.mailOTP({'email': email}).subscribe((res) => {
+        this.userInfoService.mailOTP(email).subscribe((res) => {
           this.mailProgress = false;
           if (res.status === 'success') {
             this.otpCount++;

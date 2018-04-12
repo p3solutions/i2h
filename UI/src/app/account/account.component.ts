@@ -4,7 +4,8 @@ import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { NotificationObject } from '../i2h-objects';
 import { HttpErrorResponse } from '@angular/common/http';
 import { environment } from '../../environments/environment';
-import { AuthenticationService, TokenPayload, UserDetails } from '../authentication.service';
+import { AuthenticationService } from '../authentication.service';
+import { TokenPayload } from '../i2h-objects';
 import * as  $ from 'jquery';
 
 @Component({

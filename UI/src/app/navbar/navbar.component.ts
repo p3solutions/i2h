@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { AuthenticationService, UserDetails } from '../authentication.service';
+import { AuthenticationService } from '../authentication.service';
 import { UserInfoService } from '../userinfo.service';
 import { CommonUtilityService } from '../common-utility.service';
+import { UserDetails } from '../i2h-objects';
 
 @Component({
   selector: 'app-navbar',

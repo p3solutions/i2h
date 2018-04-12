@@ -1,11 +1,12 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonUtilityService } from '../common-utility.service';
-import { UserDetails, AuthenticationService } from '../authentication.service';
+import { AuthenticationService } from '../authentication.service';
 import { environment } from '../../environments/environment';
 import { NotificationObject } from '../i2h-objects';
 import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
 import { HttpErrorResponse } from '@angular/common/http';
 import { UserInfoService } from '../userinfo.service';
+import { TokenPayload, UserDetails } from '../i2h-objects';
 
 export interface ChangePassword {
   userId: string;
@@ -21,11 +22,11 @@ export interface ChangePassword {
   styleUrls: ['./profile.component.css']
 })
 export class ProfileComponent implements OnInit, OnDestroy {
+  private today = (new Date()).toISOString().split('T')[0];
   componentIcon = 'fa-user-circle';
   userInfo: UserDetails;
   initialVal: UserDetails;
   modifiedUserInfo: any = new Object();
-  private today = (new Date()).toISOString().split('T')[0];
   inProgress = false;
   passwordProgress = false;
   notification = new NotificationObject();
@@ -144,7 +145,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
   onUpdate() {
     this.inProgress = true;
     this.modifyUserInfo();
-    this.auth.updateUser(this.modifiedUserInfo).subscribe((res) => {
+    this.userInfoService.updateUser(this.modifiedUserInfo).subscribe((res) => {
       this.inProgress = false;
       if (res && res.status) { // existing user with details
         this.updateUserInfo();
