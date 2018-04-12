@@ -4,35 +4,7 @@ import { Observable } from 'rxjs/Observable';
 import { map } from 'rxjs/operators/map';
 import { Router } from '@angular/router';
 import { environment } from '../environments/environment';
-
-export interface UserDetails {
-  _id: string;
-  email: string;
-  fname: string;
-  password: string;
-  lname: string;
-  mobile: string;
-  dob: string;
-  sex: string;
-  exp: number;
-  iat: number;
-}
-
-interface TokenResponse {
-  token: string;
-}
-
-export interface TokenPayload {
-  _id: string;
-  email: string;
-  password?: string;
-  otp?: string;
-  fname?: string;
-  lname?: string;
-  mobile?: string;
-  dob?: string;
-  sex?: string;
-}
+import { TokenPayload, TokenResponse, UserDetails } from './i2h-objects';
 
 @Injectable()
 export class AuthenticationService {
@@ -150,10 +122,6 @@ export class AuthenticationService {
 
   public validateThenSetPassword(params: any): Observable<any> {
     return this.request('post', 'validateThenSetPassword', true, null, params);
-  }
-
-  public updateUser(user: TokenPayload): Observable<any> {
-    return this.request('post', 'updateUser', true, user);
   }
 
   public logout(): void {

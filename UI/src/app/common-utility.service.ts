@@ -34,7 +34,7 @@ export class CommonUtilityService {
     }
   }
   allowOnlyNumbers(e) {
-    const keyCode = e.keyCode || e.which;
+    // const keyCode = e.keyCode || e.which;
     // console.log(keyCode, e);
     const ctrlA = (e.keyCode === 65 && (e.ctrlKey === true || e.metaKey === true));
     const ctrlC = (e.keyCode === 67 && (e.ctrlKey === true || e.metaKey === true));
