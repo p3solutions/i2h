@@ -33,10 +33,3 @@ export interface UserDetails {
     exp: number;
     iat: number;
 }
-
-export interface AddressDetails {
-    addressId: string;
-    addressName: string;
-    addressContact: string;
-    addressLine: string;
-}
