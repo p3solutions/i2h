@@ -38,7 +38,7 @@ body {
 }
 
 /* End of over-riding css */
-
+/* 
 input,
 textarea,
 select,
@@ -46,7 +46,7 @@ button,
 meter,
 progress {
   -webkit-writing-mode: horizontal-tb;
-}
+} */
 
 .center-card {
   background-color: #fff;
@@ -84,6 +84,10 @@ progress {
   top: 5px;
   pointer-events: none;
 }
+.mandatory-icon {
+  font-size: 10px;
+  color: red;
+}
 .otp-input {
   width: 62%;
 }
@@ -118,6 +122,9 @@ progress {
 }
 .m-r-15 {
   margin-right: 15px;
+}
+.m-r-20 {
+  margin-right: 20px;
 }
 .m-t-20 {
   margin-top: 20px;
@@ -154,6 +161,9 @@ progress {
 }
 .text-center {
   text-align: center;
+}
+.bg-fff {
+  background-color: #fff;
 }
 .bg-i2h {
   background-color: #ef7f1a;
@@ -197,11 +207,14 @@ progress {
 .cur-p{
   cursor: pointer !important;
 }
-.trim-text {
+.text-trim {
   display: inline-block;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+.text-cap {
+  text-transform: capitalize;
 }
 
 /*= input focus effects css
@@ -389,18 +402,19 @@ input[type="number"] {
 .last-menu-block a:last-child {
   border-bottom: 1px solid #ccc;
 }
+/* End of sidemenu css */
 
 .add-address-div {
   border: 1px solid grey;
   max-height: 380px;
-  overflow-y: scroll;
+  overflow-y: auto;
 }
 .add-address-div.extend {
   max-height: 530px;
 }
 .add-address-div .bg-alt {
   width: 100%;
-  height: 75px;
+  height: 150px;
   margin: 0;
   padding: 10px 0;
 }
@@ -413,6 +427,61 @@ input[type="number"] {
 .bg-alt:hover {
 background-color: #fff;
 }
-
-/* End of sidemenu css */
+.bg-alt.del-address {
+  background-color: #f2dede;
+  border-bottom: 1px solid #a94442;
+  border-top: 1px solid #a94442;
+  color: #a94442;
+  text-decoration: line-through;
+}
+.bg-alt.edit-address {
+  background-color: #d9edf7;
+  border-bottom: 1px solid #31708f;
+  border-top: 1px solid #31708f;
+  color: #31708f;
+}
+.bg-alt.del-address label,
+.bg-alt.del-address .address-tag{
+  text-decoration: line-through;
+}
+.address-tag {
+  border: 1px solid grey;
+  border-radius: 50px;
+  box-shadow: 1px 2px 1px 1px grey;
+  -moz-box-shadow: 1px 2px 1px 1px grey;
+  -webkit-box-shadow: 1px 2px 1px 1px grey;
+}
+.address-tag.default {
+  background-color: #6a6a6ac4;
+  color: #fff;
+  box-shadow: none;
+  -moz-box-shadow: none;
+  -webkit-box-shadow: none;
+}
+select.labelled-effect {
+  background: transparent;
+  height: 40px;
+  border: 1px solid #ccc;
+  padding: 7px 15px;
+  position: relative;
+  width: 100%;
+}
+.sub-info {
+  font-size: 10px;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  font-style: italic;
+  font-weight: bold;
+  padding: 2px;
+  color: #31708f;
+}
+.added-address-icon {
+  color: #000;
+  float: left;
+  left: 0;
+  margin: 2px 5px;
+  text-align: center;
+  width: 20px;
+}
 
