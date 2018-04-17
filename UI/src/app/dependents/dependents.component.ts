@@ -7,18 +7,18 @@ import { CommonUtilityService } from '../common-utility.service';
   styleUrls: ['./dependents.component.css']
 })
 export class DependentsComponent implements OnInit, OnDestroy {
-  componentIcon = 'fa-users';
+  componentUrl = 'dependents';
 
   constructor(
     private commonUtilityService: CommonUtilityService
   ) { }
 
   ngOnInit() {
-    this.commonUtilityService.sendData(this.componentIcon);
+    this.commonUtilityService.sendData(this.componentUrl);
   }
 
   sendData() {
-    this.commonUtilityService.sendData(this.componentIcon);
+    this.commonUtilityService.sendData(this.componentUrl);
   }
 
   ngOnDestroy() {

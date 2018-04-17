@@ -12,8 +12,8 @@ export class CommonUtilityService {
 
   constructor() { }
 
-  sendData(message: string) {
-    this.subject.next(message);
+  sendData(componentUrl: string) {
+    this.subject.next(componentUrl);
   }
 
   clearData() {
@@ -135,5 +135,20 @@ export class CommonUtilityService {
     const otpBtn = <HTMLButtonElement>document.getElementById('otp-btn');
     otpBtn.disabled = true;
     setTimeout(function () { otpBtn.disabled = false; }, environment.otpDisableTime);
+  }
+  getArrayObjectById(array, id) {
+    let obj;
+    array.forEach(element => {
+      if (element.id === id) {
+        obj = element;
+      }
+    });
+    return obj;
+  }
+  copyObject(srcObj, destObj) {
+    for (const [key, value] of Object.entries(srcObj)) {
+      destObj[key] = value;
+    }
+    console.log('copied obj', destObj);
   }
 }

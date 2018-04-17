@@ -23,7 +23,7 @@ export interface ChangePassword {
 })
 export class ProfileComponent implements OnInit, OnDestroy {
   private today = (new Date()).toISOString().split('T')[0];
-  componentIcon = 'fa-user-circle';
+  componentUrl = 'profile';
   userInfo: UserDetails;
   initialVal: UserDetails;
   modifiedUserInfo: any = new Object();
@@ -53,7 +53,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit() {
-    this.commonUtilityService.sendData(this.componentIcon);
+    this.commonUtilityService.sendData(this.componentUrl);
     this.auth.profile().subscribe(user => {
       this.initialVal = JSON.parse(JSON.stringify(user));
       this.userInfo = user;
@@ -74,7 +74,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
     });
   }
   sendData() {
-    this.commonUtilityService.sendData(this.componentIcon);
+    this.commonUtilityService.sendData(this.componentUrl);
   }
 
   // clear message

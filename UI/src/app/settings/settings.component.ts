@@ -8,15 +8,15 @@ import { Subscription } from 'rxjs/Subscription';
   styleUrls: ['./settings.component.css']
 })
 export class SettingsComponent implements OnInit, OnDestroy {
-  componentIcon = 'fa-user-circle-o';
+  componentIcon: string;
   subscription: Subscription;
 
   constructor(
     private commonUtilityService: CommonUtilityService
   ) {
     this.subscription = this.commonUtilityService.getData()
-    .subscribe(x => {
-      this.componentIcon = x;
+    .subscribe(componentUrl => {
+      this.setComponentIcon(componentUrl);
     });
   }
 
@@ -29,5 +29,24 @@ export class SettingsComponent implements OnInit, OnDestroy {
     this.subscription.unsubscribe();
   }
 
+  setComponentIcon(componentUrl) {
+    switch (componentUrl) {
+      case 'profile':
+        this.componentIcon = 'fa-user-circle';
+        break;
+      case 'address':
+        this.componentIcon = 'fa-address-card';
+        break;
+      case 'dependents':
+        this.componentIcon = 'fa-users';
+        break;
+        case 'compare':
+        this.componentIcon = 'fa-bar-chart';
+        break;
+      default:
+        this.componentIcon = 'fa-user-circle-o';
+        break;
+    }
+  }
 
 }

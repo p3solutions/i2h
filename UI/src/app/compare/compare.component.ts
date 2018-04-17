@@ -7,18 +7,18 @@ import { CommonUtilityService } from '../common-utility.service';
   styleUrls: ['./compare.component.css']
 })
 export class CompareComponent implements OnInit, OnDestroy {
-  componentIcon = 'fa-bar-chart';
+  componentUrl = 'compare';
 
   constructor(
     private commonUtilityService: CommonUtilityService
   ) { }
 
   ngOnInit() {
-    this.commonUtilityService.sendData(this.componentIcon);
+    this.commonUtilityService.sendData(this.componentUrl);
   }
 
   sendData() {
-    this.commonUtilityService.sendData(this.componentIcon);
+    this.commonUtilityService.sendData(this.componentUrl);
   }
 
   ngOnDestroy() {
