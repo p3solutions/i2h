@@ -80,6 +80,23 @@ export class UserInfoService {
     return this.request('get', url, false);
   }
 
+  public getAddress(): Observable<any> {
+    const url = 'getAddress';
+    return this.request('get', url, true);
+  }
+  public addAddress(params: any): Observable<any> {
+    const url = 'addAddress';
+    return this.request('post', url, true, {addressObj : params});
+  }
+  public updateAddress(params: any): Observable<any> {
+    const url = 'updateAddress';
+    return this.request('post', url, true, { addressObj: params });
+  }
+  public deleteAddress(id: any): Observable<any> {
+    const url = `deleteAddress/${id}`;
+    return this.request('get', url, true);
+  }
+
   mailOTP1(emailParam) {
     return this.http.post<any>(this.getOTPUrl, emailParam, { headers: this.getHeaders() });
       // .pipe(catchError(this.handleError<any>('mailOTP')));
