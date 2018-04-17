@@ -1,8 +1,8 @@
 import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { CommonUtilityService } from '../common-utility.service';
-import { UserDetails, AddressDetails, NotificationObject } from '../i2h-objects';
+import { UserDetails, NotificationObject } from '../i2h-objects';
 import { UserInfoService } from '../userinfo.service';
-import { stateList, tagArray, tagSet } from '../hardcoded-collection';
+import { stateList, tagSet } from '../hardcoded-collection';
 
 @Component({
   selector: 'app-address',
