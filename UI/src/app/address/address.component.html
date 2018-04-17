@@ -146,7 +146,7 @@
             <div class="col-md-1 text-center pull-left address-tag cur-p {{aInfo.default ? 'default' : '' }}" attr.addid="{{aInfo.id}}" title="Make default Address" (click)="makeDefault(aInfo.id)">{{aInfo.tag}}</div>
             <div class="col-md-10 pull-right ">
               <div class="pull-right m-l-10" title="Delete this address">
-                <a data-toggle="modal" href="#confirmDeleteModal" (click)="setSelectedAddress(aInfo)">
+                <a data-toggle="modal" href="#confirmDeleteModal" (click)="confirmDelAddress(aInfo)">
                   <i class="fa fa-trash-o fa-2x col-i2h" aria-hidden="true" ></i>
                 </a>
               </div>

@@ -129,7 +129,6 @@ export class AddressComponent implements OnInit, OnDestroy {
       this.tag = (this.addressInfo.length === 0) ? 'Home' : 'Other';
     }
     const addressObj: any = {
-      // id: this.selectedAddress.id,
       tag: this.tag,
       name: this.name,
       contact: this.contact,
@@ -140,7 +139,7 @@ export class AddressComponent implements OnInit, OnDestroy {
       state: this.state,
       landmark: this.landmark,
       altContact: this.altContact,
-      default: (this.addressInfo.length === 0) || this.selectedAddress.default// first address is alwaysa default
+      default: (this.addressInfo.length === 0) || this.selectedAddress.default // first address is always default
     };
     if (this.selectedAddress) {
       addressObj.id = this.selectedAddress.id;
@@ -208,7 +207,7 @@ export class AddressComponent implements OnInit, OnDestroy {
     this.pincode = this.selectedAddress.pincode;
     this.altContact = this.selectedAddress.altContact;
   }
-  setSelectedAddress(addressObj) {
+  confirmDelAddress(addressObj) {
     this.resetAddressForm();
     this.selectedAddress = addressObj;
     this.selectedAddress.css = this.delCssClass;
@@ -258,6 +257,14 @@ export class AddressComponent implements OnInit, OnDestroy {
   makeDefault(id) {
     this.setDefaultAddress(id);
     // save this.addressInfo
+    let addressObj = {};
+    for (let i = 0; i < this.addressInfo.length; i++) {
+      if (this.addressInfo[i].id === id) {
+        addressObj = this.addressInfo[i];
+        break;
+      }
+    }
+    // update address, call this.editAddress(this.selectedAddress);
     console.log(this.addressInfo);
   }
   closeDelModal() {
