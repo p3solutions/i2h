@@ -6,7 +6,7 @@ import { catchError, map, tap } from 'rxjs/operators';
 import { of } from 'rxjs/observable/of';
 import { environment } from '../environments/environment';
 import { JwtHelper } from 'angular2-jwt';
-import { TokenPayload, TokenResponse, UserDetails, AddressDetails } from './i2h-objects';
+import { TokenPayload, TokenResponse, UserDetails } from './i2h-objects';
 
 @Injectable()
 export class UserInfoService {
