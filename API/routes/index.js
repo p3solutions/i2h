@@ -28,6 +28,10 @@ router.get('/profile', auth, ctrlProfile.profileRead);
 router.post('/updateUser', auth, ctrlProfile.updateUser);
 router.post('/validatePassword', auth, ctrlProfile.validatePassword);
 router.post('/validateThenSetPassword', auth, ctrlProfile.validateThenSetPassword);
+router.post('/addAddress', auth, ctrlProfile.addAddress);
+router.post('/updateAddress', auth, ctrlProfile.updateAddress);
+router.get('/getAddress', auth, ctrlProfile.getAddress);
+router.get('/deleteAddress/:id', auth, ctrlProfile.deleteAddress);
 
 // authentication
 router.post('/register', ctrlAuth.register);

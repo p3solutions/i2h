@@ -291,6 +291,247 @@ module.exports.validateThenSetPassword = function (req, res) {
     }
 };
 
+// Manage Address API
+
+module.exports.getAddress = function (req, res) {
+    if (!req.payload._id) {
+        res.status(401).json({
+            'success': 'false',
+            'message': 'UnauthorizedError: private profile'
+        });
+    } else {
+        const callbackUserFound = function (foundUser) {
+            const address = foundUser.address;
+            // console.logD(address, ' <- add existed');
+            ctrlUtility.sendJSONresponse(res, 200, { 'status': 'success', 'address': address });
+            return;
+        };
+        const callbackUserNotFound = function (foundUser) {
+            ctrlUtility.sendJSONresponse(res, 404, {
+                'status': 'Error',
+                'message': 'User not found'
+            });
+            return;
+        };
+        try {
+            ctrlUtility.handleUserById(req.payload._id, callbackUserFound, callbackUserNotFound, null)
+        } catch (err) {
+            console.logE(err);
+        }
+    }
+};
+
+module.exports.addAddress = function (req, res) {
+    if (!req.payload._id) {
+        res.status(401).json({
+            'success': 'false',
+            'message': 'UnauthorizedError: private profile'
+        });
+    } else {
+        const addressObj = req.body.addressObj;
+        const callbackUserFound = function (foundUser) {
+            const address = foundUser.address;
+            // new addressObj id = previous id + 1
+            const lastObjId = address.length ? Number(address[address.length - 1].id) + 1 : 1;
+            addressObj.id = lastObjId.toString();
+            address.push(addressObj);
+            foundUser.save(function (err, user) {
+                if (err) {
+                    console.logE(err);
+                    ctrlUtility.sendJSONresponse(res, 503, { 'status': 'error', 'message': 'Service Unavailable' });
+                    return;
+                }
+                console.logD('address added');
+                ctrlUtility.sendJSONresponse(res, 200, {
+                    'status': 'success',
+                    'message': 'Address added successfully',
+                    'lastObjId': lastObjId
+                });
+                return;
+            });
+        };
+        const callbackUserNotFound = function (foundUser) {
+            ctrlUtility.sendJSONresponse(res, 404, {
+                'status': 'Error',
+                'message': 'User not found'
+            });
+            return;
+        };
+        try {
+            ctrlUtility.handleUserById(req.payload._id, callbackUserFound, callbackUserNotFound, null)
+        } catch (err) {
+            console.logE(err);
+        }
+    }
+};
+
+
+// module.exports.updateAddress = function (req, res) {
+//     if (!req.payload._id) {
+//         res.status(401).json({
+//             'success': 'false',
+//             'message': 'UnauthorizedError: private profile'
+//         });
+//     } else {
+//         const addressObj = req.body.addressObj;
+//         console.logD('passed add\n', addressObj);
+//         const callbackUserFound = function (foundUser) {
+//             const addressArray = foundUser.address;
+//             let  updateObj = {};
+//             for (let i = 0; i < addressArray.length; i++) {
+//                 console.logD('chking id', addressArray[i].id);
+//                 if (addressArray[i].id.toString() === addressObj.id.toString()) {
+//                     addressArray[i] = addressObj;
+//                     console.logD('array modified');
+//                     break;
+//                 }
+//             }
+//             foundUser.save(function (err, user) {
+//                 if (err) {
+//                     console.logE(err);
+//                     ctrlUtility.sendJSONresponse(res, 503, { 'status': 'error', 'message': 'Service Unavailable' });
+//                     return;
+//                 }
+//                 console.log('updated scsfly', user.address);
+//                 ctrlUtility.sendJSONresponse(res, 200, {
+//                     'status': 'success',
+//                     'message': 'Address updated successfully'
+//                 });
+//                 return;
+//             });
+//         };
+//         const callbackUserNotFound = function (foundUser) {
+//             ctrlUtility.sendJSONresponse(res, 404, {
+//                 'status': 'Error',
+//                 'message': 'User not found'
+//             });
+//             return;
+//         };
+//         try {
+//             ctrlUtility.handleUserById(req.payload._id, callbackUserFound, callbackUserNotFound, null)
+//         } catch (err) {
+//             console.logE(err);
+//         }
+//     }
+// };
+
+
+module.exports.updateAddress = function (req, res) {
+    if (!req.payload._id) {
+        res.status(401).json({
+            'success': 'false',
+            'message': 'UnauthorizedError: private profile'
+        });
+    } else {
+        const addressObj = req.body.addressObj;
+        const callbackUserFound = function (foundUser) {
+            const address = foundUser.address;
+            const newAddressArray = [];
+            for (let i = 0; i < address.length; i++) {
+                if (address[i].id.toString() === addressObj.id.toString()) {
+                    newAddressArray.push(addressObj);
+                } else{
+                    newAddressArray.push(address[i]);
+                }
+            }
+            foundUser.address = newAddressArray;
+            foundUser.save(function (err, user) {
+                if (err) {
+                    console.logE(err);
+                    ctrlUtility.sendJSONresponse(res, 503, { 'status': 'error', 'message': 'Service Unavailable' });
+                    return;
+                }
+                console.logD('address updated');
+                ctrlUtility.sendJSONresponse(res, 200, {
+                    'status': 'success',
+                    'message': 'Address updated successfully'
+                });
+                return;
+            });
+        };
+        const callbackUserNotFound = function (foundUser) {
+            ctrlUtility.sendJSONresponse(res, 404, {
+                'status': 'Error',
+                'message': 'User not found'
+            });
+            return;
+        };
+        try {
+            ctrlUtility.handleUserById(req.payload._id, callbackUserFound, callbackUserNotFound, null)
+        } catch (err) {
+            console.logE(err);
+        }
+    }
+};
+
+module.exports.deleteAddress = function (req, res) {
+    if (!req.payload._id) {
+        res.status(401).json({
+            'success': 'false',
+            'message': 'UnauthorizedError: private profile'
+        });
+    } else {
+        const id = req.params.id;
+        const callbackUserFound = function (foundUser) {
+            let flag = false;
+            const address = foundUser.address;
+            console.logD('deleting passed id->', id);
+            for(let i = 0; i < address.length; i++) { // id may not be in order so iterate full
+                if (address[i].id.toString() === id.toString()) {
+                    address.splice(i, 1);
+                    flag = true;
+                    break;
+                }
+            }
+            foundUser.save(function (err, user) {
+                if (err) {
+                    console.logE(err);
+                    ctrlUtility.sendJSONresponse(res, 503, { 'status': 'error', 'message': 'Service Unavailable' });
+                    return;
+                }
+                if (flag) {
+                console.logD('address deleted');
+                    ctrlUtility.sendJSONresponse(res, 200, {
+                        'status': 'success',
+                        'message': 'Address deleted successfully',
+                        'totalAddress': address.length
+                    });
+                } else {
+                    ctrlUtility.sendJSONresponse(res, 203, {
+                        'status': 'error',
+                        'message': 'Address id does not exist',
+                        'totalAddress': address.length
+                    });
+                }
+                return;
+            });
+        };
+        const callbackUserNotFound = function (foundUser) {
+            ctrlUtility.sendJSONresponse(res, 404, {
+                'status': 'Error',
+                'message': 'User not found'
+            });
+            return;
+        };
+        try {
+            ctrlUtility.handleUserById(req.payload._id, callbackUserFound, callbackUserNotFound, null)
+        } catch (err) {
+            console.logE(err);
+        }
+    }
+};
+
+// addressObj.tag ? addressArray[i].tag = addressObj.tag.trim() : '';
+// addressObj.name ? addressArray[i].name = addressObj.name.trim() : '';
+// addressObj.contact ? addressArray[i].contact = addressObj.contact.trim() : '';
+// addressObj.address ? addressArray[i].address = addressObj.address.trim() : '';
+// addressObj.city ? addressArray[i].city = addressObj.city.trim() : '';
+// addressObj.pincode ? addressArray[i].pincode = addressObj.pincode.trim() : '';
+// addressObj.locality ? addressArray[i].locality = addressObj.locality.trim() : '';
+// addressObj.state ? addressArray[i].state = addressObj.state.trim() : '';
+// addressObj.landmark ? addressArray[i].landmark = addressObj.landmark.trim() : '';
+// addressObj.altContact ? addressArray[i].altContact = addressObj.altContact.trim() : '';
+// addressObj.default ? addressArray[i].default = addressObj.default : '';
 
 
 /*
