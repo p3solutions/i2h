@@ -8,18 +8,18 @@
     <div>
       <ul class="nav navbar-nav navbar-right">
         <li *ngIf="userDetails?.fname" class="dropdown user-menu active">
-          <a href="#" class="nav-username dropdown-toggle trim-text" data-toggle="dropdown" role="button"
+          <a href="#" class="nav-username dropdown-toggle text-trim" data-toggle="dropdown" role="button"
              aria-haspopup="true" aria-expanded="false" title="{{userDetails?.fname}}">
              <i class="fa fa-user-circle-o fa-lg col-000 nav-username-icon"></i>&nbsp;&nbsp;{{userDetails?.fname}}
             <span class="caret"></span>
           </a>
           <ul class="dropdown-menu">
             <li title="Account">
-              <a routerLink="/landing/settings" class="trim-text">Account</a>
+              <a routerLink="/landing/settings" class="text-trim">Account</a>
             </li>
             <li role="separator" class="divider"></li>
             <li title="Order History">
-              <a routerLink="/landing/history" class="trim-text">Order History</a>
+              <a routerLink="/landing/history" class="text-trim">Order History</a>
             </li>
           </ul>
         </li>
