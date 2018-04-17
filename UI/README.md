@@ -54,4 +54,6 @@ Simiilar commands
 
 ## NOTES
 1. Password attempt limitation not yet implemented.
-2. should we redirect to sign-in after successful password change
+2. Should we redirect to sign-in after successful password change
+3. Reloading profile/other pages doesn't make sidebar link active
+4. Address pg, click edit button on last address, must scroll to maintain that in view, it scrolls down & hide because above height increased 
