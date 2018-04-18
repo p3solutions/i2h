@@ -149,6 +149,5 @@ export class CommonUtilityService {
     for (const [key, value] of Object.entries(srcObj)) {
       destObj[key] = value;
     }
-    console.log('copied obj', destObj);
   }
 }
