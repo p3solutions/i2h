@@ -4,6 +4,7 @@
       <div class="fa-2x">
         Manage Address
       </div>
+
       <div class="col-md-12 m-t-10 add-address-div p-r-0 bg-fff">
 
         <div class="col-md-12 row m-t-10 m-b-10">
@@ -139,7 +140,6 @@
       
       </div>
 
-
     <!-- Saved address -->
       <div *ngIf="addressInfo.length > 0" class="col-md-12 m-t-10 add-address-div p-0 {{showTemplate ? '' : 'extend'}}">
 
@@ -182,13 +182,10 @@
 
         </div>
       </div>
+
     </div>
 
-
 </div>
-
-
-
 
 <!-- Delete Address Confirmation Modal -->
 <div class="modal fade" id="confirmDeleteModal" role="dialog">
@@ -198,6 +195,7 @@
       <div class="header-cap">
         <i class="fa fa-user-circle fa-5x"></i>
       </div>
+
       <div class="header-content {{delNotif?.show ? 'header-content-notif' : ''}}">
        
         <div class="col-md-12 m-b-10 text-center">
