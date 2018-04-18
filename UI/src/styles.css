@@ -469,8 +469,8 @@ select.labelled-effect {
 .sub-info {
   font-size: 10px;
   position: absolute;
-  top: 100%;
-  left: 0;
+  top: 90%;
+  left: 15px;
   font-style: italic;
   font-weight: bold;
   padding: 2px;

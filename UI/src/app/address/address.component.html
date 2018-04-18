@@ -11,12 +11,7 @@
 
           <div class="col-md-6 p-l-0">
             <i class="fa fa-plus fa-3x pull-left col-i2h cur-p" aria-hidden="true" (click)="showAdressTemplate()"></i>
-            <button type="button" class="btn btn-i2h" (click)="showAdressTemplate()">Add Address</button>
-            <span *ngIf="showTemplate" class="sub-info">
-              <!-- <i class="fa fa-info col-i2h" aria-hidden="true"></i> -->
-              Mandatory fields are marked 
-              <i class="fa fa-asterisk mandatory-icon" aria-hidden="true"></i> 
-            </span>
+            <!-- <button type="button" class="btn btn-i2h" (click)="showAdressTemplate()">Add Address</button> -->
           </div>
 
           <div *ngIf="showTemplate" class="col-md-6">
@@ -137,7 +132,12 @@
           </div>
 
         </div>
-      
+
+        <span *ngIf="showTemplate" class="sub-info">
+          <i class="fa fa-asterisk mandatory-icon" aria-hidden="true"></i>
+          denotes Mandatory fields
+        </span>
+        
       </div>
 
     <!-- Saved address -->
