@@ -71,7 +71,6 @@ export class AddressComponent implements OnInit, OnDestroy {
 
   getAddress() {
     this.userInfoService.getAddress().subscribe((res) => {
-      console.log(res);
       if (res && res.status === 'success') {
         const addressList = res.address;
         if (addressList) {
@@ -83,6 +82,7 @@ export class AddressComponent implements OnInit, OnDestroy {
   }
   showAdressTemplate() {
     this.showTemplate = true;
+    this.resetSelectedAddress();
   }
   enableAddButton(e) {
     if (this.name !== '' && this.contact !== '' && this.address !== '' &&
@@ -90,22 +90,15 @@ export class AddressComponent implements OnInit, OnDestroy {
     ) {
       this.enableAddBtn = true;
       if (e.keyCode === 13) {
-        this.addAdress();
+        this.addAdress(false);
       }
     } else {
       this.enableAddBtn = false;
     }
-    // console.log(
-    //   (this.name !== '' && this.contact !== '' && this.address !== '' &&
-    //     this.state !== '' && this.pincode !== '' && this.city !== '' && this.locality !== ''
-    //   ),
-    //   this.name, this.contact, this.address, this.state, this.pincode, this.city,
-    //   this.locality, this.landmark, this.altContact, this.tag
-    // );
   }
 
   showMap() {
-    //
+    console.log('Google Maps/API still not integrated');
   }
   setPotentialTag() {
       const tags = new Set(this.tagSet);
@@ -122,9 +115,8 @@ export class AddressComponent implements OnInit, OnDestroy {
     this.tagList = [];
     this.tagSet.forEach((tag) => { this.tagList.push(tag); });
   }
-  addAdress() {
+  addAdress(isMakeDefault) {
     this.addProgress = true;
-    console.log(this.tag, 'creating');
     if (!this.tag) {
       this.tag = (this.addressInfo.length === 0) ? 'Home' : 'Other';
     }
@@ -139,27 +131,28 @@ export class AddressComponent implements OnInit, OnDestroy {
       state: this.state,
       landmark: this.landmark,
       altContact: this.altContact,
-      default: (this.addressInfo.length === 0) || this.selectedAddress.default // first address is always default
+      default: (this.addressInfo.length === 0) || (this.selectedAddress && this.selectedAddress.default) // first address is always default
     };
     if (this.selectedAddress) {
       addressObj.id = this.selectedAddress.id;
       this.userInfoService.updateAddress(addressObj).subscribe((res) => {
-        console.log(res);
         if (res && res.status === 'success') {
           for (let i = 0; i < this.addressInfo.length; i++) {
             if (this.addressInfo[i].id === addressObj.id) {
               this.commonUtilityService.copyObject(addressObj, this.addressInfo[i]);
-              console.log('after creating', this.addressInfo);
+              if (isMakeDefault) {
+                this.addressInfo[i].default = true;
+              }
+            } else if (isMakeDefault) {
+              this.addressInfo[i].default = false;
             }
           }
-          this.selectedAddress = null;
-          console.log('selected Add', this.selectedAddress);
+          this.resetSelectedAddress();
           this.resetAddressForm();
         }
       });
     } else {
       this.userInfoService.addAddress(addressObj).subscribe( (res) => {
-        console.log(res);
         if (res && res.status === 'success') {
           addressObj.id = res.lastObjId;
           this.addressInfo.push(addressObj);
@@ -168,12 +161,7 @@ export class AddressComponent implements OnInit, OnDestroy {
       });
     }
   }
-  copyObject(srcObj, destObj) {
-    for (const [key, value] of Object.entries(srcObj)) {
-      destObj[key] = value;
-    }
-    console.log('copied obj', destObj);
-  }
+
   resetAddressForm() {
     this.showTemplate = false;
     this.addProgress = false;
@@ -190,12 +178,13 @@ export class AddressComponent implements OnInit, OnDestroy {
     this.altContact = '';
     this.setPotentialTag();
   }
-  editAddress(addressObj) {
-    this.resetTagList();
+  editAddress(addressObj, isMakeDefault) {
+    if (!isMakeDefault) {
+      this.resetTagList();
+      this.showTemplate = true;
+    }
     this.selectedAddress = addressObj;
     this.selectedAddress.css = this.editCssClass;
-    console.log(this.selectedAddress);
-    this.showTemplate = true;
     this.tag = this.selectedAddress.tag;
     this.contact = this.selectedAddress.contact;
     this.name = this.selectedAddress.name;
@@ -215,9 +204,7 @@ export class AddressComponent implements OnInit, OnDestroy {
   deleteAddress() {
     this.deleteProgress = true;
     const id = this.selectedAddress.id;
-    console.log('id', id);
     this.userInfoService.deleteAddress(id).subscribe((res) => {
-      console.log(res);
       if (res && res.status === 'success') {
         for (let i = 0; i < this.addressInfo.length; i++) { // id may not be in order so iterate full
           if (this.addressInfo[i].id === id) {
@@ -230,7 +217,7 @@ export class AddressComponent implements OnInit, OnDestroy {
             setTimeout(function () {
               document.getElementById('cancel').click();
             }, 1500);
-            this.selectedAddress = null;
+            this.resetSelectedAddress();
             break;
           }
         }
@@ -242,32 +229,27 @@ export class AddressComponent implements OnInit, OnDestroy {
     });
   }
   closeDelNotif() {
-    this.selectedAddress = null;
+    this.resetSelectedAddress();
     this.delNotif = new NotificationObject();
   }
-  setDefaultAddress(id) {
-    this.addressInfo.forEach(address => {
-      if (address.id === id) {
-        address.default = true;
-      } else {
-        address.default = false;
-      }
-    });
-  }
+
   makeDefault(id) {
-    this.setDefaultAddress(id);
-    // save this.addressInfo
-    let addressObj = {};
+    this.resetAddressForm();
+    let addressObj: any = {};
     for (let i = 0; i < this.addressInfo.length; i++) {
       if (this.addressInfo[i].id === id) {
         addressObj = this.addressInfo[i];
         break;
       }
     }
-    // update address, call this.editAddress(this.selectedAddress);
-    console.log(this.addressInfo);
+    addressObj.default = true;
+    this.editAddress(addressObj, true);
+    this.addAdress(true);
   }
   closeDelModal() {
+    this.resetSelectedAddress();
+  }
+  resetSelectedAddress() {
     this.selectedAddress = null;
   }
 }

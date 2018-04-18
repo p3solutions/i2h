@@ -20,7 +20,9 @@
 
           <div *ngIf="showTemplate" class="col-md-6">
             <div class="col-md-1 pull-right" title="Add new address">
-              <i class="fa fa-plus-circle fa-3x {{ enableAddBtn ? 'col-i2h cur-p' : 'cur-disabled'}} " aria-hidden="true" (click)="enableAddBtn ? addAdress() : null"></i>
+              <i *ngIf="addProgress" class="fa fa-spinner fa-spin inline-loader col-000 fa-3x"></i>
+              <i *ngIf="!addProgress" class="fa fa-plus-circle fa-3x {{ enableAddBtn ? 'col-i2h cur-p' : 'cur-disabled'}} "
+                 aria-hidden="true" (click)="enableAddBtn ? addAdress(false) : null"></i>
             </div>
             <div class="col-md-1 pull-right text-center" title="Find in map">
               <i class="fa fa-map-marker fa-3x {{ false ? 'col-i2h cur-p' : 'cur-disabled'}}" aria-hidden="true" (click)="showMap()"></i>
@@ -151,7 +153,7 @@
                 </a>
               </div>
               <div class="text-center pull-right m-l-10" title="Edit this address">
-                <i class="fa fa-pencil fa-2x col-i2h cur-p" aria-hidden="true" (click)="editAddress(aInfo)"></i>
+                <i class="fa fa-pencil fa-2x col-i2h cur-p" aria-hidden="true" (click)="editAddress(aInfo, false)"></i>
               </div>
             </div>
           </div>
@@ -169,9 +171,7 @@
           <div class="col-md-12" title="{{aInfo.address}}{{aInfo.landmark ? ', ' + aInfo.landmark : ''}}{{', ' + aInfo.locality}}">
             <i class="fa fa-home fa-lg added-address-icon" aria-hidden="true"></i>
             <label class="text-trim col-md-11 text-cap">
-              {{aInfo.address}}
-              {{aInfo.landmark ? ', ' + aInfo.landmark : ''}}
-              {{', ' + aInfo.locality}}
+              {{aInfo.address}}{{aInfo.landmark ? ', ' + aInfo.landmark : ''}}{{', ' + aInfo.locality}}
             </label>
           </div>
 
@@ -190,7 +190,7 @@
 
 
 
-<!-- Change Password Modal -->
+<!-- Delete Address Confirmation Modal -->
 <div class="modal fade" id="confirmDeleteModal" role="dialog">
   <div class="modal-dialog">
     <!-- Modal content-->
@@ -207,7 +207,8 @@
         <div class="col-md-12 p-0 m-t-10 text-center">
           <button type="button" id="cancel" class=" m-r-20 btn btn-i2h" data-dismiss="modal" (click)="closeDelModal()">Cancel</button>
 
-          <button type="submit" class=" m-l-20 btn btn-form btn-i2h" (click)="(selectedAddress || !deleteProgress) ? deleteAddress() : null">
+          <button type="submit" class=" m-l-20 btn btn-form btn-i2h" disabled="{{(selectedAddress && !deleteProgress) ? null : 'true' }}"
+            (click)="(selectedAddress && !deleteProgress) ? deleteAddress() : null">
             Delete
             <i *ngIf="deleteProgress" class="fa fa-spinner fa-spin inline-loader col-fff"></i>
           </button>

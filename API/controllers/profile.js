@@ -334,6 +334,9 @@ module.exports.addAddress = function (req, res) {
             // new addressObj id = previous id + 1
             const lastObjId = address.length ? Number(address[address.length - 1].id) + 1 : 1;
             addressObj.id = lastObjId.toString();
+            if (!addressObj.default) {
+                addressObj.default = false;
+            }
             address.push(addressObj);
             foundUser.save(function (err, user) {
                 if (err) {
@@ -429,8 +432,14 @@ module.exports.updateAddress = function (req, res) {
             const newAddressArray = [];
             for (let i = 0; i < address.length; i++) {
                 if (address[i].id.toString() === addressObj.id.toString()) {
+                    if (addressObj.default) { // set false for all except the current addresObj
+                        console.logD('Making default address to address-id ', addressObj.id);
+                    }                    
                     newAddressArray.push(addressObj);
                 } else{
+                    if (addressObj.default) { // set false for all except the current addresObj
+                        address[i].default = false;
+                    }
                     newAddressArray.push(address[i]);
                 }
             }
