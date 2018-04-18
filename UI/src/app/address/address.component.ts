@@ -75,7 +75,7 @@ export class AddressComponent implements OnInit, OnDestroy {
         const addressList = res.address;
         if (addressList) {
           this.addressInfo = addressList;
-          this.setPotentialTag();
+          this.setPotentialTags();
         }
       }
     });
@@ -100,15 +100,15 @@ export class AddressComponent implements OnInit, OnDestroy {
   showMap() {
     console.log('Google Maps/API still not integrated');
   }
-  setPotentialTag() {
-      const tags = new Set(this.tagSet);
-      this.addressInfo.forEach(address => {
-        if (address.tag !== 'Other') {
-          tags.delete(address.tag);
-        }
-      });
-      this.tagList = [];
-      tags.forEach((tag) => { this.tagList.push(tag); });
+  setPotentialTags() {
+    const tags = new Set(this.tagSet);
+    this.addressInfo.forEach(address => {
+      if (address.tag !== 'Other') {
+        tags.delete(address.tag);
+      }
+    });
+    this.tagList = [];
+    tags.forEach((tag) => { this.tagList.push(tag); });
   }
 
   resetTagList() {
@@ -176,7 +176,7 @@ export class AddressComponent implements OnInit, OnDestroy {
     this.landmark = '';
     this.pincode = '';
     this.altContact = '';
-    this.setPotentialTag();
+    this.setPotentialTags();
   }
   editAddress(addressObj, isMakeDefault) {
     if (!isMakeDefault) {
@@ -222,6 +222,7 @@ export class AddressComponent implements OnInit, OnDestroy {
           }
         }
         this.deleteProgress = false;
+        this.setPotentialTags();
       } else {
         this.deleteProgress = false;
         this.delNotif = this.commonUtilityService.setNotificationObject('error', res.message);
