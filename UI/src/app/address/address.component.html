@@ -1,17 +1,25 @@
 <div class="row col-md-12 m-t-10">
 
     <div class="col-md-12 m-t-10 m-b-20">
-      <div class="fa-2x">
+      <div class="fa-2x m-b-20">
         Manage Address
       </div>
-
+      <div class="plus-div">
+        <a data-toggle="modal" href="#addEditAddressModal">
+          <i class="fa fa-plus fa-3x pull-left col-i2h cur-p" aria-hidden="true"></i>
+        </a>
+      </div>
+<!-- 
       <div class="col-md-12 m-t-10 add-address-div p-r-0 bg-fff">
 
         <div class="col-md-12 row m-t-10 m-b-10">
 
           <div class="col-md-6 p-l-0">
-            <i class="fa fa-plus fa-3x pull-left col-i2h cur-p" aria-hidden="true" (click)="showAdressTemplate()"></i>
-            <!-- <button type="button" class="btn btn-i2h" (click)="showAdressTemplate()">Add Address</button> -->
+            <!-- <i class="fa fa-plus fa-3x pull-left col-i2h cur-p" aria-hidden="true" (click)="showAdressTemplate()"></i>  - ->
+            <a data-toggle="modal" href="#addEditAddressModal">
+              <i class="fa fa-plus fa-3x pull-left col-i2h cur-p" aria-hidden="true"></i>
+            </a>
+            <!-- <button type="button" class="btn btn-i2h" (click)="showAdressTemplate()">Add Address</button> - ->
           </div>
 
           <div *ngIf="showTemplate" class="col-md-6">
@@ -28,14 +36,14 @@
         </div>
         
         <div *ngIf="showTemplate" class="col-md-12 row m-t-10 m-b-10 p-0">
-        <!-- 1st row -->
+        <!-- 1st row - ->
           <div class="col-md-2">
             <div class="input-effect-div input-effect m-t-10 m-b-10">
               <select class="labelled-effect {{tag ? 'has-content' : '' }}" [(ngModel)]="tag" (change)="enableAddButton($event)">
                 <option *ngFor="let tag of tagList">{{tag}}</option>
               </select>
-              <!-- <ng-autocomplete (selected)="Selected($event)" [classes]="['']" [group]="group"></ng-autocomplete> -->
-              <!-- <input type="text" class="labelled-effect" required="true" [(ngModel)]="tag" (keyup)="enableAddButton($event)" (focusout)="handleLabelName($event)"/> -->
+              <!-- <ng-autocomplete (selected)="Selected($event)" [classes]="['']" [group]="group"></ng-autocomplete> - ->
+              <!-- <input type="text" class="labelled-effect" required="true" [(ngModel)]="tag" (keyup)="enableAddButton($event)" (focusout)="handleLabelName($event)"/> - ->
               <label>Select Tag</label>
               <span class="focus-bg"></span>
             </div>
@@ -71,7 +79,7 @@
             </div>
           </div>
 
-        <!-- 2nd row -->
+        <!-- 2nd row - ->
           <div class="col-md-2">
             <div class="input-effect-div input-effect m-t-10 m-b-10">
               <input type="text" class="labelled-effect text-cap {{landmark ? 'has-content' : '' }}" required="true" [(ngModel)]="landmark"
@@ -135,17 +143,20 @@
 
         <span *ngIf="showTemplate" class="sub-info">
           <i class="fa fa-asterisk mandatory-icon" aria-hidden="true"></i>
-          denotes Mandatory fields
-        </span>
+          denotes mandatory fields
+        </span> 
         
-      </div>
+      </div> -->
+
 
     <!-- Saved address -->
-      <div *ngIf="addressInfo.length > 0" class="col-md-12 m-t-10 add-address-div p-0 {{showTemplate ? '' : 'extend'}}">
+      <!-- <div *ngIf="addressInfo.length > 0" class="col-md-12 m-t-10 add-address-div p-0 {{showTemplate ? '' : 'extend'}}"> -->
+      <div *ngIf="addressInfo.length > 0" class="col-md-12 m-t-10 add-address-div p-0">
 
         <div *ngFor="let aInfo of addressInfo" class="bg-alt {{(selectedAddress && selectedAddress.id === aInfo.id) ? selectedAddress.css : ''}}">
           <div class="col-md-12">
-            <div class="col-md-1 text-center pull-left address-tag cur-p {{aInfo.default ? 'default' : '' }}" attr.addid="{{aInfo.id}}" title="Make default Address" (click)="makeDefault(aInfo.id)">{{aInfo.tag}}</div>
+            <div class="col-md-1 text-center pull-left address-tag cur-p {{aInfo.default ? 'default' : '' }}"
+             attr.addid="{{aInfo.id}}" title="Make default Address" (click)="makeDefault(aInfo.id)">{{aInfo.tag}}</div>
             <div class="col-md-10 pull-right ">
               <div class="pull-right m-l-10" title="Delete this address">
                 <a data-toggle="modal" href="#confirmDeleteModal" (click)="confirmDelAddress(aInfo)">
@@ -153,7 +164,10 @@
                 </a>
               </div>
               <div class="text-center pull-right m-l-10" title="Edit this address">
-                <i class="fa fa-pencil fa-2x col-i2h cur-p" aria-hidden="true" (click)="editAddress(aInfo, false)"></i>
+                <!-- <i class="fa fa-pencil fa-2x col-i2h cur-p" aria-hidden="true" (click)="editAddress(aInfo, false)"></i> -->
+                <a data-toggle="modal" href="#addEditAddressModal" (click)="passSelectedAddress(aInfo, false)">
+                  <i class="fa fa-pencil fa-2x col-i2h cur-p" aria-hidden="true" ></i>
+                </a>
               </div>
             </div>
           </div>
@@ -187,6 +201,10 @@
 
 </div>
 
+<app-add-edit-address [modifiedAddressInfo]="addressInfo" (addressChange)="onAddressChanged($event)"
+   [passedSelectedAddressObj]="selectedAddressObj" (selectedAddressChange)="onSelectedAddressChanged($event)"></app-add-edit-address>
+
+
 <!-- Delete Address Confirmation Modal -->
 <div class="modal fade" id="confirmDeleteModal" role="dialog">
   <div class="modal-dialog">
@@ -197,21 +215,21 @@
       </div>
 
       <div class="header-content {{delNotif?.show ? 'header-content-notif' : ''}}">
-       
+
         <div class="col-md-12 m-b-10 text-center">
           Confirm Address Delete ?
         </div>
 
         <div class="col-md-12 p-0 m-t-10 text-center">
-          <button type="button" id="cancel" class=" m-r-20 btn btn-i2h" data-dismiss="modal" (click)="closeDelModal()">Cancel</button>
+          <button type="button" class="cancel m-r-20 btn btn-i2h" data-dismiss="modal" (click)="closeDelModal()">Cancel</button>
 
-          <button type="submit" class=" m-l-20 btn btn-form btn-i2h" disabled="{{(selectedAddress && !deleteProgress) ? null : 'true' }}"
+          <button type="submit" class="m-l-20 btn btn-form btn-i2h" disabled="{{(selectedAddress && !deleteProgress) ? null : 'true' }}"
             (click)="(selectedAddress && !deleteProgress) ? deleteAddress() : null">
             Delete
             <i *ngIf="deleteProgress" class="fa fa-spinner fa-spin inline-loader col-fff"></i>
           </button>
         </div>
-        
+
         <div id="notification-block" class="col-md-12 p-0 m-t-10">
           <div *ngIf="delNotif?.show" role="alert" class="text-center alert {{delNotif.classCss}} alert-fade-in alert-dismissible">
             <button type="button" class="close" aria-label="Close" (click)="closeDelNotif()">

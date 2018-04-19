@@ -22,6 +22,7 @@ import { AddressComponent } from './address/address.component';
 import { DependentsComponent } from './dependents/dependents.component';
 import { CompareComponent } from './compare/compare.component';
 import { OrderHistoryComponent } from './order-history/order-history.component';
+import { AddEditAddressComponent } from './add-edit-address/add-edit-address.component';
 
 @NgModule({
   declarations: [
@@ -37,7 +38,8 @@ import { OrderHistoryComponent } from './order-history/order-history.component';
     AddressComponent,
     DependentsComponent,
     CompareComponent,
-    OrderHistoryComponent
+    OrderHistoryComponent,
+    AddEditAddressComponent
   ],
   imports: [
     BrowserModule,

@@ -405,8 +405,8 @@ input[type="number"] {
 /* End of sidemenu css */
 
 .add-address-div {
-  border: 1px solid grey;
-  max-height: 380px;
+  border: 1px solid #ccc;
+  max-height: 550px;
   overflow-y: auto;
 }
 .add-address-div.extend {
@@ -469,7 +469,7 @@ select.labelled-effect {
 .sub-info {
   font-size: 10px;
   position: absolute;
-  top: 90%;
+  top: -18px;
   left: 15px;
   font-style: italic;
   font-weight: bold;

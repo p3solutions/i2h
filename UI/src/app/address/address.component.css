@@ -7,3 +7,8 @@
 .header-content-notif{
     height: 170px !important;
 }
+.plus-div {
+    position: absolute;
+    right: 60px;
+    top: 0;
+}
