@@ -235,8 +235,9 @@ export class AddressComponent implements OnInit, OnDestroy {
             }
             this.delNotif = this.commonUtilityService.setNotificationObject('success', res.message);
             setTimeout(function () {
-              const cancelBtn: HTMLButtonElement = document.querySelector('#confirmDeleteModal .cancel');
-              cancelBtn.click();
+              const cancelBtn: Element = document.querySelector('#confirmDeleteModal .cancel');
+              const btn = <HTMLButtonElement>cancelBtn;
+              btn.click();
             }, 1500);
             this.resetSelectedAddress();
             break;

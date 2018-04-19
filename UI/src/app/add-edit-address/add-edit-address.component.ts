@@ -138,8 +138,9 @@ export class AddEditAddressComponent implements OnInit, OnChanges {
           this.selectedAddressChange.emit(true);
           this.resetSelectedAddress();
           this.resetAddressForm();
-          const cancelBtn: HTMLButtonElement = document.querySelector('#addEditAddressModal .cancel');
-          cancelBtn.click();
+          const cancelBtn: Element = document.querySelector('#addEditAddressModal .cancel');
+          const btn = <HTMLButtonElement> cancelBtn;
+          btn.click();
         }
       });
     } else {
@@ -148,8 +149,9 @@ export class AddEditAddressComponent implements OnInit, OnChanges {
           addressObj.id = res.lastObjId;
           this.addressInfo.push(addressObj);
           this.resetAddressForm();
-          const cancelBtn: HTMLButtonElement = document.querySelector('#addEditAddressModal .cancel');
-          cancelBtn.click();
+          const cancelBtn: Element = document.querySelector('#addEditAddressModal .cancel');
+          const btn = <HTMLButtonElement>cancelBtn;
+          btn.click();
         }
       });
     }
