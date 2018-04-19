@@ -1,0 +1,15 @@
+.add-edit-card {
+    width: 450px;
+    top: 120px;
+    min-height: 500px;
+}
+.add-edit-card .header-content {
+    padding: 0 15px;
+    height: 400px;
+}
+.add-edit-card .header-content.header-content-notif {
+    height: 470px;
+}
+.add-edit-card .add-address-div{
+    max-height: 320px;
+}

@@ -1,0 +1,159 @@
+<!-- Add / Edit Address Confirmation Modal -->
+<div class="modal fade" id="addEditAddressModal" role="dialog">
+  <div class="modal-dialog">
+    <!-- Modal content-->
+    <div class="center-card add-edit-card">
+      <div class="header-cap">
+        <i class="fa fa-vcard fa-5x"></i>
+      </div>
+
+      <div class="header-content {{delNotif?.show ? 'header-content-notif' : ''}}">
+
+        <div class="col-md-12 m-t-10 add-address-div p-r-0 bg-fff">
+        
+          <div class="col-md-12 row p-0 m-t-10">
+<!-- 1st row -->
+            <div class="col-md-6">
+              <div class="input-effect-div input-effect m-t-10 m-b-10">
+                <select class="labelled-effect {{tag ? 'has-content' : '' }}" [(ngModel)]="tag" (change)="enableAddButton($event)">
+                  <option *ngFor="let tag of tagList">{{tag}}</option>
+                </select>
+                <!-- not deleting this comment , in case we need to implement auto complete for tags
+                   <ng-autocomplete (selected)="Selected($event)" [classes]="['']" [group]="group"></ng-autocomplete> -->
+                <!-- <input type="text" class="labelled-effect" required="true" [(ngModel)]="tag" (keyup)="enableAddButton($event)" (focusout)="handleLabelName($event)"/> -->
+                <label>Select Tag</label>
+                <span class="focus-bg"></span>
+              </div>
+            </div>
+            <div class="col-md-6 pull-right text-center m-t-10" title="Find in map">
+              <i class="fa fa-map-marker fa-3x {{ false ? 'col-i2h cur-p' : 'cur-disabled'}}" aria-hidden="true" (click)="showMap()"></i>
+            </div>
+<!-- 2nd row -->
+            <div class="col-md-12">
+              <div class="input-effect-div input-effect m-t-10 m-b-10">
+                <input type="text" class="labelled-effect text-cap {{name ? 'has-content' : '' }}" required="true" [(ngModel)]="name" (keyup)="enableAddButton($event)"
+                  (focusout)="handleLabelName($event)" />
+                <label>Name</label>
+                <span class="focus-bg"></span>
+                <i class="fa fa-asterisk input-icon mandatory-icon" aria-hidden="true"></i>
+              </div>
+            </div>
+        
+<!-- 3rd row -->
+            <div class="col-md-6">
+              <div class="input-effect-div input-effect m-t-10 m-b-10">
+                <input type="text" class="labelled-effect {{contact ? 'has-content' : '' }}" (keydown)="allowOnlyNumbers($event)" (paste)="pasteOnlyNumbers($event)"
+                  [(ngModel)]='contact' (keyup)="enableAddButton($event)" (focusout)="handleLabelName($event)" />
+                <label>Contact</label>
+                <span class="focus-bg"></span>
+                <i class="fa fa-asterisk input-icon mandatory-icon" aria-hidden="true"></i>
+              </div>
+            </div>
+        
+            <div class="col-md-6">
+              <div class="input-effect-div input-effect m-t-10 m-b-10">
+                <input type="text" class="labelled-effect {{altContact ? 'has-content' : '' }}" (keydown)="allowOnlyNumbers($event)" (paste)="pasteOnlyNumbers($event)"
+                  [(ngModel)]="altContact" (keyup)="enableAddButton($event)" (focusout)="handleLabelName($event)" />
+                <label>Alternate Contact</label>
+                <span class="focus-bg"></span>
+              </div>
+            </div>
+
+<!-- 4th row -->
+            <div class="col-md-12">
+              <div class="input-effect-div input-effect m-t-10 m-b-10">
+                <input type="text" class="labelled-effect text-cap {{address ? 'has-content' : '' }}" required="true" [(ngModel)]="address"
+                  (keyup)="enableAddButton($event)" (focusout)="handleLabelName($event)" />
+                <label>Address</label>
+                <span class="focus-bg"></span>
+                <i class="fa fa-asterisk input-icon mandatory-icon" aria-hidden="true"></i>
+              </div>
+            </div>
+        
+<!-- 5th row -->
+            <div class="col-md-6">
+              <div class="input-effect-div input-effect m-t-10 m-b-10">
+                <input type="text" class="labelled-effect text-cap {{landmark ? 'has-content' : '' }}" required="true" [(ngModel)]="landmark"
+                  (keyup)="enableAddButton($event)" (focusout)="handleLabelName($event)" />
+                <label>Landmark</label>
+                <span class="focus-bg"></span>
+              </div>
+            </div>
+        
+            <div class="col-md-6">
+              <div class="input-effect-div input-effect m-t-10 m-b-10">
+                <input type="text" class="labelled-effect text-cap {{locality ? 'has-content' : '' }}" required="true" [(ngModel)]="locality"
+                  (keyup)="enableAddButton($event)" (focusout)="handleLabelName($event)" />
+                <label>Locality</label>
+                <span class="focus-bg"></span>
+                <i class="fa fa-asterisk input-icon mandatory-icon" aria-hidden="true"></i>
+              </div>
+            </div>
+
+<!-- 6th row -->
+            <div class="col-md-6">
+              <div class="input-effect-div input-effect m-t-10 m-b-10">
+                <input type="text" class="labelled-effect text-cap {{city ? 'has-content' : '' }}" required="true" [(ngModel)]="city" (keyup)="enableAddButton($event)"
+                  (focusout)="handleLabelName($event)" />
+                <label>City</label>
+                <span class="focus-bg"></span>
+                <i class="fa fa-asterisk input-icon mandatory-icon" aria-hidden="true"></i>
+              </div>
+            </div>
+        
+            <div class="col-md-6">
+              <div class="input-effect-div input-effect m-t-10 m-b-10">
+                <input type="text" class="labelled-effect {{pincode ? 'has-content' : '' }}" (keydown)="allowOnlyNumbers($event)" (paste)="pasteOnlyNumbers($event)"
+                [(ngModel)]="pincode" (keyup)="enableAddButton($event)" (focusout)="handleLabelName($event)" />
+                <label>Pincode</label>
+                <span class="focus-bg"></span>
+                <i class="fa fa-asterisk input-icon mandatory-icon" aria-hidden="true"></i>
+              </div>
+            </div>
+
+<!-- 7th row -->
+            <div class="col-md-12">
+              <div class="input-effect-div input-effect m-t-10 m-b-10">
+                <select class="labelled-effect {{state ? 'has-content' : '' }}" [(ngModel)]="state" (change)="enableAddButton($event)">
+                  <option *ngFor="let stateName of stateList">{{stateName}}</option>
+                </select>
+                <label>State</label>
+                <span class="focus-bg"></span>
+                <i class="fa fa-asterisk input-icon mandatory-icon" aria-hidden="true"></i>
+              </div>
+            </div>
+        
+          </div>
+       
+        </div>
+
+
+        <div class="col-md-12 p-0 m-t-20 text-center">
+          <span class="sub-info">
+            <i class="fa fa-asterisk mandatory-icon" aria-hidden="true"></i>
+            denotes mandatory fields
+          </span>
+
+          <button type="button" class="cancel m-r-20 btn btn-i2h" data-dismiss="modal" (click)="closeDelModal()">Cancel</button>
+
+          <button type="submit" title="Add new address" class=" m-l-20 btn btn-form btn-i2h" disabled="{{enableAddBtn ? null : 'true' }}"
+             (click)="enableAddBtn ? addAdress(false) : null">
+            Save Address
+            <i *ngIf="addProgress" class="fa fa-spinner fa-spin inline-loader col-fff"></i>
+          </button>
+          
+        </div>
+
+        <div id="notification-block" class="col-md-12 p-0 m-t-10">
+          <div *ngIf="delNotif?.show" role="alert" class="text-center alert {{delNotif.classCss}} alert-fade-in alert-dismissible">
+            <button type="button" class="close" aria-label="Close" (click)="closeDelNotif()">
+              <span aria-hidden="true">&times;</span>
+            </button>
+            <i class="fa fa-info-circle"></i> &nbsp; {{delNotif?.message}}
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
