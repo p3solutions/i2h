@@ -17,7 +17,7 @@ First start mongoDB service, then start node server & then start angular server.
 7. https://scotch.io/tutorials/using-mongoosejs-in-node-js-and-mongodb-applications
 8. https://coursework.vschool.io/mongoose-crud/
 9. https://github.com/Smi0001/MEAN-stack-authentication
-
+10. https://ciphertrick.com/2017/08/01/search-sort-pagination-in-angular/
 
 # Commands to run in AWS:
 1. sudo git stash
