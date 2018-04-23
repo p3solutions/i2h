@@ -1,3 +1,70 @@
-<p>
-  dependents works!
-</p>
+<div class="col-md-12 m-t-10 add-address-div p-0">
+
+  <div class="col-md-12">
+
+    <div class="col-md-6 m-t-20 m-b-20">     
+      <div class="input-effect-div input-effect">
+        <input type="text" class="labelled-effect {{filter ? 'has-content' : '' }}" [(ngModel)]="filter" (focusout)="handleLabelName($event)" />
+        <label>Search dependents</label>
+        <span class="focus-bg"></span>
+        <i class="fa fa-search fa-lg input-icon" aria-hidden="true"></i>
+      </div>
+    </div>
+
+    <div class="col-md-6 m-t-20 m-b-20">
+      <a data-toggle="modal" href="#addEditAddressModal">
+        <i class="fa fa-user-plus fa-3x pull-right col-i2h cur-p" aria-hidden="true"></i>
+      </a>
+    </div>
+
+    <div class="col-md-12 m-t-10 m-b-20">      
+      <div *ngIf="!games" class="text-center sidenav-title">
+        <i class="fa fa-user-times fa-lg" aria-hidden="true"></i>
+        No dependents saved!
+      </div>
+    </div>
+
+    <div class="col-md-12">
+      <table *ngIf="games" class="table table-bordered table-hover">
+        <thead>
+          <tr>
+            <th class="text-center">#</th>
+            <th (click)="sort('name')" class="cur-p">Name
+              <i class="fa col-i2h" *ngIf="key =='name'" [ngClass]="{'fa-caret-up':reverse,'fa-caret-down':!reverse}"></i>
+            </th>
+            <th (click)="sort('age')" class="cur-p">Age
+              <i class="fa col-i2h" *ngIf="key =='age'" [ngClass]="{'fa-caret-up':reverse,'fa-caret-down':!reverse}"></i>
+            </th>
+            <th (click)="sort('gender')" class="cur-p">Gender
+              <i class="fa col-i2h" *ngIf="key =='gender'" [ngClass]="{'fa-caret-up':reverse,'fa-caret-down':!reverse}"></i>
+            </th>
+            <th (click)="sort('relationship')" class="cur-p">Relationship
+              <i class="fa col-i2h" *ngIf="key =='relationship'" [ngClass]="{'fa-caret-up':reverse,'fa-caret-down':!reverse}"></i>
+            </th>
+            <th class="text-center" colspan="2">Actions
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- <tr *ngFor="let game of games | orderBy: key : reverse | filter:filter | paginate: { itemsPerPage: 5, currentPage: p }; let i = index"> -->
+          <tr *ngFor="let game of games | orderBy: key : reverse | filter:filter ; let i=index">
+            <td class="text-center">{{i + 1}}</td>
+            <td>{{game.name}}</td>
+            <td>{{game.age}}</td>
+            <td>{{game.gender}}</td>
+            <td>{{game.relationship}}</td>
+            <td class="text-center">
+              <i class="fa fa-pencil fa-lg col-i2h cur-p" aria-hidden="true" ></i>
+            </td>
+            <td class="text-center">
+              <i class="fa fa-trash-o fa-lg col-i2h" aria-hidden="true" ></i>
+            </td>
+          </tr>
+        </tbody>
+        <!-- <pagination-controls (pageChange)="p = $event"></pagination-controls> -->
+      </table>
+    </div>
+
+  </div>
+
+</div>

@@ -23,6 +23,9 @@ import { DependentsComponent } from './dependents/dependents.component';
 import { CompareComponent } from './compare/compare.component';
 import { OrderHistoryComponent } from './order-history/order-history.component';
 import { AddEditAddressComponent } from './add-edit-address/add-edit-address.component';
+import { Ng2OrderModule } from 'ng2-order-pipe';
+import { Ng2SearchPipeModule } from 'ng2-search-filter';
+
 
 @NgModule({
   declarations: [
@@ -46,7 +49,9 @@ import { AddEditAddressComponent } from './add-edit-address/add-edit-address.com
     FormsModule,
     ReactiveFormsModule,
     AppRoutingModule,
-    HttpClientModule
+    HttpClientModule,
+    Ng2SearchPipeModule,
+    Ng2OrderModule
   ],
   providers: [
     CommonUtilityService,
