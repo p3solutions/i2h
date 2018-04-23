@@ -12,6 +12,7 @@ body {
 .btn {
   border-radius: 2px;
   text-transform: uppercase;
+  box-shadow: 1px 1px 10px grey;
 }
 .alert-success{
   border-color: #3c763d;
