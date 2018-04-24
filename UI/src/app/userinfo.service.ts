@@ -79,9 +79,13 @@ export class UserInfoService {
     const url = `mailOtp/${email}`;
     return this.request('get', url, false);
   }
-
+  // Address APIs
   public getAddress(): Observable<any> {
     const url = 'getAddress';
+    return this.request('get', url, true);
+  }
+  public getDefaultAddress(): Observable<any> {
+    const url = 'getDefaultAddress';
     return this.request('get', url, true);
   }
   public addAddress(params: any): Observable<any> {
@@ -96,12 +100,25 @@ export class UserInfoService {
     const url = `deleteAddress/${id}`;
     return this.request('get', url, true);
   }
-
-  mailOTP1(emailParam) {
-    return this.http.post<any>(this.getOTPUrl, emailParam, { headers: this.getHeaders() });
-      // .pipe(catchError(this.handleError<any>('mailOTP')));
+  // dependent APIs
+  public getDependent(): Observable<any> {
+    const url = 'getDependent';
+    return this.request('get', url, true);
+  }
+  public addDependent(params: any): Observable<any> {
+    const url = 'addDependent';
+    return this.request('post', url, true, { addressObj: params });
+  }
+  public updateDependent(params: any): Observable<any> {
+    const url = 'updateDependent';
+    return this.request('post', url, true, { addressObj: params });
+  }
+  public deleteDependent(id: any): Observable<any> {
+    const url = `deleteDependent/${id}`;
+    return this.request('get', url, true);
   }
 
+  // user
   getUserInfo(loggedInuser) {
     // const emailId = loggedInuser.emailId;
     return this.http.get<any>(this.getUserInfoUrl, { headers: this.getHeaders() });
