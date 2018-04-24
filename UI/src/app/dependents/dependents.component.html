@@ -12,20 +12,20 @@
     </div>
 
     <div class="col-md-6 m-t-20 m-b-20">
-      <a data-toggle="modal" href="#addEditAddressModal">
+      <a data-toggle="modal" data-backdrop="static" data-keyboard="false" href="#addEditDependentModal">
         <i class="fa fa-user-plus fa-3x pull-right col-i2h cur-p" aria-hidden="true"></i>
       </a>
     </div>
 
     <div class="col-md-12 m-t-10 m-b-20">      
-      <div *ngIf="!games" class="text-center sidenav-title">
+      <div *ngIf="!dependentInfo" class="text-center sidenav-title">
         <i class="fa fa-user-times fa-lg" aria-hidden="true"></i>
         No dependents saved!
       </div>
     </div>
 
     <div class="col-md-12">
-      <table *ngIf="games" class="table table-bordered table-hover">
+      <table *ngIf="dependentInfo" class="table table-bordered table-hover">
         <thead>
           <tr>
             <th class="text-center">#</th>
@@ -35,29 +35,38 @@
             <th (click)="sort('age')" class="cur-p">Age
               <i class="fa col-i2h" *ngIf="key =='age'" [ngClass]="{'fa-caret-up':reverse,'fa-caret-down':!reverse}"></i>
             </th>
-            <th (click)="sort('gender')" class="cur-p">Gender
-              <i class="fa col-i2h" *ngIf="key =='gender'" [ngClass]="{'fa-caret-up':reverse,'fa-caret-down':!reverse}"></i>
+            <th (click)="sort('sex')" class="cur-p">sex
+              <i class="fa col-i2h" *ngIf="key =='sex'" [ngClass]="{'fa-caret-up':reverse,'fa-caret-down':!reverse}"></i>
             </th>
             <th (click)="sort('relationship')" class="cur-p">Relationship
               <i class="fa col-i2h" *ngIf="key =='relationship'" [ngClass]="{'fa-caret-up':reverse,'fa-caret-down':!reverse}"></i>
+            </th>
+            <th (click)="sort('address')" class="cur-p">Address
+              <i class="fa col-i2h" *ngIf="key =='address'" [ngClass]="{'fa-caret-up':reverse,'fa-caret-down':!reverse}"></i>
             </th>
             <th class="text-center" colspan="2">Actions
             </th>
           </tr>
         </thead>
         <tbody>
-          <!-- <tr *ngFor="let game of games | orderBy: key : reverse | filter:filter | paginate: { itemsPerPage: 5, currentPage: p }; let i = index"> -->
-          <tr *ngFor="let game of games | orderBy: key : reverse | filter:filter ; let i=index">
+          <!-- <tr *ngFor="let dependent of dependentInfo | orderBy: key : reverse | filter:filter | paginate: { itemsPerPage: 5, currentPage: p }; let i = index"> -->
+          <tr *ngFor="let dependent of dependentInfo | orderBy: key : reverse | filter:filter ; let i=index" 
+          class="{{(selectedDependentObj && selectedDependentObj.id === dependent.id) ? selectedDependentObj.css : ''}}">
             <td class="text-center">{{i + 1}}</td>
-            <td>{{game.name}}</td>
-            <td>{{game.age}}</td>
-            <td>{{game.gender}}</td>
-            <td>{{game.relationship}}</td>
-            <td class="text-center">
-              <i class="fa fa-pencil fa-lg col-i2h cur-p" aria-hidden="true" ></i>
+            <td>{{dependent.name}}</td>
+            <td>{{dependent.age}}</td>
+            <td>{{dependent.sex}}</td>
+            <td>{{dependent.relationship}}</td>
+            <td>{{dependent.address}}</td>
+            <td class="text-center" data-toggle="modal" data-backdrop="static" data-keyboard="false">
+              <a (click)="editDependentReady(dependent, $event)" data-toggle="modal" data-backdrop="static" data-keyboard="false" href="#addEditDependentModal">
+                <i class="fa fa-pencil fa-lg col-i2h cur-p" aria-hidden="true" ></i>
+              </a>
             </td>
             <td class="text-center">
-              <i class="fa fa-trash-o fa-lg col-i2h" aria-hidden="true" ></i>
+              <a (click)="delDependentReady(dependent, $event)" data-toggle="modal" data-backdrop="static" data-keyboard="false" href="#confirmDeleteModal">
+                <i class="fa fa-trash-o fa-lg col-i2h cur-p" aria-hidden="true" ></i>
+              </a>
             </td>
           </tr>
         </tbody>
@@ -67,4 +76,48 @@
 
   </div>
 
+</div>
+
+<app-add-edit-dependent [modifiedDependentInfo]="dependentInfo" (dependentChange)="onDependentChangedInChild($event)"
+ [passedSelectedDependentObj]="selectedDependentObj" (selectedDependentChange)="onSelectedDependentChangedInChild($event)"></app-add-edit-dependent>
+
+
+
+<!-- Delete Dependent Confirmation Modal -->
+<div class="modal fade" id="confirmDeleteModal" role="dialog">
+  <div class="modal-dialog">
+    <!-- Modal content-->
+    <div class="center-card delete-modal">
+      <div class="header-cap">
+        <i class="fa fa-user-circle fa-5x"></i>
+      </div>
+
+      <div class="header-content {{delNotif?.show ? 'header-content-notif' : ''}}">
+
+        <div class="col-md-12 m-b-10 text-center">
+          Confirm Dependent Delete ?
+        </div>
+
+        <div class="col-md-12 p-0 m-t-10 text-center">
+          <button type="button" class="cancel m-r-20 btn btn-i2h" data-dismiss="modal" data-backdrop="static" data-keyboard="false" (click)="closeDelModal()">Cancel</button>
+
+          <button type="submit" class="m-l-20 btn btn-form btn-i2h" disabled="{{(selectedDependentObj && !deleteProgress) ? null : 'true' }}"
+            (click)="(selectedDependentObj && !deleteProgress) ? deleteDependent() : null">
+            Delete
+            <i *ngIf="deleteProgress" class="fa fa-spinner fa-spin inline-loader col-fff"></i>
+          </button>
+        </div>
+
+        <div id="notification-block" class="col-md-12 p-0 m-t-10">
+          <div *ngIf="delNotif?.show" role="alert" class="text-center alert {{delNotif.classCss}} alert-fade-in alert-dismissible">
+            <button type="button" class="close" aria-label="Close" (click)="closeDelNotif()">
+              <span aria-hidden="true">&times;</span>
+            </button>
+            <i class="fa fa-info-circle"></i> &nbsp; {{delNotif?.message}}
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
 </div>

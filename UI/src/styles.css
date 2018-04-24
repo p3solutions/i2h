@@ -60,6 +60,9 @@ progress {
   min-height: 400px;
   padding: 0;
 }
+.dependent-card.extend {
+  width: 600px;
+}
 .header-cap {
   background: #ef7f1a;
   border-top: none;
@@ -85,6 +88,11 @@ progress {
   top: 5px;
   pointer-events: none;
 }
+.select-div .input-icon,
+select~.input-icon {
+  margin-right: 18px;
+}
+
 .mandatory-icon {
   font-size: 10px;
   color: red;
@@ -428,19 +436,22 @@ input[type="number"] {
 .bg-alt:hover {
 background-color: #fff;
 }
-.bg-alt.del-address {
+.bg-alt.del-address,
+tr.del-address  {
   background-color: #f2dede;
   border-bottom: 1px solid #a94442;
   border-top: 1px solid #a94442;
   color: #a94442;
   text-decoration: line-through;
 }
-.bg-alt.edit-address {
+.bg-alt.edit-address,
+tr.edit-address {
   background-color: #d9edf7;
   border-bottom: 1px solid #31708f;
   border-top: 1px solid #31708f;
   color: #31708f;
 }
+tr.del-address,
 .bg-alt.del-address label,
 .bg-alt.del-address .address-tag{
   text-decoration: line-through;
@@ -451,6 +462,8 @@ background-color: #fff;
   box-shadow: 1px 2px 1px 1px grey;
   -moz-box-shadow: 1px 2px 1px 1px grey;
   -webkit-box-shadow: 1px 2px 1px 1px grey;
+  margin: 5px;
+  width: 100px;
 }
 .address-tag.default {
   background-color: #6a6a6ac4;
@@ -485,4 +498,33 @@ select.labelled-effect {
   text-align: center;
   width: 20px;
 }
+.link {
+  cursor: pointer;
+  color: #337ab7;
+  text-decoration: none;
+}
+.link:hover {
+  color: #23527c;
+  text-decoration: underline;
+}
+
+/* dependent list page */
+.dependent-card .dependent-address-div {
+  /* max-height: 300px; */
+  margin: 0;
+  /* overflow-y: auto; */
+}
+.dependent-card.extend .add-address-div {
+  height: 300px;
+}
+.dependent-card .no-dependent-item {
+  display: none;
+}
+.dependent-item {
+  display: none;
+}
+.dependent-card .dependent-item {
+  display: block;
+}
+
 

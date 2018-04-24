@@ -1,11 +1,14 @@
-<div class="row col-md-12 m-t-10">
+<div class="row col-md-12 dependent-address-div">
 
     <div class="col-md-12 m-t-10 m-b-20">
-      <div class="fa-2x m-b-20">
+      <div class="fa-2x m-b-20 no-dependent-item">
         Manage Address
       </div>
+      <div class="fa-2x dependent-item">
+        Add / Select Default Address
+      </div>
       <div class="plus-div">
-        <a data-toggle="modal" href="#addEditAddressModal">
+        <a data-toggle="modal" data-backdrop="static" data-keyboard="false" href="#addEditAddressModal">
           <i class="fa fa-plus fa-3x pull-left col-i2h cur-p" aria-hidden="true"></i>
         </a>
       </div>
@@ -16,7 +19,7 @@
 
           <div class="col-md-6 p-l-0">
             <!-- <i class="fa fa-plus fa-3x pull-left col-i2h cur-p" aria-hidden="true" (click)="showAdressTemplate()"></i>  - ->
-            <a data-toggle="modal" href="#addEditAddressModal">
+            <a data-toggle="modal" data-backdrop="static" data-keyboard="false" href="#addEditAddressModal">
               <i class="fa fa-plus fa-3x pull-left col-i2h cur-p" aria-hidden="true"></i>
             </a>
             <!-- <button type="button" class="btn btn-i2h" (click)="showAdressTemplate()">Add Address</button> - ->
@@ -155,17 +158,17 @@
 
         <div *ngFor="let aInfo of addressInfo" class="bg-alt {{(selectedAddress && selectedAddress.id === aInfo.id) ? selectedAddress.css : ''}}">
           <div class="col-md-12">
-            <div class="col-md-1 text-center pull-left address-tag cur-p {{aInfo.default ? 'default' : '' }}"
+            <div class="text-center pull-left address-tag cur-p {{aInfo.default ? 'default' : '' }}"
              attr.addid="{{aInfo.id}}" title="Make default Address" (click)="makeDefault(aInfo.id)">{{aInfo.tag}}</div>
             <div class="col-md-10 pull-right ">
-              <div class="pull-right m-l-10" title="Delete this address">
-                <a data-toggle="modal" href="#confirmDeleteModal" (click)="confirmDelAddress(aInfo)">
+              <div class="pull-right m-l-10 no-dependent-item" title="Delete this address">
+                <a data-toggle="modal" data-backdrop="static" data-keyboard="false" href="#confirmDeleteModal" (click)="confirmDelAddress(aInfo)">
                   <i class="fa fa-trash-o fa-2x col-i2h" aria-hidden="true" ></i>
                 </a>
               </div>
-              <div class="text-center pull-right m-l-10" title="Edit this address">
+              <div class="text-center pull-right m-l-10 no-dependent-item" title="Edit this address">
                 <!-- <i class="fa fa-pencil fa-2x col-i2h cur-p" aria-hidden="true" (click)="editAddress(aInfo, false)"></i> -->
-                <a data-toggle="modal" href="#addEditAddressModal" (click)="passSelectedAddress(aInfo, false)">
+                <a data-toggle="modal" data-backdrop="static" data-keyboard="false" href="#addEditAddressModal" (click)="passSelectedAddress(aInfo, false)">
                   <i class="fa fa-pencil fa-2x col-i2h cur-p" aria-hidden="true" ></i>
                 </a>
               </div>

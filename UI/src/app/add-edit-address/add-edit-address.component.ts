@@ -31,10 +31,10 @@ export class AddEditAddressComponent implements OnInit, OnChanges {
   delNotif = new NotificationObject();
   delCssClass = 'del-address';
   editCssClass = 'edit-address';
-  @Input() modifiedAddressInfo: any;
-  @Output() addressChange =  new EventEmitter<boolean>();
-  @Input() passedSelectedAddressObj: any;
-  @Output() selectedAddressChange = new EventEmitter<boolean>();
+  @Input() modifiedAddressInfo: any; // parent to child
+  @Output() addressChange =  new EventEmitter<boolean>(); // child to parent
+  @Input() passedSelectedAddressObj: any;  // parent to child
+  @Output() selectedAddressChange = new EventEmitter<boolean>(); // child to parent
 
   constructor(
     private commonUtilityService: CommonUtilityService,

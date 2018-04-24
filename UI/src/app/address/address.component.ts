@@ -23,7 +23,7 @@ export class AddressComponent implements OnInit, OnDestroy {
   // altContact = '';
   // enableAddBtn = false;
   // showTemplate = false;
-  addressInfo: any = [];
+  addressInfo: any = []; // parent to child
   // tagSet = tagSet;
   // tagList = [];
   // stateList = stateList;
@@ -33,7 +33,7 @@ export class AddressComponent implements OnInit, OnDestroy {
   delNotif = new NotificationObject();
   delCssClass = 'del-address';
   editCssClass = 'edit-address';
-  selectedAddressObj: any;
+  selectedAddressObj: any; // parent to child
 
   constructor(
     private commonUtilityService: CommonUtilityService,
@@ -69,7 +69,7 @@ export class AddressComponent implements OnInit, OnDestroy {
     this.commonUtilityService.pasteOnlyNumbers(e);
   }
 
-  onAddressChanged(isAddressChanged) {
+  onAddressChanged(isAddressChanged) { // child to parent
     // console.log('onAddressChanged', isAddressChanged);
     if (isAddressChanged) {
       this.getAddress();

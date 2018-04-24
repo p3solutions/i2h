@@ -9,6 +9,10 @@
 }
 .plus-div {
     position: absolute;
-    right: 60px;
+    right: 0;
     top: 0;
+}
+
+.dependent-address-div {
+    margin-top: 10px;
 }

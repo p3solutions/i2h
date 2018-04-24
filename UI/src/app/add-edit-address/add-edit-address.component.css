@@ -13,3 +13,7 @@
 .add-edit-card .add-address-div{
     max-height: 320px;
 }
+.dependent-card .add-address-div {
+    max-height: 300px;
+}
+
