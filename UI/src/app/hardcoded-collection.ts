@@ -45,4 +45,26 @@ export const tagSet = new Set(
     ]
 );
 
+export const relationshipList = [
+        'Mother',
+        'Father',
+        'Wife',
+        'Son',
+        'Daughter',
+        'Brother',
+        'Sister',
+        'Brother-in-law',
+        'Sister-in-law',
+        'Friend',
+        'Grand-Mother',
+        'Grand-Father',
+        'Uncle',
+        'Aunt',
+        'Cousin',
+        'Nephew',
+        'Neice',
+        'Relative',
+        'Others'
+    ];
+
 
