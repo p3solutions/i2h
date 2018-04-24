@@ -1,0 +1,16 @@
+.dependent-card {
+    min-height: 500px;
+    width: 500px;
+}
+.dependent-card .add-address-div {
+    max-height: 300px;
+    overflow-y: auto;    
+}
+.dependent-card .add-address-div .bg-alt {
+    border: 1px solid #ccc;
+    margin-bottom: 15px;
+}
+.dependent-card .header-content.header-content-notif {
+  height: 460px;
+}
+

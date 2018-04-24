@@ -25,6 +25,7 @@ import { OrderHistoryComponent } from './order-history/order-history.component';
 import { AddEditAddressComponent } from './add-edit-address/add-edit-address.component';
 import { Ng2OrderModule } from 'ng2-order-pipe';
 import { Ng2SearchPipeModule } from 'ng2-search-filter';
+import { AddEditDependentComponent } from './add-edit-dependent/add-edit-dependent.component';
 
 
 @NgModule({
@@ -42,7 +43,8 @@ import { Ng2SearchPipeModule } from 'ng2-search-filter';
     DependentsComponent,
     CompareComponent,
     OrderHistoryComponent,
-    AddEditAddressComponent
+    AddEditAddressComponent,
+    AddEditDependentComponent
   ],
   imports: [
     BrowserModule,
