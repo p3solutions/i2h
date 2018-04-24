@@ -7,6 +7,8 @@ var auth = jwt({
 });
 
 var ctrlProfile = require('../controllers/profile');
+var ctrlAddress = require('../controllers/address');
+var ctrlDependent = require('../controllers/dependent');
 var ctrlAuth = require('../controllers/authentication');
 var otpService = require('../controllers/otpservice');
 
@@ -28,10 +30,18 @@ router.get('/profile', auth, ctrlProfile.profileRead);
 router.post('/updateUser', auth, ctrlProfile.updateUser);
 router.post('/validatePassword', auth, ctrlProfile.validatePassword);
 router.post('/validateThenSetPassword', auth, ctrlProfile.validateThenSetPassword);
-router.post('/addAddress', auth, ctrlProfile.addAddress);
-router.post('/updateAddress', auth, ctrlProfile.updateAddress);
-router.get('/getAddress', auth, ctrlProfile.getAddress);
-router.get('/deleteAddress/:id', auth, ctrlProfile.deleteAddress);
+
+// address
+router.get('/getAddress', auth, ctrlAddress.getAddress);
+router.post('/addAddress', auth, ctrlAddress.addAddress);
+router.post('/updateAddress', auth, ctrlAddress.updateAddress);
+router.get('/deleteAddress/:id', auth, ctrlAddress.deleteAddress);
+
+// dependent
+router.get('/getDependent', auth, ctrlDependent.getDependent);
+router.post('/addDependent', auth, ctrlDependent.addDependent);
+router.post('/updateDependent', auth, ctrlDependent.updateDependent);
+router.get('/deleteDependent/:id', auth, ctrlDependent.deleteDependent);
 
 // authentication
 router.post('/register', ctrlAuth.register);
