@@ -46,6 +46,7 @@ export const tagSet = new Set(
 );
 
 export const relationshipList = [
+        'Self',
         'Mother',
         'Father',
         'Wife',
