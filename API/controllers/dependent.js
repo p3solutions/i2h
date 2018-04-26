@@ -37,14 +37,13 @@ module.exports.addDependent = function (req, res) {
     } else {
         const dependentObj = req.body.dependentObj;
         const callbackUserFound = function (foundUser) {
-            const dependent = foundUser.dependent;
-            // new dependentObj id = previous id + 1
-            const lastObjId = dependent.length ? Number(dependent[dependent.length - 1].id) + 1 : 1;
-            dependentObj.id = lastObjId.toString();
-            if (!dependentObj.default) {
-                dependentObj.default = false;
-            }
-            dependent.push(dependentObj);
+            const dependentArray = foundUser.dependent;
+            // new dependentObj id = last dependent id + 1
+            const currentObjId = dependentArray.length ? (Number(dependentArray[dependentArray.length - 1].id) + 1 ) : 1;
+            dependentObj.id = currentObjId.toString();
+            dependentObj.age = ctrlUtility.calcAgeFromDOB(dependentObj.dob);
+            console.logD('saving', dependentObj);
+            dependentArray.push(dependentObj);
             foundUser.save(function (err, user) {
                 if (err) {
                     console.logE(err);
@@ -55,7 +54,7 @@ module.exports.addDependent = function (req, res) {
                 ctrlUtility.sendJSONresponse(res, 200, {
                     'status': 'success',
                     'message': 'dependent added successfully',
-                    'lastObjId': lastObjId
+                    'lastObjId': currentObjId
                 });
                 return;
             });
@@ -88,14 +87,9 @@ module.exports.updateDependent = function (req, res) {
             const newDependentArray = [];
             for (let i = 0; i < dependent.length; i++) {
                 if (dependent[i].id.toString() === dependentObj.id.toString()) {
-                    if (dependentObj.default) { // set false for all except the current addresObj
-                        console.logD('Making default dependent to dependent-id ', dependentObj.id);
-                    }                    
+                    dependentObj.age = ctrlUtility.calcAgeFromDOB(dependentObj.dob);
                     newDependentArray.push(dependentObj);
                 } else{
-                    if (dependentObj.default) { // set false for all except the current addresObj
-                        dependent[i].default = false;
-                    }
                     newDependentArray.push(dependent[i]);
                 }
             }

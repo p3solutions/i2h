@@ -91,3 +91,16 @@ module.exports.handleUserByEmail = function (emailId, createIfNotFound, callback
         }
     });
 };
+
+
+module.exports.calcAgeFromDOB = function (dob) {
+    const currentTime = new Date();
+    const birthDate = dob.split('-');
+    const birthYear = Number(birthDate[0]);
+    const birthMonth = Number(birthDate[1]);
+    const birthDay = Number(birthDate[2]);
+    const currentMonth = currentTime.getUTCMonth() + 1;
+    let age = currentTime.getUTCFullYear() - birthYear;
+    if (currentMonth < birthMonth || currentMonth == birthMonth && currentTime.getUTCDate() < birthDay) age--;
+    return age;
+};
