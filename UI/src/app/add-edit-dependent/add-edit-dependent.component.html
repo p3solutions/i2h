@@ -2,12 +2,12 @@
 <div class="modal fade" id="addEditDependentModal" role="dialog">
   <div class="modal-dialog">
     <!-- Modal content-->
-    <div class="center-card dependent-card {{addAdress ? 'extend' : ''}}">
+    <div class="center-card dependent-card {{dependentAddressView ? 'extend' : ''}}">
       <div class="header-cap">
         <i class="fa fa-user-plus fa-5x"></i>
       </div>
 
-      <div *ngIf="!addAdress" class="header-content {{saveNotif?.show ? 'header-content-notif' : ''}}">
+      <div *ngIf="!dependentAddressView" class="header-content {{saveNotif?.show ? 'header-content-notif' : ''}}">
 
         <div class="col-md-12 m-t-10 add-address-div p-r-0 bg-fff">
 
@@ -124,8 +124,8 @@
 
       </div>
 
-      <div *ngIf="addAdress" class="header-content">
-        <app-address></app-address>
+      <div *ngIf="dependentAddressView" class="header-content">
+        <app-address [isDependentView]="dependentAddressView" (defaultAddressChange)="onPassedDefaultAddress($event)"></app-address>
       </div>
 
     </div>

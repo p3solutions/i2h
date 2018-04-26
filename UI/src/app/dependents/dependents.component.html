@@ -54,10 +54,10 @@
           class="{{(selectedDependentObj && selectedDependentObj.id === dependent.id) ? selectedDependentObj.css : ''}}">
             <td class="text-center">{{i + 1}}</td>
             <td>{{dependent.name}}</td>
-            <td>{{dependent.age}}</td>
+            <td attr.dob="{{dependent.dob}}">{{dependent.age}}</td>
             <td>{{dependent.sex}}</td>
-            <td>{{dependent.relationship}}</td>
-            <td>{{dependent.address}}</td>
+            <td>{{dependent.relation}}</td>
+            <td>{{dependent.address?.tag}} address</td>
             <td class="text-center" data-toggle="modal" data-backdrop="static" data-keyboard="false">
               <a (click)="editDependentReady(dependent, $event)" data-toggle="modal" data-backdrop="static" data-keyboard="false" href="#addEditDependentModal">
                 <i class="fa fa-pencil fa-lg col-i2h cur-p" aria-hidden="true" ></i>

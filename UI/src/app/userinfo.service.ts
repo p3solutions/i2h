@@ -107,11 +107,11 @@ export class UserInfoService {
   }
   public addDependent(params: any): Observable<any> {
     const url = 'addDependent';
-    return this.request('post', url, true, { addressObj: params });
+    return this.request('post', url, true, { dependentObj: params });
   }
   public updateDependent(params: any): Observable<any> {
     const url = 'updateDependent';
-    return this.request('post', url, true, { addressObj: params });
+    return this.request('post', url, true, { dependentObj: params });
   }
   public deleteDependent(id: any): Observable<any> {
     const url = `deleteDependent/${id}`;

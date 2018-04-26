@@ -30,7 +30,7 @@ export class AddEditDependentComponent implements OnInit, OnChanges {
   @Output() dependentChange = new EventEmitter<boolean>(); // child to parent
   @Input() passedSelectedDependentObj: any;  // parent to child
   @Output() selectedDependentChange = new EventEmitter<boolean>(); // child to parent
-  addAdress = false;
+  dependentAddressView = false;
   defaultAddress: any;
   addressInfo: any;
 
@@ -46,7 +46,7 @@ export class AddEditDependentComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(change: SimpleChanges) {
-    console.log(change, 'change detected');
+    // console.log(change, 'change detected');
     if (change.modifiedDependentInfo && change.modifiedDependentInfo.currentValue) {
       this.dependentInfo = change.modifiedDependentInfo.currentValue;
       console.log('change.modifiedDependentInfo');
@@ -54,8 +54,8 @@ export class AddEditDependentComponent implements OnInit, OnChanges {
     if (change.passedSelectedDependentObj && change.passedSelectedDependentObj.currentValue) {
       const currentVal = change.passedSelectedDependentObj.currentValue;
       this.selectedDependent = currentVal;
-      this.updateDependentReady();
       console.log('change.passedSelectedDependentObj', currentVal);
+      this.updateDependentReady();
     }
   }
   handleLabelName(e) {
@@ -85,7 +85,7 @@ export class AddEditDependentComponent implements OnInit, OnChanges {
     this.age = this.selectedDependent.age;
     this.sex = this.selectedDependent.sex;
     this.dob = this.selectedDependent.dob;
-    this.relation = this.selectedDependent.relationship;
+    this.relation = this.selectedDependent.relation;
     this.defaultAddress = this.selectedDependent.address;
     if (!this.defaultAddress) {
       this.loadDefaultAddress();
@@ -114,11 +114,11 @@ export class AddEditDependentComponent implements OnInit, OnChanges {
     } else {
       this.enableSaveBtn = false;
     }
-    console.log(this.name, this.dob, this.sex, this.defaultAddress.tag, !this.invalidDOB, this.relation);
+    // console.log(this.name, this.dob, this.sex, this.defaultAddress.tag, !this.invalidDOB, this.relation);
   }
 
   addUpdateDependent() {
-    console.log(this.selectedDependent, this.dependentInfo);
+    console.log('selectedDependent->', this.selectedDependent, this.dependentInfo);
     this.addProgress = true;
     const dependentObj: any = {
       // id: this.id,
@@ -133,9 +133,6 @@ export class AddEditDependentComponent implements OnInit, OnChanges {
       dependentObj.id = this.selectedDependent.id;
       this.userInfoService.updateDependent(dependentObj).subscribe((res) => {
         if (res && res.status === 'success') {
-          this.selectedDependentChange.emit(true);
-          this.resetselectedDependent();
-          this.resetDependentForm();
           const cancelBtn: Element = document.querySelector('#addEditDependentModal .cancel');
           const btn = <HTMLButtonElement>cancelBtn;
           btn.click();
@@ -157,30 +154,41 @@ export class AddEditDependentComponent implements OnInit, OnChanges {
 
   closeAddEditModal() {
     this.resetDependentForm();
+    this.resetselectedDependent();
   }
   resetDependentForm() {
+    if (!this.dependentAddressView) {
     this.name = '';
     this.id = '';
     this.age = '';
     this.sex = '';
     this.dob = '';
     this.relation = '';
-    this.defaultAddress = null;
+    this.loadDefaultAddress();
+    // this.defaultAddress = null;
+    }
   }
 
   closeSaveNotif() {
     this.saveNotif = new NotificationObject();
   }
-  closeDelModal() {
-    this.resetselectedDependent();
-  }
+
   resetselectedDependent() {
-    this.selectedDependentChange.emit(true);
-    this.selectedDependent = null;
-    this.defaultAddress = null;
-    console.log('resetselectedDependent called');
+    if (!this.dependentAddressView) {
+      this.selectedDependent = null;
+      this.selectedDependentChange.emit(true);
+      this.defaultAddress = null;
+    }
+    console.log('resetselectedDependent set to null', !this.dependentAddressView);
   }
   showAddressDiv() {
-    this.addAdress = true;
+    this.dependentAddressView = true;
+  }
+  onPassedDefaultAddress(passedDefaultAddress) {
+    console.log(passedDefaultAddress, 'onPassedDefaultAddress');
+    // trigger dependent.ts     this.commonUtilityService.sendData(this.componentUrl);
+    this.defaultAddress = passedDefaultAddress;
+    this.dependentAddressView = false;
+    this.enableSaveButton(null);
   }
 }

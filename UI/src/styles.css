@@ -517,7 +517,7 @@ select.labelled-effect {
 .dependent-card.extend .add-address-div {
   height: 300px;
 }
-.dependent-card .no-dependent-item {
+/* .dependent-card .no-dependent-item {
   display: none;
 }
 .dependent-item {
@@ -525,6 +525,11 @@ select.labelled-effect {
 }
 .dependent-card .dependent-item {
   display: block;
+} */
+.dependent-address label {
+  cursor: pointer;
 }
-
-
+.dependent-address:hover {
+  background-color: #d9edf7;
+  cursor: pointer;
+}

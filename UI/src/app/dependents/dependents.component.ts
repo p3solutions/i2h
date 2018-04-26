@@ -18,36 +18,37 @@ export class DependentsComponent implements OnInit, OnDestroy {
   selectedDependentObj: any;
   deleteProgress = false;
   delNotif = new NotificationObject();
-  dependentInfo = [
-    {
-      'id': '1',
-      'name': 'Mr X',
-      'age': '60',
-      'sex': 'Male',
-      'relationship': 'Father'
-    },
-    {
-      'id': '2',
-      'name': 'Master xx',
-      'age': '1',
-      'sex': 'Male',
-      'relationship': 'Son'
-    },
-    {
-      'id': '3',
-      'name': 'Mrs XY',
-      'age': '58',
-      'sex': 'Female',
-      'relationship': 'Mother'
-    },
-    {
-      'id': '4',
-      'name': 'Mrs xy',
-      'age': '25',
-      'sex': 'Female',
-      'relationship': 'Wife'
-    }
-  ];
+  // dependentInfo = [
+  //   {
+  //     'id': '1',
+  //     'name': 'Mr X',
+  //     'age': '60',
+  //     'sex': 'Male',
+  //     'relationship': 'Father'
+  //   },
+  //   {
+  //     'id': '2',
+  //     'name': 'Master xx',
+  //     'age': '1',
+  //     'sex': 'Male',
+  //     'relationship': 'Son'
+  //   },
+  //   {
+  //     'id': '3',
+  //     'name': 'Mrs XY',
+  //     'age': '58',
+  //     'sex': 'Female',
+  //     'relationship': 'Mother'
+  //   },
+  //   {
+  //     'id': '4',
+  //     'name': 'Mrs xy',
+  //     'age': '25',
+  //     'sex': 'Female',
+  //     'relationship': 'Wife'
+  //   }
+  // ];
+  dependentInfo: any;
 
   constructor(
     private commonUtilityService: CommonUtilityService,
@@ -86,9 +87,10 @@ export class DependentsComponent implements OnInit, OnDestroy {
     this.userInfoService.getDependent().subscribe((res) => {
       console.log(res);
       if (res && res.status === 'success') {
-        const dependentList = res.Dependent;
+        const dependentList = res.dependent;
         if (dependentList) {
           this.dependentInfo = dependentList;
+          this.resetSelectedDependent();
         }
       }
     });
@@ -134,6 +136,7 @@ export class DependentsComponent implements OnInit, OnDestroy {
   onSelectedDependentChangedInChild(isSelectedDependentChanged) {
     console.log(isSelectedDependentChanged, 'isSelectedDependentChanged');
     // call getDependent() to update dependentList
+    this.getDependent();
   }
   closeDelModal() {
     this.resetSelectedDependent();
