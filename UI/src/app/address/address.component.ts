@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, OnDestroy, Output, Input, EventEmitter } from '@angular/core';
 import { CommonUtilityService } from '../common-utility.service';
 import { UserDetails, NotificationObject } from '../i2h-objects';
 import { UserInfoService } from '../userinfo.service';
@@ -34,6 +34,8 @@ export class AddressComponent implements OnInit, OnDestroy {
   delCssClass = 'del-address';
   editCssClass = 'edit-address';
   selectedAddressObj: any; // parent to child
+  @Input() isDependentView: any;
+  @Output() defaultAddressChange = new EventEmitter<boolean>(); // child to parent
 
   constructor(
     private commonUtilityService: CommonUtilityService,
@@ -41,8 +43,11 @@ export class AddressComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit() {
-    this.commonUtilityService.sendData(this.componentUrl);
-    this.getAddress();
+    if (!this.isDependentView) {
+      this.commonUtilityService.sendData(this.componentUrl);
+      this.getAddress();
+    }
+    console.log('isDependentView', this.isDependentView);
   }
 
   sendData() {
@@ -70,13 +75,13 @@ export class AddressComponent implements OnInit, OnDestroy {
   }
 
   onAddressChanged(isAddressChanged) { // child to parent
-    // console.log('onAddressChanged', isAddressChanged);
+    console.log('onAddressChanged', isAddressChanged);
     if (isAddressChanged) {
       this.getAddress();
     }
   }
   onSelectedAddressChanged(isSelectedAddressChanged) {
-    // console.log('isSelectedAddressChanged', isSelectedAddressChanged);
+    console.log('isSelectedAddressChanged', isSelectedAddressChanged);
     if (isSelectedAddressChanged) {
       this.resetSelectedAddress();
       this.getAddress(); // fetch latest address to refresh to show latest default address
@@ -275,5 +280,9 @@ export class AddressComponent implements OnInit, OnDestroy {
   }
   resetSelectedAddress() {
     this.selectedAddress = null;
+  }
+  selectDefaultAddress(address) {
+    this.defaultAddressChange.emit(address);
+    // console.log('selected DefaultAddress', address);
   }
 }
