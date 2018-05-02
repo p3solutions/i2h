@@ -58,3 +58,4 @@ Simiilar commands
 3. Reloading profile/other pages doesn't make sidebar link active
 4. Address pg, click edit button on last address, must scroll to maintain that in view, it scrolls down & hide because above height increased 
 5. On load of Manage address page, scroll down to the default address
+6. expecting an error of btn-click when seleting address for any dependent
