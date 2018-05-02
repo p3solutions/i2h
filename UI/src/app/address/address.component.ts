@@ -36,6 +36,7 @@ export class AddressComponent implements OnInit, OnDestroy {
   selectedAddressObj: any; // parent to child
   @Input() isDependentView: any;
   @Output() defaultAddressChange = new EventEmitter<boolean>(); // child to parent
+  @Output() backToDependentViewChange = new EventEmitter<boolean>(); // child to parent
 
   constructor(
     private commonUtilityService: CommonUtilityService,
@@ -104,123 +105,7 @@ export class AddressComponent implements OnInit, OnDestroy {
       }
     });
   }
-  // showAdressTemplate() {
-  //   this.showTemplate = true;
-  //   this.resetSelectedAddress();
-  // }
-  // enableAddButton(e) {
-  //   if (this.name !== '' && this.contact !== '' && this.address !== '' &&
-  //     this.state !== '' && this.pincode !== '' && this.city !== '' && this.locality !== ''
-  //   ) {
-  //     this.enableAddBtn = true;
-  //     if (e.keyCode === 13) {
-  //       this.addAdress(false);
-  //     }
-  //   } else {
-  //     this.enableAddBtn = false;
-  //   }
-  // }
 
-  // showMap() {
-  //   console.log('Google Maps/API still not integrated');
-  // }
-  // setPotentialTags() {
-  //   const tags = new Set(this.tagSet);
-  //   this.addressInfo.forEach(address => {
-  //     if (address.tag !== 'Other') {
-  //       tags.delete(address.tag);
-  //     }
-  //   });
-  //   this.tagList = [];
-  //   tags.forEach((tag) => { this.tagList.push(tag); });
-  // }
-
-  // resetTagList() {
-  //   this.tagList = [];
-  //   this.tagSet.forEach((tag) => { this.tagList.push(tag); });
-  // }
-  // addAdress(isMakeDefault) {
-  //   this.addProgress = true;
-  //   if (!this.tag) {
-  //     this.tag = (this.addressInfo.length === 0) ? 'Home' : 'Other';
-  //   }
-  //   const addressObj: any = {
-  //     tag: this.tag,
-  //     name: this.name,
-  //     contact: this.contact,
-  //     address: this.address,
-  //     city: this.city,
-  //     pincode: this.pincode,
-  //     locality: this.locality,
-  //     state: this.state,
-  //     landmark: this.landmark,
-  //     altContact: this.altContact,
-  //     default: (this.addressInfo.length === 0) || (this.selectedAddress && this.selectedAddress.default)
-  //   };
-  //   if (this.selectedAddress) {
-  //     addressObj.id = this.selectedAddress.id;
-  //     this.userInfoService.updateAddress(addressObj).subscribe((res) => {
-  //       if (res && res.status === 'success') {
-  //         for (let i = 0; i < this.addressInfo.length; i++) {
-  //           if (this.addressInfo[i].id === addressObj.id) {
-  //             this.commonUtilityService.copyObject(addressObj, this.addressInfo[i]);
-  //             if (isMakeDefault) {
-  //               this.addressInfo[i].default = true;
-  //             }
-  //           } else if (isMakeDefault) {
-  //             this.addressInfo[i].default = false;
-  //           }
-  //         }
-  //         this.resetSelectedAddress();
-  //         this.resetAddressForm();
-  //       }
-  //     });
-  //   } else {
-  //     this.userInfoService.addAddress(addressObj).subscribe( (res) => {
-  //       if (res && res.status === 'success') {
-  //         addressObj.id = res.lastObjId;
-  //         this.addressInfo.push(addressObj);
-  //         this.resetAddressForm();
-  //       }
-  //     });
-  //   }
-  // }
-
-  // resetAddressForm() {
-  //   // this.showTemplate = false;
-  //   // this.addProgress = false;
-  //   this.enableAddBtn = false;
-  //   this.tag = '';
-  //   this.contact = '';
-  //   this.name = '';
-  //   this.address = '';
-  //   this.city = '';
-  //   this.state = '';
-  //   this.locality = '';
-  //   this.landmark = '';
-  //   this.pincode = '';
-  //   this.altContact = '';
-  //   // this.setPotentialTags();
-  // }
-
-  // editAddress(addressObj, isMakeDefault) {
-  //   if (!isMakeDefault) {
-  //     this.resetTagList();
-  //     this.showTemplate = true;
-  //   }
-  //   this.selectedAddress = addressObj;
-  //   this.selectedAddress.css = this.editCssClass;
-  //   this.tag = this.selectedAddress.tag;
-  //   this.contact = this.selectedAddress.contact;
-  //   this.name = this.selectedAddress.name;
-  //   this.address = this.selectedAddress.address;
-  //   this.city = this.selectedAddress.city;
-  //   this.state = this.selectedAddress.state;
-  //   this.locality = this.selectedAddress.locality;
-  //   this.landmark = this.selectedAddress.landmark;
-  //   this.pincode = this.selectedAddress.pincode;
-  //   this.altContact = this.selectedAddress.altContact;
-  // }
   confirmDelAddress(addressObj) {
     // this.resetAddressForm();
     this.selectedAddress = addressObj;
@@ -284,5 +169,8 @@ export class AddressComponent implements OnInit, OnDestroy {
   selectDefaultAddress(address) {
     this.defaultAddressChange.emit(address);
     // console.log('selected DefaultAddress', address);
+  }
+  backToDependentView() {
+    this.backToDependentViewChange.emit(true);
   }
 }

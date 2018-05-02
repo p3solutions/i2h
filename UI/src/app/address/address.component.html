@@ -4,8 +4,9 @@
       <div *ngIf="!isDependentView" class="fa-2x m-b-20">
         Manage Address
       </div>
+      <i *ngIf="isDependentView" title="Back" aria-hidden="true" class="fa fa-chevron-left fa-3x  pull-left col-i2h cur-p" (click)="backToDependentView()"></i>
       <div *ngIf="isDependentView" class="fa-2x">
-        Add / Select Default Address
+        Add / Select Address
       </div>
       <div class="plus-div">
         <a *ngIf="!isDependentView" data-toggle="modal" data-backdrop="static" data-keyboard="false" href="#addEditAddressModal">
@@ -15,155 +16,18 @@
           <i class="fa fa-plus fa-3x pull-left col-i2h cur-p" aria-hidden="true"></i>
         </a>
       </div>
-<!-- 
-      <div class="col-md-12 m-t-10 add-address-div p-r-0 bg-fff">
-
-        <div class="col-md-12 row m-t-10 m-b-10">
-
-          <div class="col-md-6 p-l-0">
-            <!-- <i class="fa fa-plus fa-3x pull-left col-i2h cur-p" aria-hidden="true" (click)="showAdressTemplate()"></i>  - ->
-            <a data-toggle="modal" data-backdrop="static" data-keyboard="false" href="#addEditAddressModal">
-              <i class="fa fa-plus fa-3x pull-left col-i2h cur-p" aria-hidden="true"></i>
-            </a>
-            <!-- <button type="button" class="btn btn-i2h" (click)="showAdressTemplate()">Add Address</button> - ->
-          </div>
-
-          <div *ngIf="showTemplate" class="col-md-6">
-            <div class="col-md-1 pull-right" title="Add new address">
-              <i *ngIf="addProgress" class="fa fa-spinner fa-spin inline-loader col-000 fa-3x"></i>
-              <i *ngIf="!addProgress" class="fa fa-plus-circle fa-3x {{ enableAddBtn ? 'col-i2h cur-p' : 'cur-disabled'}} "
-                 aria-hidden="true" (click)="enableAddBtn ? addAdress(false) : null"></i>
-            </div>
-            <div class="col-md-1 pull-right text-center" title="Find in map">
-              <i class="fa fa-map-marker fa-3x {{ false ? 'col-i2h cur-p' : 'cur-disabled'}}" aria-hidden="true" (click)="showMap()"></i>
-            </div>
-          </div>
-
-        </div>
-        
-        <div *ngIf="showTemplate" class="col-md-12 row m-t-10 m-b-10 p-0">
-        <!-- 1st row - ->
-          <div class="col-md-2">
-            <div class="input-effect-div input-effect m-t-10 m-b-10">
-              <select class="labelled-effect {{tag ? 'has-content' : '' }}" [(ngModel)]="tag" (change)="enableAddButton($event)">
-                <option *ngFor="let tag of tagList">{{tag}}</option>
-              </select>
-              <!-- <ng-autocomplete (selected)="Selected($event)" [classes]="['']" [group]="group"></ng-autocomplete> - ->
-              <!-- <input type="text" class="labelled-effect" required="true" [(ngModel)]="tag" (keyup)="enableAddButton($event)" (focusout)="handleLabelName($event)"/> - ->
-              <label>Select Tag</label>
-              <span class="focus-bg"></span>
-            </div>
-          </div>
-
-          <div class="col-md-2">
-            <div class="input-effect-div input-effect m-t-10 m-b-10">
-              <input type="text" class="labelled-effect text-cap {{name ? 'has-content' : '' }}" required="true" [(ngModel)]="name"
-               (keyup)="enableAddButton($event)" (focusout)="handleLabelName($event)" />
-              <label>Name</label>
-              <span class="focus-bg"></span>
-              <i class="fa fa-asterisk input-icon mandatory-icon" aria-hidden="true"></i>
-            </div>
-          </div>
-
-          <div class="col-md-2">
-            <div class="input-effect-div input-effect m-t-10 m-b-10">
-              <input type="text" class="labelled-effect {{contact ? 'has-content' : '' }}" (keydown)="allowOnlyNumbers($event)" (paste)="pasteOnlyNumbers($event)"
-                [(ngModel)]='contact' (keyup)="enableAddButton($event)" (focusout)="handleLabelName($event)" />
-              <label>Contact</label>
-              <span class="focus-bg"></span>
-              <i class="fa fa-asterisk input-icon mandatory-icon" aria-hidden="true"></i>
-            </div>
-          </div>
-
-          <div class="col-md-6">
-            <div class="input-effect-div input-effect m-t-10 m-b-10">
-              <input type="text" class="labelled-effect text-cap {{address ? 'has-content' : '' }}" required="true" [(ngModel)]="address"
-               (keyup)="enableAddButton($event)" (focusout)="handleLabelName($event)" />
-              <label>Address</label>
-              <span class="focus-bg"></span>
-              <i class="fa fa-asterisk input-icon mandatory-icon" aria-hidden="true"></i>
-            </div>
-          </div>
-
-        <!-- 2nd row - ->
-          <div class="col-md-2">
-            <div class="input-effect-div input-effect m-t-10 m-b-10">
-              <input type="text" class="labelled-effect text-cap {{landmark ? 'has-content' : '' }}" required="true" [(ngModel)]="landmark"
-               (keyup)="enableAddButton($event)" (focusout)="handleLabelName($event)" />
-              <label>Landmark</label>
-              <span class="focus-bg"></span>
-            </div>
-          </div>
-
-          <div class="col-md-2">
-            <div class="input-effect-div input-effect m-t-10 m-b-10">
-              <input type="text" class="labelled-effect text-cap {{locality ? 'has-content' : '' }}" required="true" [(ngModel)]="locality"
-               (keyup)="enableAddButton($event)" (focusout)="handleLabelName($event)" />
-              <label>Locality</label>
-              <span class="focus-bg"></span>
-              <i class="fa fa-asterisk input-icon mandatory-icon" aria-hidden="true"></i>
-            </div>
-          </div>
-
-          <div class="col-md-2">
-            <div class="input-effect-div input-effect m-t-10 m-b-10">
-              <input type="text" class="labelled-effect text-cap {{city ? 'has-content' : '' }}" required="true" [(ngModel)]="city"
-               (keyup)="enableAddButton($event)" (focusout)="handleLabelName($event)" />
-              <label>City</label>
-              <span class="focus-bg"></span>
-              <i class="fa fa-asterisk input-icon mandatory-icon" aria-hidden="true"></i>
-            </div>
-          </div>
-          
-          <div class="col-md-2">
-            <div class="input-effect-div input-effect m-t-10 m-b-10">
-              <select class="labelled-effect {{state ? 'has-content' : '' }}" [(ngModel)]="state" (change)="enableAddButton($event)">
-                <option *ngFor="let stateName of stateList">{{stateName}}</option>
-              </select>
-              <label>State</label>
-              <span class="focus-bg"></span>
-              <i class="fa fa-asterisk input-icon mandatory-icon" aria-hidden="true"></i>
-            </div>
-          </div>
-
-          <div class="col-md-2">
-            <div class="input-effect-div input-effect m-t-10 m-b-10">
-              <input type="text" class="labelled-effect {{pincode ? 'has-content' : '' }}" (keydown)="allowOnlyNumbers($event)" (paste)="pasteOnlyNumbers($event)" [(ngModel)]="pincode"
-                (keyup)="enableAddButton($event)" (focusout)="handleLabelName($event)" />
-              <label>Pincode</label>
-              <span class="focus-bg"></span>
-              <i class="fa fa-asterisk input-icon mandatory-icon" aria-hidden="true"></i>
-            </div>
-          </div>
-
-          <div class="col-md-2">
-            <div class="input-effect-div input-effect m-t-10 m-b-10">
-              <input type="text" class="labelled-effect {{altContact ? 'has-content' : '' }}" (keydown)="allowOnlyNumbers($event)" (paste)="pasteOnlyNumbers($event)" [(ngModel)]="altContact"
-                (keyup)="enableAddButton($event)" (focusout)="handleLabelName($event)" />
-              <label>Alternate Contact</label>
-              <span class="focus-bg"></span>
-            </div>
-          </div>
-
-        </div>
-
-        <span *ngIf="showTemplate" class="sub-info">
-          <i class="fa fa-asterisk mandatory-icon" aria-hidden="true"></i>
-          denotes mandatory fields
-        </span> 
-        
-      </div> -->
-
 
     <!-- Saved address -->
-      <!-- <div *ngIf="addressInfo.length > 0" class="col-md-12 m-t-10 add-address-div p-0 {{showTemplate ? '' : 'extend'}}"> -->
+      <div *ngIf="addressInfo.length == 0" class="col-md-12 m-t-10 text-center">
+        <i class="fa fa-spinner fa-spin fa-3x col-000"></i>
+      </div>
       <div *ngIf="addressInfo.length > 0" class="col-md-12 m-t-10 add-address-div p-0">
 
         <div *ngFor="let aInfo of addressInfo" (click)="isDependentView ? selectDefaultAddress(aInfo) : null"
          class="bg-alt {{(selectedAddress && selectedAddress.id === aInfo.id) ? selectedAddress.css : ''}} {{isDependentView ? 'dependent-address' : ''}}">
           <div class="col-md-12">
             <div class="text-center pull-left address-tag cur-p {{aInfo.default ? 'default' : '' }}"
-             attr.addid="{{aInfo.id}}" title="Make default Address" (click)="makeDefault(aInfo.id)">{{aInfo.tag}}</div>
+             attr.addid="{{aInfo.id}}" title="Make default Address" (click)="isDependentView ? null : makeDefault(aInfo.id)">{{aInfo.tag}}</div>
             <div class="col-md-10 pull-right ">
               <div *ngIf="!isDependentView" class="pull-right m-l-10" title="Delete this address">
                 <a data-toggle="modal" data-backdrop="static" data-keyboard="false" href="#confirmDeleteModal" (click)="confirmDelAddress(aInfo)">

@@ -125,7 +125,8 @@
       </div>
 
       <div *ngIf="dependentAddressView" class="header-content">
-        <app-address [isDependentView]="dependentAddressView" (defaultAddressChange)="onPassedDefaultAddress($event)"></app-address>
+        <app-address [isDependentView]="dependentAddressView" (defaultAddressChange)="onPassedDefaultAddress($event)"
+        (backToDependentViewChange)="onBackToDependentView($event)"></app-address>
       </div>
 
     </div>

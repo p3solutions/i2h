@@ -28,6 +28,7 @@ export class AddEditDependentComponent implements OnInit, OnChanges {
   selectedDependent: any = null;
   @Input() modifiedDependentInfo: any;
   @Output() dependentChange = new EventEmitter<boolean>(); // child to parent
+  @Output() backToDependentView = new EventEmitter<boolean>(); // child to parent
   @Input() passedSelectedDependentObj: any;  // parent to child
   @Output() selectedDependentChange = new EventEmitter<boolean>(); // child to parent
   dependentAddressView = false;
@@ -190,5 +191,8 @@ export class AddEditDependentComponent implements OnInit, OnChanges {
     this.defaultAddress = passedDefaultAddress;
     this.dependentAddressView = false;
     this.enableSaveButton(null);
+  }
+  onBackToDependentView() {
+    this.dependentAddressView = false;
   }
 }
