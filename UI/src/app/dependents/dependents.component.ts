@@ -115,7 +115,7 @@ export class DependentsComponent implements OnInit, OnDestroy {
             this.dependentInfo.splice(i, 1);
             this.delNotif = this.commonUtilityService.setNotificationObject('success', res.message);
             setTimeout(function () {
-              const cancelBtn: Element = document.querySelector('#confirmDeleteModal .cancel');
+              const cancelBtn: Element = document.querySelector('#confirmDelDepModal .cancel');
               const btn = <HTMLButtonElement>cancelBtn;
               btn.click();
             }, 1500);
@@ -144,5 +144,9 @@ export class DependentsComponent implements OnInit, OnDestroy {
   resetSelectedDependent() {
     this.selectedDependentObj = null;
     console.log('resetSelectedDependent called in dependent');
+  }
+  closeDelNotif() {
+    this.resetSelectedDependent();
+    this.delNotif = null;
   }
 }

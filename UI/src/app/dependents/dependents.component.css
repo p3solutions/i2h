@@ -2,3 +2,12 @@ th.cur-p:hover{
     text-decoration: underline;
     color: #23527c;
 }
+.delete-modal.center-card {
+    min-height: 120px;
+}
+.delete-modal .header-content {
+    height: 120px;
+}
+.delete-modal .header-content-notif {
+    height: 170px;
+}
