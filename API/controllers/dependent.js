@@ -53,7 +53,7 @@ module.exports.addDependent = function (req, res) {
                 console.logD('dependent added');
                 ctrlUtility.sendJSONresponse(res, 200, {
                     'status': 'success',
-                    'message': 'dependent added successfully',
+                    'message': 'Dependent added successfully',
                     'lastObjId': currentObjId
                 });
                 return;
