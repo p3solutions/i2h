@@ -54,6 +54,7 @@ export class AddEditDependentComponent implements OnInit, OnChanges {
       const currentVal = change.passedSelectedDependentObj.currentValue;
       this.selectedDependent = currentVal;
       this.updateDependentReady();
+      this.enableSaveButton(null);
     }
   }
   handleLabelName(e) {
@@ -111,7 +112,7 @@ export class AddEditDependentComponent implements OnInit, OnChanges {
     } else {
       this.enableSaveBtn = false;
     }
-    // console.log(this.name, this.dob, this.sex, this.defaultAddress.tag, !this.invalidDOB, this.relation);
+    console.log(this.name, this.dob, this.sex, this.defaultAddress.tag, !this.invalidDOB, this.relation);
   }
 
   addUpdateDependent() {
