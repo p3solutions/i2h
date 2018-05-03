@@ -18,36 +18,6 @@ export class DependentsComponent implements OnInit, OnDestroy {
   selectedDependentObj: any;
   deleteProgress = false;
   delNotif = new NotificationObject();
-  // dependentInfo = [
-  //   {
-  //     'id': '1',
-  //     'name': 'Mr X',
-  //     'age': '60',
-  //     'sex': 'Male',
-  //     'relationship': 'Father'
-  //   },
-  //   {
-  //     'id': '2',
-  //     'name': 'Master xx',
-  //     'age': '1',
-  //     'sex': 'Male',
-  //     'relationship': 'Son'
-  //   },
-  //   {
-  //     'id': '3',
-  //     'name': 'Mrs XY',
-  //     'age': '58',
-  //     'sex': 'Female',
-  //     'relationship': 'Mother'
-  //   },
-  //   {
-  //     'id': '4',
-  //     'name': 'Mrs xy',
-  //     'age': '25',
-  //     'sex': 'Female',
-  //     'relationship': 'Wife'
-  //   }
-  // ];
   dependentInfo: any;
 
   constructor(
@@ -85,7 +55,6 @@ export class DependentsComponent implements OnInit, OnDestroy {
 
   getDependent() {
     this.userInfoService.getDependent().subscribe((res) => {
-      console.log(res);
       if (res && res.status === 'success') {
         const dependentList = res.dependent;
         if (dependentList) {
@@ -103,7 +72,7 @@ export class DependentsComponent implements OnInit, OnDestroy {
   delDependentReady(dependent) {
     this.selectedDependentObj = dependent;
     this.selectedDependentObj.css = this.delCssClass;
-    console.log(this.selectedDependentObj);
+    // console.log(this.selectedDependentObj);
   }
   deleteDependent() {
     this.deleteProgress = true;
@@ -134,7 +103,7 @@ export class DependentsComponent implements OnInit, OnDestroy {
  }
 
   onSelectedDependentChangedInChild(isSelectedDependentChanged) {
-    console.log(isSelectedDependentChanged, 'isSelectedDependentChanged');
+    // console.log(isSelectedDependentChanged, 'isSelectedDependentChanged');
     // call getDependent() to update dependentList
     this.getDependent();
   }
@@ -143,7 +112,7 @@ export class DependentsComponent implements OnInit, OnDestroy {
   }
   resetSelectedDependent() {
     this.selectedDependentObj = null;
-    console.log('resetSelectedDependent called in dependent');
+    // console.log('resetSelectedDependent called in dependent');
   }
   closeDelNotif() {
     this.resetSelectedDependent();

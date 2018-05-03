@@ -507,25 +507,42 @@ select.labelled-effect {
   color: #23527c;
   text-decoration: underline;
 }
+/* add-edit modal */
+.add-edit-card {
+  width: 450px;
+  top: 120px;
+  min-height: 500px;
+}
 
 /* dependent list page */
 .dependent-card .dependent-address-div {
-  /* max-height: 300px; */
   margin: 0;
-  /* overflow-y: auto; */
 }
 .dependent-card.extend .add-address-div {
   height: 300px;
 }
-/* .dependent-card .no-dependent-item {
-  display: none;
+.dependent-card {
+  min-height: 500px;
+  width: 500px;
 }
-.dependent-item {
-  display: none;
+
+.dependent-card .add-address-div {
+  max-height: 300px;
+  overflow-y: auto;
 }
-.dependent-card .dependent-item {
-  display: block;
-} */
+
+.dependent-card .add-address-div .bg-alt {
+  border: 1px solid #ccc;
+  margin-bottom: 15px;
+}
+.dependent-card app-address .add-address-div .bg-alt {
+  margin-bottom: 0;
+}
+
+.dependent-card .header-content.header-content-notif {
+  height: 460px;
+}
+
 .dependent-address label {
   cursor: pointer;
 }
@@ -533,3 +550,11 @@ select.labelled-effect {
   background-color: #d9edf7;
   cursor: pointer;
 }
+.overlapDependentModal #addEditAddressModal {
+  display: table;
+}
+.overlapDependentModal .add-edit-card {
+  width: 600px;
+}
+
+

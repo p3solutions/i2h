@@ -35,6 +35,8 @@ export class AddEditAddressComponent implements OnInit, OnChanges {
   @Output() addressChange =  new EventEmitter<boolean>(); // child to parent
   @Input() passedSelectedAddressObj: any;  // parent to child
   @Output() selectedAddressChange = new EventEmitter<boolean>(); // child to parent
+  @Input() overlapDependentModal: any;
+  overlapDependent = false;
 
   constructor(
     private commonUtilityService: CommonUtilityService,
@@ -46,15 +48,15 @@ export class AddEditAddressComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(change: SimpleChanges) {
-    // console.log(change, 'change detected');
     if (change.modifiedAddressInfo && change.modifiedAddressInfo.currentValue) {
       this.addressInfo = change.modifiedAddressInfo.currentValue;
       this.setPotentialTags();
-      // console.log('change.modifiedAddressInfo');
     }
     if (change.passedSelectedAddressObj && change.passedSelectedAddressObj.currentValue) {
       this.editAddress(change.passedSelectedAddressObj.currentValue.addressObj, change.passedSelectedAddressObj.currentValue.isMakeDefault);
-      // console.log('change.passedSelectedAddressObj');
+    }
+    if (change.overlapDependentModal) {
+      this.overlapDependent = change.overlapDependentModal.currentValue;
     }
   }
 
@@ -149,7 +151,10 @@ export class AddEditAddressComponent implements OnInit, OnChanges {
           addressObj.id = res.lastObjId;
           this.addressInfo.push(addressObj);
           this.resetAddressForm();
-          const cancelBtn: Element = document.querySelector('#addEditAddressModal .cancel');
+          let cancelBtn: Element = document.querySelector('#addEditAddressModal .cancel');
+          if (this.overlapDependent) {
+            cancelBtn = document.querySelector('#addEditAddressModal .back');
+          }
           const btn = <HTMLButtonElement>cancelBtn;
           btn.click();
         }
@@ -217,5 +222,16 @@ export class AddEditAddressComponent implements OnInit, OnChanges {
   resetSelectedAddress() {
     this.selectedAddressChange.emit(true);
     this.selectedAddress = null;
+  }
+  hideThisModal() {
+    const modal = document.getElementById('addEditAddressModal');
+    modal.style.display = 'none';
+    const fn = function () {
+      const modalBackdrop = <HTMLElement>document.querySelector('.modal-backdrop:last-of-type');
+      if (modalBackdrop) {
+        modalBackdrop.style.display = 'none'; // need to remove this div from DOM
+      }
+    };
+    setTimeout(fn, 500);
   }
 }

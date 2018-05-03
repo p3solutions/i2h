@@ -47,15 +47,12 @@ export class AddEditDependentComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(change: SimpleChanges) {
-    // console.log(change, 'change detected');
     if (change.modifiedDependentInfo && change.modifiedDependentInfo.currentValue) {
       this.dependentInfo = change.modifiedDependentInfo.currentValue;
-      console.log('change.modifiedDependentInfo');
     }
     if (change.passedSelectedDependentObj && change.passedSelectedDependentObj.currentValue) {
       const currentVal = change.passedSelectedDependentObj.currentValue;
       this.selectedDependent = currentVal;
-      console.log('change.passedSelectedDependentObj', currentVal);
       this.updateDependentReady();
     }
   }
@@ -64,7 +61,6 @@ export class AddEditDependentComponent implements OnInit, OnChanges {
   }
 
   loadDefaultAddress() {
-    console.log('loadDefaultAddress called');
     this.userInfoService.getAddress().subscribe((res) => {
       if (res && res.status === 'success') {
         const addressList = res.address;
@@ -138,6 +134,7 @@ export class AddEditDependentComponent implements OnInit, OnChanges {
           const btn = <HTMLButtonElement>cancelBtn;
           btn.click();
         }
+        this.addProgress = false;
       });
     } else {
       this.userInfoService.addDependent(dependentObj).subscribe((res) => {
@@ -149,6 +146,7 @@ export class AddEditDependentComponent implements OnInit, OnChanges {
           const btn = <HTMLButtonElement>cancelBtn;
           btn.click();
         }
+        this.addProgress = false;
       });
     }
   }
@@ -166,7 +164,6 @@ export class AddEditDependentComponent implements OnInit, OnChanges {
     this.dob = '';
     this.relation = '';
     this.loadDefaultAddress();
-    // this.defaultAddress = null;
     }
   }
 
@@ -180,14 +177,11 @@ export class AddEditDependentComponent implements OnInit, OnChanges {
       this.selectedDependentChange.emit(true);
       this.defaultAddress = null;
     }
-    console.log('resetselectedDependent set to null', !this.dependentAddressView);
   }
   showAddressDiv() {
     this.dependentAddressView = true;
   }
   onPassedDefaultAddress(passedDefaultAddress) {
-    console.log(passedDefaultAddress, 'onPassedDefaultAddress');
-    // trigger dependent.ts     this.commonUtilityService.sendData(this.componentUrl);
     this.defaultAddress = passedDefaultAddress;
     this.dependentAddressView = false;
     this.enableSaveButton(null);

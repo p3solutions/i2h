@@ -11,23 +11,7 @@ import { stateList, tagSet } from '../hardcoded-collection';
 })
 export class AddressComponent implements OnInit, OnDestroy {
   componentUrl = 'address';
-  // tag = '';
-  // name = '';
-  // contact = '';
-  // address = '';
-  // city = '';
-  // pincode = '';
-  // locality = '';
-  // state = '';
-  // landmark = '';
-  // altContact = '';
-  // enableAddBtn = false;
-  // showTemplate = false;
-  addressInfo: any = []; // parent to child
-  // tagSet = tagSet;
-  // tagList = [];
-  // stateList = stateList;
-  // addProgress = false;
+  addressInfo: any; // parent to child
   selectedAddress: any = null;
   deleteProgress = false;
   delNotif = new NotificationObject();
@@ -37,6 +21,7 @@ export class AddressComponent implements OnInit, OnDestroy {
   @Input() isDependentView: any;
   @Output() defaultAddressChange = new EventEmitter<boolean>(); // child to parent
   @Output() backToDependentViewChange = new EventEmitter<boolean>(); // child to parent
+  overlapDependentModal = false;
 
   constructor(
     private commonUtilityService: CommonUtilityService,
@@ -48,7 +33,6 @@ export class AddressComponent implements OnInit, OnDestroy {
       this.commonUtilityService.sendData(this.componentUrl);
       this.getAddress();
     }
-    console.log('isDependentView', this.isDependentView);
   }
 
   sendData() {
@@ -76,13 +60,12 @@ export class AddressComponent implements OnInit, OnDestroy {
   }
 
   onAddressChanged(isAddressChanged) { // child to parent
-    console.log('onAddressChanged', isAddressChanged);
     if (isAddressChanged) {
       this.getAddress();
+      // scroll to new address
     }
   }
   onSelectedAddressChanged(isSelectedAddressChanged) {
-    console.log('isSelectedAddressChanged', isSelectedAddressChanged);
     if (isSelectedAddressChanged) {
       this.resetSelectedAddress();
       this.getAddress(); // fetch latest address to refresh to show latest default address
@@ -90,7 +73,6 @@ export class AddressComponent implements OnInit, OnDestroy {
   }
   passSelectedAddress(addressObj, isMakeDefault) {
     this.selectedAddressObj = { 'addressObj': addressObj, 'isMakeDefault': isMakeDefault };
-    // console.log('passing selectedAddressObj', this.selectedAddressObj);
     this.selectedAddress = addressObj;
     this.selectedAddress.css = this.editCssClass;
   }
@@ -100,14 +82,12 @@ export class AddressComponent implements OnInit, OnDestroy {
         const addressList = res.address;
         if (addressList) {
           this.addressInfo = addressList;
-          // this.setPotentialTags();
         }
       }
     });
   }
 
   confirmDelAddress(addressObj) {
-    // this.resetAddressForm();
     this.selectedAddress = addressObj;
     this.selectedAddress.css = this.delCssClass;
   }
@@ -134,7 +114,6 @@ export class AddressComponent implements OnInit, OnDestroy {
           }
         }
         this.deleteProgress = false;
-        // this.setPotentialTags();
       } else {
         this.deleteProgress = false;
         this.delNotif = this.commonUtilityService.setNotificationObject('error', res.message);
@@ -147,7 +126,6 @@ export class AddressComponent implements OnInit, OnDestroy {
   }
 
   makeDefault(id) {
-    // this.resetAddressForm();
     let addressObj: any = {};
     for (let i = 0; i < this.addressInfo.length; i++) {
       if (this.addressInfo[i].id === id) {
@@ -157,8 +135,6 @@ export class AddressComponent implements OnInit, OnDestroy {
     }
     addressObj.default = true;
     this.passSelectedAddress(addressObj, true);
-    // this.editAddress(addressObj, true);
-    // this.addAdress(true);
   }
   closeDelModal() {
     this.resetSelectedAddress();
@@ -168,9 +144,12 @@ export class AddressComponent implements OnInit, OnDestroy {
   }
   selectDefaultAddress(address) {
     this.defaultAddressChange.emit(address);
-    // console.log('selected DefaultAddress', address);
   }
   backToDependentView() {
     this.backToDependentViewChange.emit(true);
+  }
+  addAddressinDependentView() {
+    document.getElementById('showAddAdressModal').click();
+    this.overlapDependentModal = true;
   }
 }

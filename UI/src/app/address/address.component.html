@@ -4,6 +4,7 @@
       <div *ngIf="!isDependentView" class="fa-2x m-b-20">
         Manage Address
       </div>
+      
       <i *ngIf="isDependentView" title="Back" aria-hidden="true" class="fa fa-chevron-left fa-3x  pull-left col-i2h cur-p" (click)="backToDependentView()"></i>
       <div *ngIf="isDependentView" class="fa-2x">
         Add / Select Address
@@ -12,16 +13,21 @@
         <a *ngIf="!isDependentView" data-toggle="modal" data-backdrop="static" data-keyboard="false" href="#addEditAddressModal">
           <i class="fa fa-plus fa-3x pull-left col-i2h cur-p" aria-hidden="true"></i>
         </a>
-        <a *ngIf="isDependentView" data-toggle="modal" data-backdrop="static" data-keyboard="false" >
+        <a *ngIf="isDependentView" (click)="addAddressinDependentView()">
           <i class="fa fa-plus fa-3x pull-left col-i2h cur-p" aria-hidden="true"></i>
         </a>
+        <a id="showAddAdressModal" class="hide" data-toggle="modal" data-backdrop="static" data-keyboard="false" href="#addEditAddressModal">showAddAdressModal</a>
       </div>
 
     <!-- Saved address -->
-      <div *ngIf="addressInfo.length == 0" class="col-md-12 m-t-10 text-center">
+      <div *ngIf="!addressInfo" class="col-md-12 m-t-10 text-center">
         <i class="fa fa-spinner fa-spin fa-3x col-000"></i>
       </div>
-      <div *ngIf="addressInfo.length > 0" class="col-md-12 m-t-10 add-address-div p-0">
+      <div *ngIf="addressInfo && addressInfo.length == 0" class="text-center sidenav-title">
+        <i class="fa fa-user-times fa-lg" aria-hidden="true"></i>
+        No address saved!
+      </div>
+      <div *ngIf="addressInfo && addressInfo.length > 0" class="col-md-12 m-t-10 add-address-div p-0">
 
         <div *ngFor="let aInfo of addressInfo" (click)="isDependentView ? selectDefaultAddress(aInfo) : null"
          class="bg-alt {{(selectedAddress && selectedAddress.id === aInfo.id) ? selectedAddress.css : ''}} {{isDependentView ? 'dependent-address' : ''}}">
@@ -71,9 +77,10 @@
     </div>
 
 </div>
-
-<app-add-edit-address [modifiedAddressInfo]="addressInfo" (addressChange)="onAddressChanged($event)"
+<div class="{{overlapDependentModal ? 'overlapDependentModal' : ''}}">
+  <app-add-edit-address [modifiedAddressInfo]="addressInfo" (addressChange)="onAddressChanged($event)" [overlapDependentModal]="overlapDependentModal"
    [passedSelectedAddressObj]="selectedAddressObj" (selectedAddressChange)="onSelectedAddressChanged($event)"></app-add-edit-address>
+</div>
 
 
 <!-- Delete Address Confirmation Modal -->

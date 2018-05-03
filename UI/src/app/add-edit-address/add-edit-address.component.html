@@ -15,7 +15,7 @@
 <!-- 1st row -->
             <div class="col-md-6">
               <div class="input-effect-div input-effect m-t-10 m-b-10">
-                <select class="labelled-effect {{tag ? 'has-content' : '' }}" [(ngModel)]="tag" (change)="enableAddButton($event)">
+                <select class="labelled-effect has-content" [(ngModel)]="tag" (change)="enableAddButton($event)">
                   <option *ngFor="let tag of tagList">{{tag}}</option>
                 </select>
                 <!-- not deleting this comment , in case we need to implement auto complete for tags
@@ -134,8 +134,8 @@
             denotes mandatory fields
           </span>
 
-          <button type="button" class="cancel m-r-20 btn btn-i2h" data-dismiss="modal" (click)="closeDelModal()">Cancel</button>
-
+          <button *ngIf="!overlapDependent" type="button" class="cancel m-r-20 btn btn-i2h" data-dismiss="modal" (click)="closeDelModal()">Cancel</button>
+          <button *ngIf="overlapDependent" type="button" class="back m-r-20 btn btn-i2h" (click)="hideThisModal()">Back</button>
           <button type="submit" title="Add new address" class=" m-l-20 btn btn-form btn-i2h" disabled="{{enableAddBtn ? null : 'true' }}"
              (click)="enableAddBtn ? addAdress(false) : null">
             Save Address
