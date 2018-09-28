@@ -1,5 +1,5 @@
-// importing logger that overrides console.log to format logging time
-require('./config/logger');
+
+const { log, logI, logD, logE, logConfig, resetLogger } = require('override-console-log'); // importing override-console-log for all logging stuffs
 const express = require('express'),
       path = require('path'),
       morgan = require('morgan'),
